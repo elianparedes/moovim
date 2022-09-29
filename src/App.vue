@@ -1,8 +1,8 @@
 <template>
-  <v-app>
-    <v-app-bar
+  <v-app :style="{ background: $vuetify.theme.themes['dark'].background }">
+    <v-app-bar light
       app
-      color="primary"
+      color="accent"
       dark
     >
       <div class="d-flex align-center">
@@ -45,10 +45,8 @@
 
 <script>
 import HelloWorld from './components/HelloWorld';
-
 export default {
   name: 'App',
-
   components: {
     HelloWorld,
   },
