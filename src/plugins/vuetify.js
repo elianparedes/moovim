@@ -1,7 +1,33 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
+import Vue from "vue";
+import Vuetify from "vuetify/lib/framework";
+import MaterialIcon from "@/components/MaterialIcon";
 
-Vue.use(Vuetify);
+function missingMaterialIcons(ids) {
+  const icons = {};
+  for (const id of ids) {
+    for (const suffix of ["fill", "round"]) {
+      const name = `${id}_${suffix}`;
+      icons[name] = {
+        component: MaterialIcon,
+        props: {
+          name,
+        },
+      };
+    }
+  }
+  return icons;
+}
+
+Vue.use(Vuetify, {
+  icons: {
+    values: {
+      ...missingMaterialIcons(["star", "bookmark"]),
+    },
+  },
+});
 
 export default new Vuetify({
+  theme: {
+    dark: true,
+  },
 });
