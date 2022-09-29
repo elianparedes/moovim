@@ -1,58 +1,66 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes['dark'].background }">
-    <v-app-bar light
-      app
-      color="accent"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+    <v-item-group mandatory>
+      <div class="pa-2" style="width: 700px; height: 700px; overflow-y: scroll">
+        <v-item
+          v-slot="{ active, toggle }"
+          v-for="routine in routines"
+          :key="routine.id"
+        >
+          <WorkoutResultCard
+            :key="routine.id"
+            :name="routine.name"
+            :desc="routine.desc"
+            :image="routine.image"
+            :author="routine.author"
+            :avatar="routine.avatar"
+            :verified="routine.verified"
+            :stars="routine.stars"
+            :bookmarks="routine.bookmarks"
+            :click="toggle"
+            :active="active"
+          />
+        </v-item>
       </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <HelloWorld/>
-    </v-main>
+      <div
+        class="red"
+        style="
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 50px;
+          width: 100%;
+        "
+      ></div>
+    </v-item-group>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import WorkoutResultCard from "./components/WorkoutResultCard.vue";
+import routines from "./assets/mock/routines.json";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld,
+    WorkoutResultCard,
   },
-
   data: () => ({
-    //
+    routines: routines,
   }),
 };
 </script>
+
+<style scoped>
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #2e2e2e;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
+</style>
