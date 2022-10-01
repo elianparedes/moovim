@@ -1,37 +1,43 @@
 <template>
   <v-container>
-    <v-chip v-for="(chip,index) in chips" :key="chip.text" v-bind="{outlined: !chip.toggle}" color="white"
-            :class="{'hidden-border': chip.toggle}" @click="changeSelectedChip(index)" class="mx-1 px-16 py-4 font-weight-regular text-body-2" :ripple="false">
-      {{ chips[index].text }}
-    </v-chip>
+    <SelectButton v-for="(chip,index) in chipContent" :key="chip" vue-style="mx-1 px-16 py-4 font-weight-regular text-body-2"
+                  @click="changeSelectedChip(index)" :toggle="chipStatus[index].toggle">{{ chip }}</SelectButton>
   </v-container>
 </template>
 
 <script>
+import SelectButton from "@/components/SelectButton";
 export default {
   name: "SwitchButton",
+  components: {SelectButton},
+  props: {
+    chipContent: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
-    return {
-      selectedChip: 0,
-      chips: [
-        {text: "Explorar", toggle: true},
-        {text: "Descubrir", toggle: false}
-      ]
+    return{
+      chipStatus: [],
+      selectedChip: 0
     }
   },
   methods: {
     changeSelectedChip(index) {
-      this.chips[this.selectedChip].toggle = false;
+      this.chipStatus[this.selectedChip].toggle = false;
       this.selectedChip = index;
-      this.chips[this.selectedChip].toggle = true;
+      this.chipStatus[this.selectedChip].toggle = true;
     }
   },
+  created(){
+    for(let i = 0 ; i < this.chipContent.length ; i++){
+      this.chipStatus.push({toggle: false})
+    }
+    this.chipStatus[0].toggle = true
+  }
 }
 </script>
 
 <style scoped>
-.hidden-border{
-  border-width: thin;
-  border-style: solid;
-}
+
 </style>
