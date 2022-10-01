@@ -1,36 +1,82 @@
 <template>
-  <v-card
-        :key="name"
-        class="rounded-lg d-inline-block ma-8"
-        elevation="0"
+  <v-card class="ma-8 rounded-lg" elevation="0" @click="click" :ripple="false">
+    <v-img
+      class="pr-16 pa-2 card"
+      :class="{ 'active-card': active }"
+      :src="image"
+      :aspect-ratio="16 / 9"
+      :width="width"
+      gradient="to right, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 30%,rgba(37, 37, 37, 0.5) 100%"
+    >
+      <v-card-title class="font-weight-bold text-h3">{{ name }}</v-card-title>
+      <v-card-subtitle class="text-subtitle-1 font-weight-regular pr-8">{{
+        desc
+      }}</v-card-subtitle>
+
+      <v-card-subtitle class="d-inline red--text font-weight-medium"
+        ><v-icon class="material-icons-round mr-1" color="red">star</v-icon
+        >{{ stars }}</v-card-subtitle
       >
-        <v-img
-          class="pr-16"
-          :src="image"
-          :aspect-ratio="16 / 9"
-          :width="width"
-          gradient="to right, #212121, rgba(43, 43, 43, 0.356)"
-        >
-          <v-card-title class="font-weight-bold text-h3">{{
-            name
-          }}</v-card-title>
-          <v-card-text class="text-h6 font-weight-regular pr-8">{{
-            desc
-          }}</v-card-text>
-        </v-img>
-      </v-card>
+
+      <v-card-subtitle class="d-inline red--text font-weight-medium"
+        ><v-icon class="material-icons-round mr-1" color="red">bookmark</v-icon
+        >{{ bookmarks }}</v-card-subtitle
+      >
+
+      <v-list-item class="mt-12">
+        <v-list-item-content>
+          <v-list-item-subtitle class="mb-2"> Creada por</v-list-item-subtitle>
+          <v-list-item-title>
+            <v-avatar size="24" class="mr-2">
+              <img :src="avatar" alt="saul"
+            /></v-avatar>
+
+            {{ author }}
+            <v-icon v-if="verified" small class="ml-1" color="blue">
+              mdi-check-decagram
+            </v-icon>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-img>
+  </v-card>
 </template>
 
 <script>
 export default {
-    name: 'WorkoutResultCard',
-    props: ['name', 'desc', 'image']
-}
+  name: "WorkoutResultCard",
+  props: {
+    name: String,
+    desc: String,
+    image: String,
+    author: String,
+    avatar: String,
+    stars: Number,
+    bookmarks: Number,
+    verified: Boolean,
+    active: Boolean,
+    click: Event,
+  },
+};
 </script>
 
 <style>
 .container {
-    height: 100px;
-    padding: 600px;
+  height: 100px;
+  padding: 600px;
+}
+
+.card {
+  transition: all 200ms ease-in;
+  outline: solid transparent 2px;
+}
+
+.card:hover {
+  transition: all 150ms ease-in-out;
+  scale: 1.01;
+}
+
+.active-card {
+  outline: solid #f44336 2px;
 }
 </style>
