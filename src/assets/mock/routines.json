@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "name": "Masa Muscular",
+        "desc": "Aumenta el tamaño de tus músculos",
+        "stars": "5.0",
+        "bookmarks": "267",
+        "author": "Gustavo Fring",
+        "verified": "true",
+        "avatar": "https://i.pinimg.com/736x/71/c3/64/71c3646ae8158efa14ff5315a9995125.jpg",
+        "image": "https://images.pexels.com/photos/4164849/pexels-photo-4164849.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+        "id": 2,
+        "name": "Superseries",
+        "desc": "Para ganar fuerza en ejercicios multiarticulares muy globales",
+        "stars": "4.9",
+        "bookmarks": "239",
+        "author": "Saul Goodman",
+        "verified": "true",
+        "avatar": "https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg",
+        "image": "https://images.pexels.com/photos/949128/pexels-photo-949128.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+        "id": 3,
+        "name": "Recuperación",
+        "desc": "Ejercicios para recuperar la energía luego de varias semanas de entrenamiento",
+        "stars": "4.9",
+        "bookmarks": "239",
+        "author": "Saul Goodman",
+        "verified": "true",
+        "image": "https://images.pexels.com/photos/5319911/pexels-photo-5319911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "avatar": "https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Recuperación",
+        "desc": "Ejercicios para recuperar la energía luego de varias semanas de entrenamiento",
+        "stars": "4.9",
+        "bookmarks": "239",
+        "author": "Saul Goodman",
+        "verified": "true",
+        "image": "https://images.pexels.com/photos/5319911/pexels-photo-5319911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "avatar": "https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Recuperación",
+        "desc": "Ejercicios para recuperar la energía luego de varias semanas de entrenamiento",
+        "stars": "4.9",
+        "bookmarks": "239",
+        "author": "Saul Goodman",
+        "verified": "true",
+        "image": "https://images.pexels.com/photos/5319911/pexels-photo-5319911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "avatar": "https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg"
+    }
+]

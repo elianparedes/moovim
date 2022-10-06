@@ -1,14 +1,17 @@
 <template>
-  <v-card class="ma-8 rounded-lg" elevation="0" @click="click" :ripple="false">
+  <v-card class="rounded-lg" elevation="0" @click="click" :ripple="false">
     <v-img
-      class="pr-16 pa-2 card"
+      class="pr-16 pa-2 card d-flex"
+      style="flex: 1"
       :class="{ 'active-card': active }"
       :src="image"
       :aspect-ratio="16 / 9"
-      :width="width"
+      :height="height"
       gradient="to right, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 30%,rgba(37, 37, 37, 0.5) 100%"
     >
-      <v-card-title class="font-weight-bold text-h3">{{ name }}</v-card-title>
+      <v-card-title class="font-weight-bold text-h3 mb-1">{{
+        name
+      }}</v-card-title>
       <v-card-subtitle class="text-subtitle-1 font-weight-regular pr-8">{{
         desc
       }}</v-card-subtitle>
@@ -23,7 +26,7 @@
         >{{ bookmarks }}</v-card-subtitle
       >
 
-      <v-list-item class="mt-12">
+      <v-list-item class="bottom mb-2" style="position: absolute; bottom: 0">
         <v-list-item-content>
           <v-list-item-subtitle class="mb-2"> Creada por</v-list-item-subtitle>
           <v-list-item-title>
@@ -69,6 +72,10 @@ export default {
 .card {
   transition: all 200ms ease-in;
   outline: solid transparent 2px;
+}
+
+.bottom {
+  align-self: flex-end;
 }
 
 .card:hover {
