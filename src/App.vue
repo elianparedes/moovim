@@ -10,8 +10,8 @@
           :ripple="false"
           :to="item.link"
         >
-          <v-list-item-icon class="material-icons-round">
-            <v-icon>{{ item.icon }}</v-icon>
+          <v-list-item-icon>
+            <v-icon class="material-icons-round">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>

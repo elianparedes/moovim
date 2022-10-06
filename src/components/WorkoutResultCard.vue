@@ -35,8 +35,13 @@
             /></v-avatar>
 
             {{ author }}
-            <v-icon v-if="verified" small class="ml-1" color="blue">
-              mdi-check-decagram
+            <v-icon
+              v-if="verified"
+              small
+              class="ml-1 material-icons-round"
+              color="blue"
+            >
+              verified
             </v-icon>
           </v-list-item-title>
         </v-list-item-content>
