@@ -8,6 +8,7 @@
           :key="item.title"
           link
           :ripple="false"
+          :to="item.link"
         >
           <v-list-item-icon class="material-icons-round">
             <v-icon>{{ item.icon }}</v-icon>
@@ -28,142 +29,33 @@
       /></v-avatar>
     </v-app-bar>
     <v-main>
-      <div class="d-flex pa-4">
-        <v-item-group
-          mandatory
-          class="pa-1 d-flex flex-column"
-          style="overflow-y: scroll; gap: 32px; height: 100%"
-        >
-          <v-item
-            v-slot="{ active, toggle }"
-            v-for="routine in routines"
-            :key="routine.id"
-          >
-            <WorkoutResultCard
-              :key="routine.id"
-              :name="routine.name"
-              :desc="routine.desc"
-              :image="routine.image"
-              :author="routine.author"
-              :avatar="routine.avatar"
-              :verified="routine.verified"
-              :stars="routine.stars"
-              :bookmarks="routine.bookmarks"
-              :click="toggle"
-              :active="active"
-            />
-          </v-item>
-        </v-item-group>
-        <div class="px-8" style="flex: 90%; overflow-y: scroll; height: 100%">
-          <v-toolbar color="transparent" flat class="mb-4">
-            <v-toolbar-title class="font-weight-bold text-h3"
-              >Superseries</v-toolbar-title
-            >
-            <v-spacer></v-spacer>
-            <div>
-              <v-chip class="px-10" color="white" outlined>
-                <v-icon left small>edit</v-icon>
-                Editar rutina
-              </v-chip>
-            </div>
-          </v-toolbar>
-
-          <div class="d-flex flex-column px-4" style="gap: 16px">
-            <div class="text-subtitle-1">
-              Calentamiento<v-icon size="20px" class="mx-4">loop</v-icon>2
-            </div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div class="text-subtitle-1">
-              Principal<v-icon size="20px" class="mx-4">loop</v-icon>4
-            </div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-            <div
-              style="
-                height: 100px;
-                background-color: #252525;
-                border-radius: 16px;
-              "
-            ></div>
-          </div>
-        </div>
-      </div>
+      <router-view class="pa-8"></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import WorkoutResultCard from "./components/WorkoutResultCard.vue";
 import routines from "./assets/mock/routines.json";
 export default {
   name: "App",
-  components: {
-    WorkoutResultCard,
-  },
   data: () => ({
     routines: routines,
     items: [
-      { icon: "home", title: "Inicio" },
-      { icon: "search", title: "Explorar" },
-      { icon: "fitness_center", title: "Mis Rutinas" },
+      { icon: "home", title: "Inicio", link: "/" },
+      { icon: "search", title: "Explorar", link: "/explore" },
+      { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
     ],
   }),
 };
 </script>
 
-<style scoped>
+<style lang="scss">
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }
-
 ::-webkit-scrollbar {
   width: 8px;
+  background-color: #181818;
 }
 ::-webkit-scrollbar-thumb {
   background: #2e2e2e;
