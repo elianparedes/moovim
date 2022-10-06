@@ -4,6 +4,7 @@
       mandatory
       class="pa-1 d-flex flex-column"
       style="overflow-y: auto; gap: 32px; height: 100%"
+      v-model="selected"
     >
       <v-item
         v-slot="{ active, toggle }"
@@ -27,9 +28,9 @@
     </v-item-group>
     <div class="px-8" style="flex: 90%; overflow-y: auto; height: 100%">
       <v-toolbar color="transparent" flat class="mb-4">
-        <v-toolbar-title class="font-weight-bold text-h3"
-          >Superseries</v-toolbar-title
-        >
+        <v-toolbar-title class="font-weight-bold text-h3">{{
+          routines[selected]?.name
+        }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <div>
           <v-chip class="px-10" color="white" outlined>
@@ -90,6 +91,7 @@ export default {
       { icon: "search", title: "Explorar" },
       { icon: "fitness_center", title: "Mis Rutinas" },
     ],
+    selected: Number,
   }),
 };
 </script>
