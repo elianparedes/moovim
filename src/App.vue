@@ -22,11 +22,13 @@
     </v-navigation-drawer>
     <v-app-bar app color="transparent" class="px-14" flat>
       <v-spacer></v-spacer>
-      <v-avatar class="my-8" size="36px">
-        <img
-          src="https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg"
-          alt="saul"
-      /></v-avatar>
+      <router-link to="/profile">
+        <v-avatar class="my-8" size="36px">
+          <img
+            src="https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg"
+            alt="saul"
+        /></v-avatar>
+      </router-link>
     </v-app-bar>
     <v-main>
       <router-view class="pa-8"></router-view>
