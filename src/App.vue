@@ -3,21 +3,25 @@
     <v-navigation-drawer app color="transparent" floating width="300px">
       <v-spacer style="height: 90px"></v-spacer>
       <v-list nav>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-          :ripple="false"
-          :to="item.link"
-        >
-          <v-list-item-icon>
-            <v-icon class="material-icons-round">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <v-list-item-group>
+          <v-list-item
+            style="padding-left: 24px"
+            v-for="item in items"
+            :key="item.title"
+            link
+            :ripple="false"
+            :to="item.link"
+            flat
+          >
+            <v-list-item-icon>
+              <v-icon class="material-icons-round">{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app color="transparent" class="pl-4 pr-14" flat>
@@ -51,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }
@@ -63,5 +67,10 @@ export default {
   background: #2e2e2e;
   border-radius: 8px;
   background-clip: padding-box;
+}
+
+.v-list-item--link:before {
+  border-radius: 20px;
+  background-color: #5b5b5b;
 }
 </style>
