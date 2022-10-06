@@ -20,7 +20,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="transparent" class="px-14" flat>
+    <v-app-bar app color="transparent" class="pl-4 pr-14" flat>
       <v-spacer></v-spacer>
       <router-link to="/profile">
         <v-avatar class="my-8" size="36px">

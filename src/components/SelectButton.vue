@@ -1,42 +1,39 @@
 <template>
-  <v-chip color="white"
-          :class="[{'hidden-border': this.toggle},vueStyle]"
-          :ripple="false"
-          v-bind="[{outlined : !this.toggle}]"
-          @click="clickHandler">
-    <slot>
-
-    </slot>
+  <v-chip
+    color="white"
+    :class="[{ 'hidden-border': this.toggle }, vueStyle]"
+    :ripple="false"
+    v-bind="[{ outlined: !this.toggle }]"
+    @click="clickHandler"
+  >
+    <slot> </slot>
   </v-chip>
 </template>
 
 <script>
 export default {
   name: "SelectButton",
-  props:{
-    toggle :{
+  props: {
+    toggle: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    vueStyle:{
+    vueStyle: {
       type: String,
-      required: true
+      required: true,
     },
   },
-  methods:{
-    clickHandler(){
-      this.$emit('click')
-    }
+  methods: {
+    clickHandler() {
+      this.$emit("click");
+    },
   },
-  computed:{
-
-  }
-
-}
+  computed: {},
+};
 </script>
 
 <style scoped>
-.hidden-border{
+.hidden-border {
   border-width: thin;
   border-style: solid;
 }

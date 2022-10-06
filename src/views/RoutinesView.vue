@@ -33,7 +33,7 @@
         }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <div>
-          <v-chip class="px-10" color="white" outlined>
+          <v-chip class="px-10" color="white" outlined @click="editRoutine">
             <v-icon left small class="material-icons-round">edit</v-icon>
             Editar rutina
           </v-chip>
@@ -42,7 +42,9 @@
 
       <div class="d-flex flex-column px-4" style="gap: 16px">
         <div class="text-subtitle-1">
-          Calentamiento<v-icon size="20px" class="mx-4 material-icons-round">loop</v-icon>2
+          Calentamiento<v-icon size="20px" class="mx-4 material-icons-round"
+            >loop</v-icon
+          >2
         </div>
         <div
           style="height: 100px; background-color: #252525; border-radius: 16px"
@@ -54,7 +56,9 @@
           style="height: 100px; background-color: #252525; border-radius: 16px"
         ></div>
         <div class="text-subtitle-1">
-          Principal<v-icon size="20px" class="mx-4 material-icons-round">loop</v-icon>4
+          Principal<v-icon size="20px" class="mx-4 material-icons-round"
+            >loop</v-icon
+          >4
         </div>
         <div
           style="height: 100px; background-color: #252525; border-radius: 16px"
@@ -93,5 +97,10 @@ export default {
     ],
     selected: Number,
   }),
+  methods: {
+    editRoutine() {
+      this.$router.push("/routines/edit");
+    },
+  },
 };
 </script>

@@ -24,6 +24,11 @@ const routes = [
     name: "profile",
     component: () => import("../views/ProfileView.vue"),
   },
+  {
+    path: "/routines/edit",
+    name: "edit",
+    component: () => import("../views/EditView.vue"),
+  },
 ];
 
 const router = new VueRouter({
