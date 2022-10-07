@@ -37,6 +37,7 @@
             <v-icon left small class="material-icons-round">edit</v-icon>
             Editar rutina
           </v-chip>
+          <SelectButton vue-style="px-10"><template v-slot:icon>mdi-pencil</template>Editar rutina</SelectButton>
         </div>
       </v-toolbar>
 
@@ -83,9 +84,11 @@
 <script>
 import WorkoutResultCard from "@/components/WorkoutResultCard.vue";
 import routines from "@/assets/mock/routines.json";
+import SelectButton from "@/components/SelectButton";
 export default {
   name: "RoutinesView",
   components: {
+    SelectButton,
     WorkoutResultCard,
   },
   data: () => ({
