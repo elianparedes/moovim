@@ -1,14 +1,15 @@
 <template>
-  <v-card :key="name" class="rounded-lg d-inline-block ma-8" elevation="0">
+  <v-card :key="name" elevation="0" class="rounded-xl" color="transparent">
     <v-img
-      class="pr-16"
+      class="pl-2 pr-16"
+      style="width: 502px; height: 350px; border: red 2px"
       :src="image"
       :aspect-ratio="16 / 9"
       :width="width"
-      gradient="to right, #212121, rgba(43, 43, 43, 0.356)"
+      gradient="to right, #212121 0%, rgba(43, 43, 43, 1) 15%, rgba(43, 43, 43, 0.6) 100%"
     >
       <v-card-title class="font-weight-bold text-h3">{{ name }}</v-card-title>
-      <v-card-text class="text-h6 font-weight-regular pr-8">{{
+      <v-card-text class="text-h6 font-weight-light pr-8">{{
         desc
       }}</v-card-text>
     </v-img>
@@ -24,7 +25,6 @@ export default {
 
 <style>
 .container {
-  height: 100px;
-  padding: 600px;
+  height: 50px;
 }
 </style>

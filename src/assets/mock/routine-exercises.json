@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Calentamiento",
+    "loops": 2,
+    "exercises": [
+      {
+        "name": "Skipping",
+        "desc": "Tren Inferior",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      },
+      {
+        "name": "Talones al glúteo",
+        "desc": "Tren inferior",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      },
+      {
+        "name": "Jumping Jacks",
+        "desc": "Tren Inferior",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Principal",
+    "loops": 3,
+    "exercises": [
+      {
+        "name": "Extensión con sillón",
+        "desc": "Cuadriceps",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      },
+      {
+        "name": "Flexión con camilla",
+        "desc": "Issquiotibiales",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      },
+      {
+        "name": "Prensa Inclinada",
+        "desc": "Gemelos",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      },
+      {
+        "name": "Estocadas",
+        "desc": "Glúteos",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      },
+      {
+        "name": "Pantorrillas en máquina",
+        "desc": "Gemelos",
+        "sessions": [
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 },
+          { "reps": 12, "weight": 20, "secs": 60 }
+        ]
+      }
+    ]
+  }
+]

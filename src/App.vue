@@ -1,9 +1,8 @@
 <template>
-  <v-app style="background: #181818; overflow-y: hidden">
-    <v-navigation-drawer app color="transparent" floating width="300px">
-      <v-spacer style="height: 90px"></v-spacer>
-      <v-list nav>
-        <v-list-item-group>
+  <v-app style="background: #181818">
+    <v-navigation-drawer app color="transparent" floating width="256px" clipped>
+      <v-list nav height="100%">
+        <v-list-item-group class="d-flex flex-column" style="height: 100%">
           <v-list-item
             style="padding-left: 24px"
             v-for="item in items"
@@ -21,10 +20,33 @@
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item
+            class="mt-auto"
+            style="padding-left: 24px"
+            flat
+            :ripple="false"
+          >
+            <v-list-item-action>
+              <v-icon class="material-icons-round">logout</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title class="text--secondary"
+                >Logout</v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="transparent" class="pl-4 pr-14" flat>
+    <v-app-bar
+      app
+      prominent
+      color="transparent"
+      style="background-image: linear-gradient(#181818, rgba(24, 24, 24, 0))"
+      class="pl-4 pr-14"
+      flat
+    >
       <v-spacer></v-spacer>
       <router-link to="/profile">
         <v-avatar class="my-8" size="36px">
@@ -35,7 +57,7 @@
       </router-link>
     </v-app-bar>
     <v-main>
-      <router-view class="pa-8"></router-view>
+      <router-view class="pl-4"></router-view>
     </v-main>
   </v-app>
 </template>
@@ -55,12 +77,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
   background-color: #181818;
 }
 ::-webkit-scrollbar-thumb {
@@ -72,5 +94,9 @@ export default {
 .v-list-item--link:before {
   border-radius: 20px;
   background-color: #5b5b5b;
+}
+
+.v-list-item {
+  flex: 0;
 }
 </style>

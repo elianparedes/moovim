@@ -2,17 +2,17 @@
   <v-card class="rounded-lg" elevation="0" @click="click" :ripple="false">
     <v-img
       class="pr-16 pa-2 card d-flex"
-      style="flex: 1"
+      style="flex: 1; height: 256px"
       :class="{ 'active-card': active }"
       :src="image"
       :aspect-ratio="16 / 9"
       :height="height"
       gradient="to right, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 30%,rgba(37, 37, 37, 0.5) 100%"
     >
-      <v-card-title class="font-weight-bold text-h3 mb-1">{{
+      <v-card-title class="font-weight-bold text-h4 mb-1">{{
         name
       }}</v-card-title>
-      <v-card-subtitle class="text-subtitle-1 font-weight-regular pr-8">{{
+      <v-card-subtitle class="text-subtitle-2 font-weight-regular pr-8">{{
         desc
       }}</v-card-subtitle>
 

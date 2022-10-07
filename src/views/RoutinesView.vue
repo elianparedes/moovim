@@ -1,9 +1,13 @@
 <template>
-  <div class="d-flex">
+  <div
+    id="routines"
+    class="d-flex"
+    style="gap: 32px; height: calc(100vh - 128px)"
+  >
     <v-item-group
       mandatory
-      class="pa-1 d-flex flex-column"
-      style="overflow-y: auto; gap: 32px; height: 100%"
+      class="px-4 py-1 d-flex flex-column"
+      style="overflow-y: auto; gap: 32px"
       v-model="selected"
     >
       <v-item
@@ -26,8 +30,19 @@
         />
       </v-item>
     </v-item-group>
-    <div class="px-8" style="flex: 90%; overflow-y: auto; height: 100%">
-      <v-toolbar color="transparent" flat class="mb-4">
+    <div style="flex: 90%; overflow-y: scroll">
+      <v-toolbar
+        color="transparent"
+        style="
+          position: sticky;
+          top: 0px;
+          z-index: 1;
+          height: 96px;
+          background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
+        "
+        flat
+        class="mb-4"
+      >
         <v-toolbar-title class="font-weight-bold text-h3">{{
           routines[selected]?.name
         }}</v-toolbar-title>
@@ -40,41 +55,52 @@
         </div>
       </v-toolbar>
 
-      <div class="d-flex flex-column px-4" style="gap: 16px">
-        <div class="text-subtitle-1">
-          Calentamiento<v-icon size="20px" class="mx-4 material-icons-round"
-            >loop</v-icon
-          >2
-        </div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div class="text-subtitle-1">
-          Principal<v-icon size="20px" class="mx-4 material-icons-round"
-            >loop</v-icon
-          >4
-        </div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
-        <div
-          style="height: 100px; background-color: #252525; border-radius: 16px"
-        ></div>
+      <div
+        v-for="(stage, n) in exercises"
+        :key="n"
+        class="d-flex flex-column px-4 mb-4"
+      >
+        <v-row class="text-body-1 mb-4">
+          <v-col cols="4">
+            <div>
+              {{ stage.name
+              }}<span>
+                <v-icon size="24px" class="ml-4 material-icons-round"
+                  >loop</v-icon
+                >
+                {{ stage.loops }}
+              </span>
+            </div>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="1" align="center">
+            <v-icon size="24px" class="material-icons-round pl-2"
+              >replay</v-icon
+            >
+          </v-col>
+          <v-col cols="1" align="center">
+            <v-icon size="24px" class="material-icons-round"
+              >fitness_center</v-icon
+            ></v-col
+          >
+          <v-col cols="1" align="center"
+            ><v-icon size="24px" class="material-icons-outlined pr-4"
+              >timer</v-icon
+            >
+          </v-col>
+          <v-spacer> </v-spacer>
+        </v-row>
+
+        <v-expansion-panels flat style="z-index: 0" multiple>
+          <ExerciseViewCard
+            v-for="exercise in stage.exercises"
+            :key="exercise.name"
+            :sessions="exercise.sessions"
+            :exercise="exercise.name"
+            :category="exercise.desc"
+            class="mb-4 rounded-xl"
+          ></ExerciseViewCard>
+        </v-expansion-panels>
       </div>
     </div>
   </div>
@@ -83,10 +109,13 @@
 <script>
 import WorkoutResultCard from "@/components/WorkoutResultCard.vue";
 import routines from "@/assets/mock/routines.json";
+import routinesExercises from "@/assets/mock/routine-exercises.json";
+import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
 export default {
   name: "RoutinesView",
   components: {
     WorkoutResultCard,
+    ExerciseViewCard,
   },
   data: () => ({
     routines: routines,
@@ -95,6 +124,7 @@ export default {
       { icon: "search", title: "Explorar" },
       { icon: "fitness_center", title: "Mis Rutinas" },
     ],
+    exercises: routinesExercises,
     selected: Number,
   }),
   methods: {
@@ -104,3 +134,14 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-expansion-panel:not(:first-child)::after {
+  border-top: 0;
+}
+/*.v-main__wrap {
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+}*/
+</style>

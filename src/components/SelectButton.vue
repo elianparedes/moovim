@@ -1,12 +1,17 @@
 <template>
   <v-chip
     color="white"
+    :text-color="this.toggle ? 'black' : 'white'"
     :class="[{ 'hidden-border': this.toggle }, vueStyle]"
     :ripple="false"
     v-bind="[{ outlined: !this.toggle }]"
     @click="clickHandler"
   >
-    <slot> </slot>
+    <v-icon v-bind="[{small: true},{left:true}]" ><slot name="icon"></slot></v-icon>
+    <slot>
+
+    </slot>
+
   </v-chip>
 </template>
 
@@ -22,13 +27,19 @@ export default {
       type: String,
       required: true,
     },
+    iconClass : {
+      type: String,
+      required: false
+    }
   },
   methods: {
     clickHandler() {
       this.$emit("click");
     },
   },
-  computed: {},
+  computed: {
+
+  },
 };
 </script>
 
@@ -36,5 +47,6 @@ export default {
 .hidden-border {
   border-width: thin;
   border-style: solid;
+  background-color: red;
 }
 </style>
