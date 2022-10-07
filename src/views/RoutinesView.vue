@@ -55,15 +55,20 @@
         </div>
       </v-toolbar>
 
-      <div class="d-flex flex-column px-3" style="gap: 16px">
-        <v-row class="text-body-1">
+      <div
+        v-for="(stage, n) in exercises"
+        :key="n"
+        class="d-flex flex-column px-4 mb-4"
+      >
+        <v-row class="text-body-1 mb-4">
           <v-col cols="4">
-            <div class="text-body-1">
-              Calentamiento<span>
+            <div>
+              {{ stage.name
+              }}<span>
                 <v-icon size="24px" class="ml-4 material-icons-round"
                   >loop</v-icon
                 >
-                2
+                {{ stage.loops }}
               </span>
             </div>
           </v-col>
@@ -88,31 +93,14 @@
 
         <v-expansion-panels flat style="z-index: 0" multiple>
           <ExerciseViewCard
-            v-for="session in sessions"
-            :key="session"
-            :sessions="session"
-            exercise="Skipping"
-            category="Tren inferior"
+            v-for="exercise in stage.exercises"
+            :key="exercise.name"
+            :sessions="exercise.sessions"
+            :exercise="exercise.name"
+            :category="exercise.desc"
             class="mb-4 rounded-xl"
           ></ExerciseViewCard>
         </v-expansion-panels>
-
-        <div class="text-body-1">
-          Principal<span>
-            <v-icon size="24px" class="ml-4 material-icons-round">loop</v-icon>
-            4
-          </span>
-        </div>
-        <v-expansion-panels flat style="z-index: 0" multiple>
-          <ExerciseViewCard
-            v-for="session in sessions1"
-            :key="session"
-            :sessions="session"
-            exercise="Hola"
-            category="adgaadgadgadgdg"
-            class="mb-4 rounded-xl"
-          ></ExerciseViewCard
-        ></v-expansion-panels>
       </div>
     </div>
   </div>
@@ -121,6 +109,7 @@
 <script>
 import WorkoutResultCard from "@/components/WorkoutResultCard.vue";
 import routines from "@/assets/mock/routines.json";
+import routinesExercises from "@/assets/mock/routine-exercises.json";
 import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
 export default {
   name: "RoutinesView",
@@ -135,70 +124,7 @@ export default {
       { icon: "search", title: "Explorar" },
       { icon: "fitness_center", title: "Mis Rutinas" },
     ],
-    sessions1: [
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-    ],
-    sessions: [
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-      [
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-        { reps: 13, weight: 13, secs: 13 },
-      ],
-    ],
+    exercises: routinesExercises,
     selected: Number,
   }),
   methods: {
