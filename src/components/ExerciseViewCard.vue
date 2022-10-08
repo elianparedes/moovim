@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel style="background-color: #252525">
+  <v-expansion-panel style="background-color: #252525" @click="expand=!expand">
     <v-expansion-panel-header>
       <v-row align="center" class="text-body-1">
         <v-col cols="4">

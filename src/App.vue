@@ -59,6 +59,8 @@
 
 <script>
 import routines from "./assets/mock/routines.json";
+import {useSecurityStore} from "./stores/securityStore.js";
+
 export default {
   name: "App",
   data: () => ({
@@ -68,7 +70,13 @@ export default {
       { icon: "search", title: "Explorar", link: "/explore" },
       { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
     ],
+    result: null,
+    controller: null
   }),
+  async created() {
+    const securityStore = useSecurityStore();
+    await securityStore.initialize();
+  }
 };
 </script>
 
