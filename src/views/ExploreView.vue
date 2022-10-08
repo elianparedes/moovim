@@ -102,17 +102,17 @@ export default {
     MusclesCategoryCard,
   },
   computed: {
-    ...mapState(useCategoryStore, { categories: state => state.categories})
+    ...mapState(useCategoryStore, { categories: state => state.items})
   },
   methods : {
-    ...mapActions(useCategoryStore, ['getAll']),
+    ...mapActions(useCategoryStore, {$getAllCategories: 'getAllCategories'}),
       setResult(result){
-      this.result = result;
+        this.result = result;
     },  
     async getAllCategories(){
       try {
         this.controller = new AbortController()
-        const categories = await this.getAll(this.controller);
+        const categories = await this.$getAllCategories(this.controller);
         this.controller = null
         this.setResult(categories)
       } catch(e) {

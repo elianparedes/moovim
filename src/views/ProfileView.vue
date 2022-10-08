@@ -46,7 +46,6 @@ export default{
       try {
         const credentials = new Credentials('admin', '12345')
         await this.$login(credentials, true)
-        console.log("entre")
         this.clearResult()
       } catch (e) {
         this.setResult(e)
