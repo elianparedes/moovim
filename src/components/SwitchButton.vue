@@ -3,7 +3,7 @@
     <SelectButton
       v-for="(chip, index) in chipContent"
       :key="chip"
-      vue-style="mx-1 px-16 py-4 font-weight-regular text-body-2"
+      :vue-style=vueStyle
       @click="changeSelectedChip(index)"
       :toggle="chipStatus[index].toggle"
       >{{ chip }}</SelectButton
@@ -21,6 +21,11 @@ export default {
       type: Array,
       required: true,
     },
+    vueStyle:{
+      type: String,
+      required: false,
+      default: "mx-1 px-16 py-4 font-weight-regular text-body-2"
+    }
   },
   data() {
     return {
