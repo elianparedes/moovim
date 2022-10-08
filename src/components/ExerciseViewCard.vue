@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel style="background-color: #252525">
+  <v-expansion-panel style="background-color: #252525" @click="expand=!expand">
     <v-expansion-panel-header>
       <v-row align="center" class="text-body-1">
         <v-col cols="4">
@@ -16,11 +16,13 @@
         </v-col>
         <v-spacer> </v-spacer>
 
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ "S" + 1 }}
+        <v-col  cols="1" class="text-h6 font-weight-light">
+          <v-fade-transition duration="200ms">
+          <span v-show="expand">{{ "S" + 1 }}</span>
+          </v-fade-transition>
         </v-col>
         <v-col cols="1" class="text-h6 font-weight-light">
-          {{ sessions[0].reps }}
+          {{ sessions[0].reps}}
         </v-col>
         <v-col cols="1" class="text-h6 font-weight-light">
           {{ sessions[0].weight }}
@@ -37,7 +39,9 @@
         <v-col cols="4"> </v-col>
         <v-spacer> </v-spacer>
         <v-col cols="1" class="text-h6 font-weight-light">
-          {{ "S" + (n + 2) }}
+          <v-fade-transition>
+          <span v-show="expand" >{{ "S" + (n + 2) }}</span>
+          </v-fade-transition>
         </v-col>
         <v-col cols="1" class="text-h6 font-weight-light">
           {{ session.reps }}
@@ -74,6 +78,7 @@ export default {
   data() {
     return {
       sessionNumber: 1,
+      expand: false
     };
   },
   methods() {},
