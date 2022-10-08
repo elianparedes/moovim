@@ -1,36 +1,41 @@
 <template>
-  <div class="d-flex flex-column" style="gap: 32px">
-    <SwitchButton :chipContent="['Categorías', 'Descubrir']" />
-    <div class="font-weight-regular text-subtitle-1">Objetivos</div>
-    <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
-      <WorkoutCategoryCard
-        v-for="routine in routines"
-        :key="routine"
-        class="d-inline-block mr-4"
-        :image="routine.image"
-        :name="routine.name"
-        :desc="routine.desc"
-      />
+  <div>
+    <div class="mb-8">
+      <SwitchButton :chipContent="['Categorías', 'Descubrir']" />
     </div>
-    <div class="font-weight-regular text-subtitle-1">Etapas</div>
-    <div style="white-space: nowrap; overflow: auto">
-      <StagesCategoryCard
-        v-for="stage in stages"
-        :key="stage"
-        class="d-inline-block mr-4"
-        :image="stage.image"
-        :name="stage.name"
-        :desc="stage.desc"
-      />
-    </div>
-    <div class="font-weight-regular text-subtitle-1">Grupos Musculares</div>
-    <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
-      <MusclesCategoryCard
-        v-for="group in groups"
-        :key="group"
-        class="d-inline-block mr-4"
-        :name="group.name"
-      />
+
+    <div class="d-flex flex-column" style="gap: 32px">
+      <div class="font-weight-regular text-subtitle-1">Objetivos</div>
+      <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
+        <WorkoutCategoryCard
+          v-for="routine in routines"
+          :key="routine"
+          class="d-inline-block mr-4"
+          :image="routine.image"
+          :name="routine.name"
+          :desc="routine.desc"
+        />
+      </div>
+      <div class="font-weight-regular text-subtitle-1">Etapas</div>
+      <div style="white-space: nowrap; overflow: auto">
+        <StagesCategoryCard
+          v-for="stage in stages"
+          :key="stage"
+          class="d-inline-block mr-4"
+          :image="stage.image"
+          :name="stage.name"
+          :desc="stage.desc"
+        />
+      </div>
+      <div class="font-weight-regular text-subtitle-1">Grupos Musculares</div>
+      <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
+        <MusclesCategoryCard
+          v-for="group in groups"
+          :key="group"
+          class="d-inline-block mr-4"
+          :name="group.name"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -110,7 +115,7 @@ export default {
 }
 
 ::-webkit-scrollbar-track {
-  margin-right: 64px;
+  margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
   background-color: #1e1e1e;
   border-radius: 8px;
 }
