@@ -1,10 +1,9 @@
 <template>
   <v-app style="background: #181818">
-    <v-navigation-drawer app color="transparent" floating width="256px" clipped>
+    <v-navigation-drawer app color="transparent" floating clipped>
       <v-list nav height="100%">
         <v-list-item-group class="d-flex flex-column" style="height: 100%">
           <v-list-item
-            style="padding-left: 24px"
             v-for="item in items"
             :key="item.title"
             link
@@ -21,12 +20,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            class="mt-auto"
-            style="padding-left: 24px"
-            flat
-            :ripple="false"
-          >
+          <v-list-item class="mt-auto" flat :ripple="false">
             <v-list-item-action>
               <v-icon class="material-icons-round">logout</v-icon>
             </v-list-item-action>
@@ -46,6 +40,7 @@
       style="background-image: linear-gradient(#181818, rgba(24, 24, 24, 0))"
       class="pl-4 pr-14"
       flat
+      dense
     >
       <v-spacer></v-spacer>
       <router-link to="/profile">
