@@ -7,27 +7,27 @@
         "name": "Skipping",
         "desc": "Tren Inferior",
         "sessions": [
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 }
+          { "reps": 12, "weight": null, "secs": 60 },
+          { "reps": 12, "weight": null, "secs": 60 },
+          { "reps": 12, "weight": null, "secs": 60 }
         ]
       },
       {
         "name": "Talones al glúteo",
         "desc": "Tren inferior",
         "sessions": [
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 }
+          { "reps": 12, "weight": null, "secs": 60 },
+          { "reps": 12, "weight": null, "secs": 60 },
+          { "reps": 12, "weight": null, "secs": 60 }
         ]
       },
       {
         "name": "Jumping Jacks",
         "desc": "Tren Inferior",
         "sessions": [
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 }
+          { "reps": 12, "weight": null, "secs": 60 },
+          { "reps": 12, "weight": null, "secs": 60 },
+          { "reps": 12, "weight": null, "secs": 60 }
         ]
       }
     ]
@@ -40,18 +40,18 @@
         "name": "Extensión con sillón",
         "desc": "Cuadriceps",
         "sessions": [
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 }
+          { "reps": 12, "weight": 20, "secs": null },
+          { "reps": 12, "weight": 20, "secs": 80 },
+          { "reps": 12, "weight": 20, "secs": null }
         ]
       },
       {
         "name": "Flexión con camilla",
         "desc": "Issquiotibiales",
         "sessions": [
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 },
-          { "reps": 12, "weight": 20, "secs": 60 }
+          { "reps": 12, "weight": 20, "secs": null },
+          { "reps": 12, "weight": 20, "secs": null },
+          { "reps": 12, "weight": 20, "secs": null }
         ]
       },
       {
