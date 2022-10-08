@@ -2,7 +2,7 @@
   <div
     id="routines"
     class="d-flex"
-    style="gap: 32px; height: calc(100vh - 128px)"
+    style="gap: 32px; height: calc(100vh - 96px)"
   >
     <v-item-group
       mandatory
@@ -31,30 +31,27 @@
       </v-item>
     </v-item-group>
     <div style="flex: 90%; overflow-y: scroll">
-      <v-toolbar
-        color="transparent"
-        style="
-          position: sticky;
-          top: 0px;
-          z-index: 1;
-          height: 96px;
-          background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
-        "
-        flat
-        class="mb-4"
-      >
-        <v-toolbar-title class="font-weight-bold text-h3">{{
-          routines[selected]?.name
-        }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <div>
-          <v-chip class="px-10" color="white" outlined @click="editRoutine">
-            <v-icon left small class="material-icons-round">edit</v-icon>
-            Editar rutina
-          </v-chip>
-        </div>
-      </v-toolbar>
-
+      <div style="position: sticky; top: 0px; z-index: 1">
+        <v-toolbar color="#181818" flat>
+          <v-toolbar-title class="font-weight-bold text-h3">{{
+            routines[selected]?.name
+          }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <div>
+            <v-chip class="px-10" color="white" outlined @click="editRoutine">
+              <v-icon left small class="material-icons-round">edit</v-icon>
+              Editar rutina
+            </v-chip>
+          </div>
+        </v-toolbar>
+        <div
+          style="
+            height: 64px;
+            width: 100%;
+            background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
+          "
+        ></div>
+      </div>
       <div
         v-for="(stage, n) in exercises"
         :key="n"
@@ -73,7 +70,7 @@
             </div>
           </v-col>
           <v-spacer></v-spacer>
-          <v-col cols="1" align="center">
+          <!---<v-col cols="1" align="center">
             <v-icon size="24px" class="material-icons-round pl-2"
               >replay</v-icon
             >
@@ -88,7 +85,7 @@
               >timer</v-icon
             >
           </v-col>
-          <v-spacer> </v-spacer>
+          <v-spacer> </v-spacer>-->
         </v-row>
 
         <v-expansion-panels flat style="z-index: 0" multiple>
@@ -117,6 +114,13 @@ export default {
     WorkoutResultCard,
     ExerciseViewCard,
   },
+  mounted: () => {
+    fetch(
+      "http://localhost:5000/api/users?page=0&size=10&orderBy=username&direction=asc"
+    )
+      .then((res) => JSON.stringify(res))
+      .then((data) => console.log(data));
+  },
   data: () => ({
     routines: routines,
     items: [
@@ -139,6 +143,7 @@ export default {
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
 }
+
 /*.v-main__wrap {
   display: flex;
   flex-direction: column;
