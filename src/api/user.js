@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials, SignCredentials, VerifyCredentials }
+export { UserApi, Credentials, SignCredentials, VerifyCredentials, UserData }
 
 class UserApi {
     static getUrl(slug) {
@@ -26,6 +26,12 @@ class UserApi {
     static async get(controller) {
         return Api.get(UserApi.getUrl('current'), true, controller);
     }
+    static async modifyUser(credentials, controller){
+        return await Api.put(UserApi.getUrl('current'),true,credentials, controller)
+    }
+    static async deleteAccount(controller){
+        return await Api.delete(UserApi.getUrl('current'),true, controller)
+    }
 }
 
 class Credentials {
@@ -47,5 +53,13 @@ class VerifyCredentials {
     constructor(email, code) {
         this.email=email;
         this.code=code;
+    }
+}
+
+class UserData {
+    constructor(firstName, lastName, gender) {
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.gender=gender;
     }
 }

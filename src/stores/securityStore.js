@@ -57,6 +57,12 @@ export const useSecurityStore = defineStore("security", {
 
             const result = await UserApi.get();
             this.setUser(result);
+        },
+        async modifyUser(data){
+            await UserApi.modifyUser(data);
+        },
+        async deleteAccount(){
+            await UserApi.deleteAccount();
         }
     },
 });
