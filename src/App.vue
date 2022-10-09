@@ -72,7 +72,7 @@ export default {
     routines: routines,
     items: [
       { icon: "home", title: "Inicio", link: "/" },
-      { icon: "search", title: "Explorar", link: "/explore" },
+      { icon: "search", title: "Explorar", link: "/discover" },
       { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
     ],
     result: null,

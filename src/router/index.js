@@ -29,6 +29,11 @@ const routes = [
     name: "edit",
     component: () => import("../views/EditView.vue"),
   },
+  {
+    path: "/discover",
+    name: "discover",
+    component: () => import("../views/DiscoverView.vue"),
+  },
 ];
 
 const router = new VueRouter({
