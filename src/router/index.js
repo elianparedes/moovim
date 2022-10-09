@@ -34,6 +34,11 @@ const routes = [
     name: "discover",
     component: () => import("../views/DiscoverView.vue"),
   },
+  {
+    path: "/verification/:userId/:code",
+    name: "verification",
+    component: () => import("../views/VerificationView.vue")
+  }
 ];
 
 const router = new VueRouter({
