@@ -35,9 +35,9 @@ const routes = [
     component: () => import("../views/DiscoverView.vue"),
   },
   {
-    path: "/verification/:userId/:code",
-    name: "verification",
-    component: () => import("../views/VerificationView.vue")
+    path: "/register",
+    name :"register",
+    component: () => import("../views/RegisterView.vue")
   }
 ];
 
