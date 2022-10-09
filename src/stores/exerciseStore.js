@@ -4,14 +4,13 @@ import { exercisesApi, Exercise} from "@/api/exercises"
 export const useExerciseStore = defineStore("exercises", {
     state: () => ({items: []}),
     getters:{
-
     },
     actions: {
-        push(category){
-            this.items.push(category);
+        push(fullExercise){
+            this.items.push(fullExercise);
         },
-        replace(index, fullCategory){
-            this.items[index] = fullCategory;
+        replace(index, fullExercise){
+            this.items[index] = fullExercise;
         },
         splice(index) {
             this.items.splice(index, 1);
