@@ -16,43 +16,70 @@
         </v-col>
         <v-spacer> </v-spacer>
 
-        <v-col  cols="1" class="text-h6 font-weight-light">
-          <v-fade-transition duration="200ms">
-          <span v-show="expand">{{ "S" + 1 }}</span>
-          </v-fade-transition>
+        <v-col cols="1" class="text-h6 font-weight-light" align="center">
         </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ sessions[0].reps}}
+        <v-col cols="1" class="text-h6 font-weight-light" align="center">
+          <v-btn @click.stop="onClick" icon>
+            <v-icon size="24px" class="material-icons-round"
+              >replay</v-icon
+            ></v-btn
+          >
         </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ sessions[0].weight }}
+        <v-col cols="1" class="text-h6 font-weight-light" align="center">
+          <v-btn @click.stop="onClick" icon>
+            <v-icon
+              size="24px"
+              class="material-icons-round"
+              :class="{ 'grey--text text--darken-2': !this.hasWeight }"
+              >fitness_center</v-icon
+            ></v-btn
+          >
         </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ sessions[0].secs }}
+        <v-col cols="1" class="text-h6 font-weight-light" align="center">
+          <v-btn @click.stop="onClick" icon>
+            <v-icon
+              size="24px"
+              class="material-icons-outlined"
+              :class="{ 'grey--text text--darken-2': !this.hasTime }"
+              >timer</v-icon
+            ></v-btn
+          >
         </v-col>
-
         <v-spacer> </v-spacer>
       </v-row>
     </v-expansion-panel-header>
     <v-expansion-panel-content class="pr-6">
       <v-row v-for="(session, n) in sessions" :key="session">
-        <v-col cols="4"> </v-col>
+        <v-col cols="4"></v-col>
         <v-spacer> </v-spacer>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          <v-fade-transition>
-          <span v-show="expand" >{{ "S" + (n + 2) }}</span>
-          </v-fade-transition>
+        <v-col cols="1" class="text-h6 font-weight-light" align="center">
+          {{ "S" + (n + 1) }}
         </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ session.reps }}
+        <v-col
+          cols="1"
+          :class="{ 'grey--text text--darken-2': session.reps === null }"
+          class="text-h6 font-weight-light"
+          align="center"
+        >
+          {{ session.reps ? session.reps : "•" }}
         </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ session.weight }}
+        <v-col
+          cols="1"
+          :class="{ 'grey--text text--darken-2': session.weight === null }"
+          class="text-h6 font-weight-light"
+          align="center"
+        >
+          {{ session.weight ? session.weight : "•" }}
         </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light">
-          {{ session.secs }}
+        <v-col
+          cols="1"
+          :class="{ 'grey--text text--darken-2': session.secs === null }"
+          class="text-h6 font-weight-light"
+          align="center"
+        >
+          {{ session.secs ? session.secs : "•" }}
         </v-col>
-        <v-spacer> </v-spacer>
+        <v-spacer></v-spacer>
       </v-row>
     </v-expansion-panel-content>
   </v-expansion-panel>
@@ -75,12 +102,13 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      sessionNumber: 1,
-      expand: false
-    };
+  computed: {
+    hasTime: function () {
+      return this.sessions.some((session) => session.secs !== null);
+    },
+    hasWeight: function () {
+      return this.sessions.some((session) => session.weight !== null);
+    },
   },
-  methods() {},
 };
 </script>

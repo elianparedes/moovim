@@ -6,28 +6,22 @@
     <v-card-subtitle>
       {{ category }}
     </v-card-subtitle>
-    <v-card-text class="d-flex" style="gap:20px;">
+    <v-card-text class="d-flex" style="gap: 20px">
       <span v-show="sets">
-        <span>
-        {{sets}} x
-        </span>
+        <span> {{ sets }} x </span>
         <span v-show="repetitions">
-          {{repetitions}}
+          {{ repetitions }}
         </span>
       </span>
-      <span v-show="weight">
-        {{weight}}kg
-      </span>
-      <span v-show="time">
-        {{time}}s
-      </span>
+      <span v-show="weight"> {{ weight }}kg </span>
+      <span v-show="time"> {{ time }}s </span>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
 export default {
-  name: 'ExerciseSummaryCard',
+  name: "ExerciseSummaryCard",
   props: {
     exercise: {
       type: String,
@@ -37,7 +31,7 @@ export default {
       type: String,
       required: true,
     },
-    sets:{
+    sets: {
       type: String,
       required: false,
     },
@@ -52,8 +46,8 @@ export default {
     time: {
       type: String,
       required: false,
-    }
-  }
+    },
+  },
 };
 </script>
 

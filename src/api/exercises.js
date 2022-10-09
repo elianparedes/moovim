@@ -8,12 +8,24 @@ class exercisesApi{
         return `${Api.baseUrl}/exercises${slug ? `/${slug}` : "" }`;
     }
 
-    static async postExercises(exercise){
-        return await Api.post(exercisesApi.getUrl(), true, exercise);
+    static async add(exercise, controller){
+        return await Api.post(exercisesApi.getUrl(), true, exercise, controller);
     }
 
-    static async getExercises(exercise){
-        return await Api.get(exercisesApi.getUrl(), true);
+    static async modify(exercise, controller){
+        return await Api.put(exercisesApi.getUrl(exercise.id), true, exercise, controller);
+    }
+
+    static async get(id, controller){
+        return await Api.get(exercisesApi.getUrl(id), true, controller);
+    }
+
+    static async delete(id, controller){
+        return await Api.delete(exercisesApi.getUrl(id), true, controller);
+    }
+
+    static async getAll(controller){
+        return await Api.get(exercisesApi.getUrl(), true, controller);
     }
 }
 
