@@ -20,7 +20,7 @@ class UserApi {
     }
 
     static async logout(controller) {
-        await Api.post(UserApi.getUrl('logout'), true, controller);
+        return await Api.post(UserApi.getUrl('logout'), true, controller);
     }
 
     static async get(controller) {

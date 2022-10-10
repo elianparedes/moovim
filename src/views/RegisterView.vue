@@ -86,14 +86,15 @@ export default {
         },
         async signUp() {
             try {
+                this.clearResult()
                 const signCredentials = new SignCredentials(this.username, this.password, this.email)
                 await this.$signUp(signCredentials)
-                this.clearResult()
-                this.clearData()
                 this.setResult(signCredentials)
             } catch (e) {
                 this.setResult(e)
             }
+            localStorage.setItem('email', this.email);
+            this.$router.push({name: 'verify'})
         }
     }
 };

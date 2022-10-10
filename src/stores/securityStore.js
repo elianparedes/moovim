@@ -45,7 +45,7 @@ export const useSecurityStore = defineStore("security", {
             await UserApi.signUp(credentials);
         },
         async verify(credentials){
-            await UserApi.verify(credentials);
+            return await UserApi.verify(credentials);
         },
         async logout() {
             await UserApi.logout();
