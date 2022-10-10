@@ -37,7 +37,7 @@ const useExerciseCycleStore = defineStore("exerciseCycle", {
             return result;
         },
         async modifyExerciseCycle(cycleId, exerciseId, fullExerciseCycle){
-            const result = await routineCycleApi.modify(cycleId, exerciseId, fullExerciseCycle);
+            const result = await exerciseCycleApi.modify(cycleId, exerciseId, fullExerciseCycle);
             const index = this.items.findIndex(fullExerciseCycle);
             if (index >= 0){
                 this.replace(index, result);
@@ -45,7 +45,7 @@ const useExerciseCycleStore = defineStore("exerciseCycle", {
             return result;
         },
         async deleteExerciseCycle(cycleId, exerciseId, fullExerciseCycle){
-            await routineCycleApi.delete(cycleId, exerciseId,fullExerciseCycle.id);
+            await exerciseCycleApi.delete(cycleId, exerciseId,fullExerciseCycle.id);
             const index = this.items.findIndex(fullExerciseCycle);
             if (index >= 0){
                 return this.splice(index);
