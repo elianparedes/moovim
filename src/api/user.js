@@ -57,9 +57,10 @@ class VerifyCredentials {
 }
 
 class UserData {
-    constructor(firstName, lastName, gender) {
+    constructor(firstName, lastName, gender, avatarUrl) {
         this.firstName=firstName;
         this.lastName=lastName;
         this.gender=gender;
+        this.avatarUrl=avatarUrl;
     }
 }
