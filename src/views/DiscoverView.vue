@@ -13,7 +13,7 @@
         ></SwitchButton>
       </div>
     </div>
-    <div>
+    <div class="mr-6">
       <v-carousel hide-delimiters height="100%" cycle show-arrows-on-hover>
         <v-carousel-item v-for="i in Math.floor(routines.length / 6)" :key="i" height="100%">
           <v-row
