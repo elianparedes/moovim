@@ -17,10 +17,70 @@
       </v-img>
     </v-card>
     <div>
-      <v-chip class="px-10" color="white" outlined>
-        <v-icon left small class="material-icons-round">add</v-icon>
-        Crear grupo
-      </v-chip>
+      <v-dialog
+        v-model="createGroupDialog"
+        width="500"
+        transition="fade-transition"
+        class="rounded-xl"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-chip class="px-10" color="white" outlined v-bind="attrs" v-on="on">
+            <v-icon left small class="material-icons-round">add</v-icon>
+            Nuevo ciclo
+          </v-chip></template
+        >
+        <v-card :key="name" class="d-inline-block pa-8" color="#252525" flat>
+          <div class="mb-8">
+            <div class="d-inline-block font-weight-regular text-h6">
+              Crear ciclo
+            </div>
+            <v-btn icon class="float-right"
+              ><v-icon class="material-icons-round">close</v-icon></v-btn
+            >
+          </div>
+
+          <v-text-field solo placeholder="Nombre" flat></v-text-field>
+
+          <v-divider class="mb-8"></v-divider>
+          <v-row class="mb-4">
+            <v-col class="text-center">
+              <v-icon size="24px" class="material-icons-round mr-2">loop</v-icon
+              >Repeticiones
+            </v-col>
+          </v-row>
+
+          <input
+            placeholder="1"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            type="number"
+            maxlength="3"
+            class="
+              white--text
+              rounded-lg
+              text-h6
+              font-weight-regular
+              py-2
+              mb-16
+            "
+            style="width: 100%; text-align: center; background-color: #1e1e1e"
+          />
+
+          <div class="d-flex">
+            <v-btn
+              large
+              style="flex: 1"
+              flat
+              rounded
+              elevation="0"
+              class="font-weight-bold"
+              color="red"
+              :loading="buttonLoading"
+              @click="buttonLoading = true"
+              >Crear ciclo</v-btn
+            >
+          </div>
+        </v-card></v-dialog
+      >
     </div>
     <div class="d-flex">
       <div style="width: 50%">
@@ -30,54 +90,61 @@
             :key="n"
             class="d-flex flex-column mb-4"
           >
-            <v-row class="text-body-1 mb-4 pr-4">
-              <v-col>
-                <div>
-                  {{ cycle.name
-                  }}<span>
-                    <v-icon size="18px" class="ml-4 material-icons-round"
-                      >loop</v-icon
-                    >
-                    {{ cycle.repetitions }}
-                  </span>
-                </div>
-              </v-col>
+            <v-hover v-slot="{ hover }" close-delay="100">
+              <div>
+                <v-row class="text-body-1 mb-4 pr-4 align-center">
+                  <v-col>
+                    <div>
+                      {{ cycle.name
+                      }}<span>
+                        <v-icon size="18px" class="ml-4 material-icons-round"
+                          >loop</v-icon
+                        >
+                        {{ cycle.repetitions }}
+                      </span>
+                    </div>
+                  </v-col>
 
-              <v-btn icon>
-                <v-icon class="material-icons-round">edit</v-icon>
-              </v-btn>
-              <v-btn icon class="ml-4">
-                <v-icon class="material-icons-round">add</v-icon>
-              </v-btn>
-            </v-row>
+                  <v-fade-transition>
+                    <span v-if="hover">
+                      <v-btn icon>
+                        <v-icon class="material-icons-round">edit</v-icon>
+                      </v-btn>
+                      <v-btn icon class="ml-4">
+                        <v-icon class="material-icons-round">add</v-icon>
+                      </v-btn></span
+                    ></v-fade-transition
+                  >
+                </v-row>
 
-            <v-item
-              v-slot="{ active, toggle }"
-              v-for="obj in cycle.exercises"
-              :key="obj.order"
-            >
-              <ExerciseViewCard
-                :name="obj.exercise.name"
-                :detail="obj.exercise.detail"
-                :duration="obj.duration"
-                :weight="obj.weight"
-                :repetitions="obj.repetitions"
-                class="mb-4 rounded-xl"
-                :click="
-                  () => {
-                    toggle();
-                    selectExercise({
-                      name: obj.exercise.name,
-                      detail: obj.exercise.detail,
-                      duration: obj.duration,
-                      weight: obj.weight,
-                      repetitions: obj.repetitions,
-                    });
-                  }
-                "
-                :active="active"
-              />
-            </v-item>
+                <v-item
+                  v-slot="{ active, toggle }"
+                  v-for="obj in cycle.exercises"
+                  :key="obj.order"
+                >
+                  <ExerciseViewCard
+                    :name="obj.exercise.name"
+                    :detail="obj.exercise.detail"
+                    :duration="obj.duration"
+                    :weight="obj.weight"
+                    :repetitions="obj.repetitions"
+                    class="mb-4 rounded-xl"
+                    :click="
+                      () => {
+                        toggle();
+                        selectExercise({
+                          name: obj.exercise.name,
+                          detail: obj.exercise.detail,
+                          duration: obj.duration,
+                          weight: obj.weight,
+                          repetitions: obj.repetitions,
+                        });
+                      }
+                    "
+                    :active="active"
+                  />
+                </v-item></div
+            ></v-hover>
           </div>
         </v-item-group>
       </div>
@@ -120,6 +187,8 @@ export default {
     cycles: null,
     selectedExercise: null,
     selected: undefined,
+    createGroupDialog: false,
+    buttonLoading: false,
   }),
   created() {
     this.fetchRoutine(this.id);
@@ -171,3 +240,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+</style>
