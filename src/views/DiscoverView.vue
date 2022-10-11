@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div style="height: 128px">
-      <SwitchButton :chip-content="['Categorias', 'Descubrir']"> </SwitchButton>
+<div >
+
+    <div style="height: 100px">
       <v-spacer class="my-8"></v-spacer>
       <div class="font-weight-thin text-h6 d-flex row">
         <span class="mx-2">Rutinas de otros usuarios</span>
@@ -14,17 +14,17 @@
       </div>
     </div>
     <div>
-      <v-carousel hide-delimiters height="100%">
-        <v-carousel-item v-for="i in Math.ceil(routines.length / 6)" :key="i">
+      <v-carousel hide-delimiters height="100%" cycle show-arrows-on-hover>
+        <v-carousel-item v-for="i in Math.floor(routines.length / 6)" :key="i" height="100%">
           <v-row
             v-for="k in [(i - 1) * 2, (i - 1) * 2 + 1]"
             :key="k"
-            style="width: 100%; height: 290px"
+
           >
-            <v-col v-for="routine in getArray(k)" :key="routine.id">
+            <v-col v-for="routine in getArray(k)" :key="routine.id" md="4" xs="3">
               <WorkoutResultCard
                 v-if="routine"
-                :name="routine.id"
+                :name="String(routine.id)"
                 :desc="routine.desc"
                 :image="routine.image"
                 :author="routine.author"
@@ -32,13 +32,17 @@
                 :verified="routine.verified"
                 :stars="routine.stars"
                 :bookmarks="routine.bookmarks"
-                :click="toggle"
-                :active="active"
               />
             </v-col>
           </v-row>
         </v-carousel-item>
       </v-carousel>
+    </div>
+  <div class="font-weight-thin text-h6 my-2">
+    <span class="mx-2">Ejercicios</span>
+    </div>
+  <div>
+      <ExerciseSummaryCard v-for="n in 15" :key="n" category="Bíceps" :exercise="'Curl con barra'+ ' ' + n" class="my-4 mr-6"></ExerciseSummaryCard>
     </div>
   </div>
 </template>
@@ -47,13 +51,14 @@
 import SwitchButton from "@/components/SwitchButton";
 import WorkoutResultCard from "@/components/WorkoutResultCard";
 import routines from "@/assets/mock/routines.json";
+import ExerciseSummaryCard from "@/components/ExerciseSummaryCard";
 export default {
   name: "DiscoverView",
-  components: { WorkoutResultCard, SwitchButton },
+  components: { ExerciseSummaryCard, WorkoutResultCard, SwitchButton },
   data: () => {
     return {
       routines: routines,
-      indexes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      carousel: 0
     };
   },
   methods: {

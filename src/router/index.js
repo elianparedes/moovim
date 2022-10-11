@@ -9,10 +9,25 @@ const routes = [
     name: "home",
     component: () => import("../views/HomeView.vue"),
   },
+
   {
     path: "/explore",
     name: "explore",
     component: () => import("../views/ExploreView.vue"),
+    children: [
+      {
+        path: "categories",
+        name: "Categorias",
+        component: () => import("../views/CategoriesView.vue"),
+        props:{ viewIndex: 0}
+      },
+      {
+        path: "discover",
+        name: "Descubrir",
+        component: () => import("../views/DiscoverView.vue"),
+        props:{ viewIndex: 1}
+      }
+    ]
   },
   {
     path: "/routines",
@@ -29,11 +44,7 @@ const routes = [
     name: "edit",
     component: () => import("../views/EditView.vue"),
   },
-  {
-    path: "/discover",
-    name: "discover",
-    component: () => import("../views/DiscoverView.vue"),
-  },
+
 ];
 
 const router = new VueRouter({
