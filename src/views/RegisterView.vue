@@ -1,42 +1,40 @@
 <template>
-    <v-card 
-    class="form">
-        <v-card-title>
-            Regístrate en GymApp
-        </v-card-title>
-        <v-card-text>
-            <v-form
-            ref="registration" 
-            lazy-registration 
-            v-model="valid">
-                <v-text-field 
-                v-model="username"
-                label="Nombre de usuario" 
-                :counter="15" 
-                :rules="nameRules" 
-                required outlined>
+    <div class="d-flex mt-16">
+        <v-card elevation="0" class="form pa-4">
+            <v-card-title>
+                Regístrate en GymApp
+            </v-card-title>
+            <v-card-text class="pt-8">
+                <v-form ref="registration" v-model="valid">
+                    <v-text-field v-model="username" label="Nombre de usuario *" :counter="15" :rules="nameRules"
+                        required outlined>
 
-                </v-text-field>
-                <v-text-field 
-                v-model="email"
-                label="Correo electrónico" 
-                :counter="20"
-                :rules="emailRules" 
-                required outlined>
+                    </v-text-field>
+                    <v-text-field v-model="email" label="Correo electrónico *" :counter="20" :rules="emailRules"
+                        required outlined>
 
-                </v-text-field>
-                <v-text-field 
-                v-model="password" 
-                label="Contraseña" 
-                :counter="15" 
-                :rules="nameRules"
-                required outlined>
-
-                </v-text-field>
-                <v-btn :disabled="!valid" @click="signUp">Registrarse</v-btn>
-            </v-form>
-        </v-card-text>
-    </v-card>
+                    </v-text-field>
+                    <v-text-field v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="passwordRules" :type="show ? 'text' : 'password'" label="Contraseña *" :counter="15"
+                        @click:append="show = !show" required outlined></v-text-field>
+                    <div class="d-flex justify-center pt-8">
+                        <v-btn depressed large color="accent" elevation="0" :disabled="!valid" @click="signUp">
+                            Registrarse
+                        </v-btn>
+                    </div>
+                </v-form>
+            </v-card-text>
+            <v-snackbar v-model="snackbar" color="snackbarColor">
+                <div class="d-flex align-center justify-center">
+                    <strong class="mr-4">{{snackbarText}}</strong>
+                    <v-progress-circular size="20" v-if="loading" indeterminate color="white"></v-progress-circular>
+                    <v-icon small class="ml-4" v-if="!loading">
+                        mdi-alert-circle
+                    </v-icon>
+                </div>
+            </v-snackbar>
+        </v-card>
+    </div>
 </template>
 
 
@@ -66,7 +64,12 @@ export default {
         passwordRules: [
             v => !!v || 'La contraseña es obligatoria',
             v => v.length <= 15 || 'La contraseña puede tener hasta 15 caracteres',
-        ]
+        ],
+        show: false,
+        snackbar: false,
+        snackbarColor: 'primary',
+        snackbarText: 'Cargando',
+        loading: true,
     }),
     methods: {
         ...mapActions(useSecurityStore, {
@@ -79,12 +82,11 @@ export default {
         clearResult() {
             this.result = null
         },
-        clearData() {
-            this.username = ''
-            this.password = ''
-            this.email = ''
-        },
         async signUp() {
+            this.snackbarText = 'Cargando';
+            this.snackbarColor = 'primary';
+            this.loading = true;
+            this.snackbar = true;
             try {
                 this.clearResult()
                 const signCredentials = new SignCredentials(this.username, this.password, this.email)
@@ -93,16 +95,34 @@ export default {
             } catch (e) {
                 this.setResult(e)
             }
-            localStorage.setItem('email', this.email);
-            this.$router.push({name: 'verify'})
+            const result = this.handleResult();
+            if (result === 0) {
+                localStorage.setItem('email', this.email);
+                this.$router.push({ name: 'verify' });
+            }
+            this.loading = false;
+        },
+        handleResult() {
+            let toReturn = -1;
+            if (this.result.code === 2) {
+                if (this.result.details[0].includes('username'))
+                    this.snackbarText = "El nombre de usuario ya existe";
+                else
+                    this.snackbarText = "Ya existe una cuenta registrada con este correo";
+                this.snackbarColor = 'error';
+            }
+            else {
+                toReturn = 0;
+            }
+            return toReturn;
         }
     }
 };
 </script>
 
 <style>
-    .form{
-        width: 40%;
-        margin: auto;
-    }
+.form {
+    width: 35%;
+    margin: auto;
+}
 </style>
