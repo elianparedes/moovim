@@ -1,5 +1,9 @@
 <template>
 <div>
+  <v-text-field background-color="#252525" solo flat label="Buscar" class="rounded-lg" style="width: 50%">
+    <template v-slot:prepend-inner><v-icon class="mr-2" color="#4a4a4a">mdi-magnify</v-icon></template>
+    <template v-slot:label ><span style="color: #4a4a4a;">Buscar</span></template>
+  </v-text-field>
   <SwitchButton :chip-content="contents"  :selected-chip="getIndex()"  @switch="switchHandler"></SwitchButton>
   <router-view/>
 </div>
