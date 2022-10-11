@@ -1,154 +1,144 @@
 <template>
   <v-card
-      :key="name"
-      class="rounded-lg d-inline-block ma-8"
-      elevation="0"
-      width="50%"
+    :key="name"
+    class="rounded-xl d-inline-block pa-8"
+    color="#252525"
+    flat
   >
-    <v-card-title class="font-weight-bold text-h3">{{
-        name
-      }}</v-card-title>
-    <v-card-title class="text-h6 font-weight-regular pr-8">{{
-        muscle
-      }}</v-card-title>
-    <div class="pr-8 pb-16" >
-      <v-btn class="text-h6 font-weight-regular float-right rounded-pill flex-fill">Ver detalles</v-btn>
+    <v-card-title class="font-weight-bold text-h4">{{ name }}</v-card-title>
+    <v-card-subtitle class="text-h6 font-weight-regular pr-8">{{
+      detail
+    }}</v-card-subtitle>
+    <div class="pr-8 pb-16">
+      <v-chip class="px-10 float-right" color="white" outlined>
+        <v-icon left small class="material-icons-round">info_outline</v-icon>
+        Ver detalles
+      </v-chip>
     </div>
     <v-divider class="pt-16"></v-divider>
-    <v-row>
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <div class="text-center"></div>
-      </v-col>
+    <div>
+      <v-row>
+        <v-col class="text-center">
+          <v-icon size="24px" class="material-icons-round mr-2">replay</v-icon
+          >Reps.
+        </v-col>
 
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <div class="text-center">Reps</div>
-      </v-col>
+        <v-col class="text-center">
+          <v-icon size="24px" class="material-icons-round mr-2"
+            >fitness_center</v-icon
+          >Kg.
+        </v-col>
 
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <div class="text-center">Kg</div>
-      </v-col>
+        <v-col class="text-center">
+          <v-icon size="24px" class="material-icons-outlined mr-2">timer</v-icon
+          >Segs.
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <input
+            @keyup="debounceEdit"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            type="number"
+            maxlength="3"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2"
+            :value="repetitions"
+            style="width: 100%; text-align: center; background-color: #1e1e1e"
+          />
+        </v-col>
 
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <div class="text-center">Segs</div>
-      </v-col>
-    </v-row>
-    <v-row
-        v-for="item in Exercises"
-        :key="item.name"
-    >
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <div class="text-center">{{item.name}}</div>
-      </v-col>
+        <v-col>
+          <input
+            @keyup="debounceEdit"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            type="number"
+            maxlength="3"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2"
+            :value="weight"
+            style="width: 100%; text-align: center; background-color: #1e1e1e"
+          />
+        </v-col>
 
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <v-text-field
-            v-model=item.reps
-            placeholder=item.reps
-            filled
-            solo
-            dense
-        ></v-text-field>
-      </v-col>
-
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <v-text-field
-            v-model=item.kg
-            placeholder=item.kg
-            filled
-            solo
-            dense
-        ></v-text-field>
-      </v-col>
-
-      <v-col
-          cols="12"
-          sm="6"
-          md="3"
-      >
-        <v-text-field
-            v-model=item.segs
-            placeholder=item.segs
-            filled
-            solo
-            dense
-        ></v-text-field>
-      </v-col>
-    </v-row>
+        <v-col>
+          <input
+            @keyup="debounceEdit"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            type="number"
+            maxlength="3"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2"
+            :value="duration"
+            style="width: 100%; text-align: center; background-color: #1e1e1e"
+          />
+        </v-col>
+      </v-row>
+    </div>
   </v-card>
 </template>
 
 <script>
-
 export default {
   name: "ExerciseSet",
-  props: ['name', 'muscle', 'desc', 'image'],
-  data () {
-    return {
-      Exercises: [
-        {
-          name: 'S1',
-          reps: 12,
-          kg: 10,
-          segs:15,
-        },
-        {
-          name: 'S2',
-          reps: 12,
-          kg: 10,
-          segs:15,
-        },
-        {
-          name: 'S3',
-          reps: 14,
-          kg: 20,
-          segs:15,
-        },
-      ],
-    }
+  props: {
+    name: { type: String, required: false },
+    detail: { type: String, required: false },
+    repetitions: {
+      type: Number,
+      required: false,
+    },
+    weight: {
+      type: Number,
+      required: false,
+    },
+    duration: {
+      type: Number,
+      required: false,
+    },
   },
-}
+  data: () => ({
+    debounce: null,
+  }),
+  methods: {
+    debounceEdit() {
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        console.log("autosave");
+      }, 2000);
+    },
+  },
+};
 </script>
 
 <style scoped>
-/*
-<td>{{ item.name }}</td>
-          <td>{{ item.reps }}</td>
-          <td>{{ item.kg }}</td>
-          <td>
-            <v-text-field
-              :label=item.segs
-              solo
-              dense
-              class="shrink"
-            ></v-text-field>
-          </td>
- */
+::-webkit-input-placeholder {
+  /* Edge */
+  color: white;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::placeholder {
+  color: white;
+}
+
+.centered-input input {
+  text-align: center;
+}
+
+.v-text-field__details {
+  display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 </style>
