@@ -1,114 +1,94 @@
 <template>
-  <v-expansion-panel style="background-color: #252525" @click="expand=!expand">
-    <v-expansion-panel-header>
-      <v-row align="center" class="text-body-1">
-        <v-col cols="4">
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="text-h6 font-weight-bold">
-                {{ exercise }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="mt-2">
-                {{ category }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
-        <v-spacer> </v-spacer>
+  <v-card
+    class="pa-4"
+    flat
+    style="background-color: #252525; width: 100%; cursor: pointer"
+    :class="{ 'active-card': active }"
+    :ripple="false"
+    @click.native="click"
+  >
+    <v-row align="center" class="text-body-1" no-gutters>
+      <v-col>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="text-h6 font-weight-bold">
+              {{ name }}
+            </v-list-item-title>
+            <v-list-item-subtitle class="mt-2">
+              {{ detail }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-col>
 
-        <v-col cols="1" class="text-h6 font-weight-light" align="center">
-        </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light" align="center">
-          <v-btn @click.stop="onClick" icon>
-            <v-icon size="24px" class="material-icons-round"
-              >replay</v-icon
-            ></v-btn
-          >
-        </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light" align="center">
-          <v-btn @click.stop="onClick" icon>
-            <v-icon
-              size="24px"
-              class="material-icons-round"
-              :class="{ 'grey--text text--darken-2': !this.hasWeight }"
-              >fitness_center</v-icon
-            ></v-btn
-          >
-        </v-col>
-        <v-col cols="1" class="text-h6 font-weight-light" align="center">
-          <v-btn @click.stop="onClick" icon>
-            <v-icon
-              size="24px"
-              class="material-icons-outlined"
-              :class="{ 'grey--text text--darken-2': !this.hasTime }"
-              >timer</v-icon
-            ></v-btn
-          >
-        </v-col>
-        <v-spacer> </v-spacer>
-      </v-row>
-    </v-expansion-panel-header>
-    <v-expansion-panel-content class="pr-6">
-      <v-row v-for="(session, n) in sessions" :key="session">
-        <v-col cols="4"></v-col>
-        <v-spacer> </v-spacer>
-        <v-col cols="1" class="text-h6 font-weight-light" align="center">
-          {{ "S" + (n + 1) }}
-        </v-col>
-        <v-col
-          cols="1"
-          :class="{ 'grey--text text--darken-2': session.reps === null }"
-          class="text-h6 font-weight-light"
-          align="center"
-        >
-          {{ session.reps ? session.reps : "•" }}
-        </v-col>
-        <v-col
-          cols="1"
-          :class="{ 'grey--text text--darken-2': session.weight === null }"
-          class="text-h6 font-weight-light"
-          align="center"
-        >
-          {{ session.weight ? session.weight : "•" }}
-        </v-col>
-        <v-col
-          cols="1"
-          :class="{ 'grey--text text--darken-2': session.secs === null }"
-          class="text-h6 font-weight-light"
-          align="center"
-        >
-          {{ session.secs ? session.secs : "•" }}
-        </v-col>
-        <v-spacer></v-spacer>
-      </v-row>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+      <v-col
+        cols="1"
+        :class="{
+          'grey--text text--darken-2 text-center': repetitions === null,
+        }"
+        class="text-h6 font-weight-light text-center"
+      >
+        {{ repetitions ? repetitions : "•" }}
+      </v-col>
+      <v-col
+        cols="1"
+        :class="{ 'grey--text text--darken-2 text-center': weight === null }"
+        class="text-h6 font-weight-light text-center"
+      >
+        {{ weight ? weight : "•" }}
+      </v-col>
+      <v-col
+        cols="1"
+        :class="{
+          'grey--text text--darken-2 text-center': duration === null,
+        }"
+        class="text-h6 font-weight-light text-center"
+      >
+        {{ duration }}
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
 export default {
   name: "ExerciseViewCard",
   props: {
-    exercise: {
+    name: {
       type: String,
       required: true,
     },
-    category: {
+    detail: {
       type: String,
       required: true,
     },
-    sessions: {
-      type: Array,
-      required: true,
+    repetitions: {
+      type: Number,
+      required: false,
     },
-  },
-  computed: {
-    hasTime: function () {
-      return this.sessions.some((session) => session.secs !== null);
+    duration: {
+      type: Number,
+      required: false,
     },
-    hasWeight: function () {
-      return this.sessions.some((session) => session.weight !== null);
+    weight: {
+      type: Number,
+      required: false,
+    },
+    click: {
+      default: () => ({}),
+      type: Function,
+      required: false,
+    },
+    active: {
+      type: Boolean,
+      required: false,
     },
   },
 };
 </script>
+
+<style>
+.active-card {
+  outline: solid #f44336 2px;
+}
+</style>
