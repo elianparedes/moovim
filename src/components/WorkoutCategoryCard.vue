@@ -5,7 +5,6 @@
       style="width: 502px; height: 350px; border: red 2px"
       :src="image"
       :aspect-ratio="16 / 9"
-      :width="width"
       gradient="to right, #212121 0%, rgba(43, 43, 43, 1) 15%, rgba(43, 43, 43, 0.6) 100%"
     >
       <v-card-title class="font-weight-bold text-h3">{{ name }}</v-card-title>

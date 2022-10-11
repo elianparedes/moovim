@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     clickHandler() {
-      this.$emit("click");
+      this.$emit('click');
     },
   },
   computed: {

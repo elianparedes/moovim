@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="nav">
     <SelectButton
       v-for="(chip, index) in chipContent"
       :key="chip"
@@ -13,6 +13,7 @@
 
 <script>
 import SelectButton from "@/components/SelectButton";
+
 export default {
   name: "SwitchButton",
   components: { SelectButton },
@@ -25,27 +26,35 @@ export default {
       type: String,
       required: false,
       default: "mx-1 px-16 py-4 font-weight-regular text-body-2"
+    },
+    selectedChip: {
+      type: Number,
+      required: false,
+      default: 0
     }
   },
   data() {
     return {
       chipStatus: [],
-      selectedChip: 0,
+      indexChip : this.selectedChip
     };
   },
   methods: {
     changeSelectedChip(index) {
-      this.chipStatus[this.selectedChip].toggle = false;
-      this.selectedChip = index;
-      this.chipStatus[this.selectedChip].toggle = true;
+      this.chipStatus[this.indexChip].toggle = false;
+      this.$emit('switch',index)
+      this.indexChip = index
+      this.chipStatus[index].toggle = true;
     },
+
   },
   created() {
     for (let i = 0; i < this.chipContent.length; i++) {
+      console.log("Item" + ' ' + i)
       this.chipStatus.push({ toggle: false });
     }
-    this.chipStatus[0].toggle = true;
-  },
+    this.chipStatus[this.selectedChip].toggle = true;
+  }
 };
 </script>
 

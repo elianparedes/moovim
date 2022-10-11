@@ -1,11 +1,15 @@
 <template>
   <div>
+    <div class="mb-8">
+      <SwitchButton :chipContent="['Categorías', 'Descubrir']" />
+    </div>
+
     <div class="d-flex flex-column" style="gap: 32px">
-      <div class="font-weight-thin text-h6 my-4">Objetivos</div>
+      <div class="font-weight-regular text-subtitle-1">Objetivos</div>
       <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
         <WorkoutCategoryCard
           v-for="routine in routines"
-          :key="routine.name"
+          :key="routine"
           class="d-inline-block mr-4"
           :image="routine.image"
           :name="routine.name"
@@ -16,7 +20,7 @@
       <div style="white-space: nowrap; overflow: auto">
         <StagesCategoryCard
           v-for="stage in stages"
-          :key="stage.name"
+          :key="stage"
           class="d-inline-block mr-4"
           :image="stage.image"
           :name="stage.name"
@@ -27,7 +31,7 @@
       <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
         <MusclesCategoryCard
           v-for="group in groups"
-          :key="group.name"
+          :key="group"
           class="d-inline-block mr-4"
           :name="group.name"
         />
@@ -38,6 +42,7 @@
 
 <script>
 import WorkoutCategoryCard from "@/components/WorkoutCategoryCard.vue";
+import SwitchButton from "../components/SwitchButton.vue";
 import StagesCategoryCard from "@/components/StagesCategoryCard.vue";
 import MusclesCategoryCard from "@/components/MusclesCategoryCard.vue";
 
@@ -97,6 +102,7 @@ export default {
   }),
   components: {
     WorkoutCategoryCard,
+    SwitchButton,
     StagesCategoryCard,
     MusclesCategoryCard,
   },

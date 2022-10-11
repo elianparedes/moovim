@@ -1,7 +1,7 @@
 <template>
 <div >
 
-    <div style="height: 100px">
+    <div style="height: 80px">
       <v-spacer class="my-8"></v-spacer>
       <div class="font-weight-thin text-h6 d-flex row">
         <span class="mx-2">Rutinas de otros usuarios</span>
