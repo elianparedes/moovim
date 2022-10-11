@@ -24,7 +24,7 @@
             <v-col v-for="routine in getArray(k)" :key="routine.id">
               <WorkoutResultCard
                 v-if="routine"
-                :name="routine.id"
+                :name="routine.name"
                 :desc="routine.desc"
                 :image="routine.image"
                 :author="routine.author"
@@ -32,8 +32,6 @@
                 :verified="routine.verified"
                 :stars="routine.stars"
                 :bookmarks="routine.bookmarks"
-                :click="toggle"
-                :active="active"
               />
             </v-col>
           </v-row>
@@ -44,8 +42,8 @@
 </template>
 
 <script>
-import SwitchButton from "@/components/SwitchButton";
-import WorkoutResultCard from "@/components/WorkoutResultCard";
+import SwitchButton from "@/components/SwitchButton.vue";
+import WorkoutResultCard from "@/components/WorkoutResultCard.vue";
 import routines from "@/assets/mock/routines.json";
 export default {
   name: "DiscoverView",
