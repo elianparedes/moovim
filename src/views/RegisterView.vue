@@ -10,7 +10,7 @@
                         required outlined>
 
                     </v-text-field>
-                    <v-text-field v-model="email" label="Correo electrónico *" :counter="20" :rules="emailRules"
+                    <v-text-field v-model="email" label="Correo electrónico *" :counter="40" :rules="emailRules"
                         required outlined>
 
                     </v-text-field>
@@ -18,17 +18,17 @@
                         :rules="passwordRules" :type="show ? 'text' : 'password'" label="Contraseña *" :counter="15"
                         @click:append="show = !show" required outlined></v-text-field>
                     <div class="d-flex justify-center pt-8">
-                        <v-btn depressed large color="accent" elevation="0" :disabled="!valid" @click="signUp">
+                        <v-btn depressed large color="accent" elevation="0" :disabled="!valid" @click="onClicked">
                             Registrarse
                         </v-btn>
                     </div>
                 </v-form>
             </v-card-text>
-            <v-snackbar v-model="snackbar" color="snackbarColor">
+            <v-snackbar v-model="snackbar" :color="snackbarColor">
                 <div class="d-flex align-center justify-center">
                     <strong class="mr-4">{{snackbarText}}</strong>
                     <v-progress-circular size="20" v-if="loading" indeterminate color="white"></v-progress-circular>
-                    <v-icon small class="ml-4" v-if="!loading">
+                    <v-icon class="ml-4" v-if="!loading">
                         mdi-alert-circle
                     </v-icon>
                 </div>
@@ -59,7 +59,7 @@ export default {
         emailRules: [
             v => !!v || 'El correo electrónico es obligatorio',
             v => /.+@.+/.test(v) || 'El correo electrónico no es válido',
-            v => v.length <= 20 || 'El correo electrónico puede tener hasta 20 caracteres',
+            v => v.length <= 40 || 'El correo electrónico puede tener hasta 40 caracteres',
         ],
         passwordRules: [
             v => !!v || 'La contraseña es obligatoria',
@@ -83,10 +83,6 @@ export default {
             this.result = null
         },
         async signUp() {
-            this.snackbarText = 'Cargando';
-            this.snackbarColor = 'primary';
-            this.loading = true;
-            this.snackbar = true;
             try {
                 this.clearResult()
                 const signCredentials = new SignCredentials(this.username, this.password, this.email)
@@ -95,12 +91,30 @@ export default {
             } catch (e) {
                 this.setResult(e)
             }
+        },
+        async onClicked() {
+            this.snackbarText = 'Cargando';
+            this.snackbarColor = 'primary';
+            this.loading = true;
+            this.snackbar = true;
+            const apiTimer = setTimeout(() => {
+                this.loading = false;
+                this.snackbarText = "Sin conexión";
+                this.snackbarColor = 'error';
+                return;
+            }, 5 * 1000)
+            await this.signUp();
+            clearTimeout(apiTimer);
             const result = this.handleResult();
             if (result === 0) {
+                localStorage.setItem('username', this.username);
+                localStorage.setItem('password', this.password);
                 localStorage.setItem('email', this.email);
                 this.$router.push({ name: 'verify' });
             }
-            this.loading = false;
+            else {
+                this.loading = false;
+            }
         },
         handleResult() {
             let toReturn = -1;

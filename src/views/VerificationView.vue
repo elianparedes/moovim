@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex mt-16">
-    <v-card elevation="0" class="form pa-4" :loading="loading">
-      <v-progress-linear color="accent" :active="loading" :indeterminate="loading"></v-progress-linear>
+    <v-card elevation="0" class="form pa-4">
       <v-card-title>
         Verificación de correo electrónico
       </v-card-title>
@@ -9,17 +8,21 @@
         Se envió un código al correo {{this.email}}
       </v-card-subtitle>
       <v-card-text class="pt-8">
-        <v-otp-input v-model="otp" :length="length" :disabled="loading">
+        <v-otp-input v-model="otp" :length="length">
         </v-otp-input>
         <div class="d-flex justify-center pt-8">
-        <v-btn depressed large color="accent" elevation="0" :disabled="!valid" @click="onFinish">
+          <v-btn depressed large color="accent" elevation="0" :disabled="!valid" @click="onFinish">
             Verificar
-        </v-btn>
+          </v-btn>
         </div>
       </v-card-text>
-      <v-snackbar rounded="pill" v-model="snackbar" color="snackbarColor">
-        <div class="d-flex justify-center">
-          <strong>{{snackbarText}}</strong>
+      <v-snackbar v-model="snackbar" :color="snackbarColor">
+        <div class="d-flex align-center justify-center">
+          <strong class="mr-4">{{snackbarText}}</strong>
+          <v-progress-circular size="20" v-if="loading" indeterminate color="white"></v-progress-circular>
+          <v-icon class="ml-4" v-if="!loading">
+            mdi-alert-circle
+          </v-icon>
         </div>
       </v-snackbar>
     </v-card>
@@ -34,15 +37,17 @@ import { useSecurityStore } from "../stores/securityStore.js";
 
 export default {
   data: () => ({
-    loading: false,
+    username: localStorage.getItem('username'),
+    password: localStorage.getItem('password'),
     email: localStorage.getItem('email'),
     otp: '',
     result: {},
     controller: null,
     length: 6,
     snackbar: false,
-    snackbarText: '',
-    snackbarColor: 'error'
+    loading: true,
+    snackbarText: 'Cargando',
+    snackbarColor: 'primary'
   }),
   computed: {
     valid() {
@@ -83,35 +88,38 @@ export default {
         this.setResult(e)
       }
     },
-    async getCurrentUser() {
-      await this.$getCurrentUser()
-      this.setResult(this.$user)
-    },
     async onFinish() {
+      this.snackbarText = "Cargando";
+      this.snackbarColor = 'primary';
       this.loading = true;
+      this.snackbar = true;
       const apiTimer = setTimeout(() => {
         this.loading = false;
-        this.snackbarText = "Sin conexión",
-          this.snackbar = true
-      }, 3 * 1000)
+        this.snackbarText = "Sin conexión";
+        this.snackbarColor = 'error';
+        return;
+      }, 5 * 1000)
       await this.verify();
       clearTimeout(apiTimer);
-      this.handleResult();
-      console.log(JSON.stringify(this.result));
-      this.loading = false;
-      this.clearResult();
+      const result = this.handleResult();
+      if (result === 0) {
+        //this.login();
+        this.$router.push({ name: 'home' });
+      }
+      else {
+        this.loading = false;
+      }
     },
     handleResult() {
-      switch (this.result.code) {
-        case 8:
-          this.snackbarText = "Código incorrecto"
-          break;
-        default:
-          this.snackbarText = "Verificación completa";
-          this.snackbarColor = 'success'
-          break;
+      let toReturn = -1
+      if (this.result.code === 8) {
+        this.snackbarText = "Código incorrecto"
+        this.snackbarColor = 'error';
       }
-      this.snackbar = true;
+      else {
+        toReturn = 0;
+      }
+      return toReturn;
     }
   }
 };
