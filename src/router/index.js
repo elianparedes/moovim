@@ -25,9 +25,10 @@ const routes = [
     component: () => import("../views/ProfileView.vue"),
   },
   {
-    path: "/routines/edit",
+    path: "/routines/edit/:name-:id",
     name: "edit",
     component: () => import("../views/EditView.vue"),
+    props: true,
   },
   {
     path: "/discover",
@@ -36,15 +37,14 @@ const routes = [
   },
   {
     path: "/register",
-    name :"register",
+    name: "register",
     component: () => import("../views/RegisterView.vue"),
   },
   {
-    path: '/verify',
-    name: 'verify',
-    component: () => import("../views/VerificationView.vue")
-  }
-
+    path: "/verify",
+    name: "verify",
+    component: () => import("../views/VerificationView.vue"),
+  },
 ];
 
 const router = new VueRouter({
