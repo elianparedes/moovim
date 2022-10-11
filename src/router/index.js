@@ -9,7 +9,6 @@ const routes = [
     name: "home",
     component: () => import("../views/HomeView.vue"),
   },
-
   {
     path: "/explore",
     name: "explore",
@@ -40,11 +39,21 @@ const routes = [
     component: () => import("../views/ProfileView.vue"),
   },
   {
-    path: "/routines/edit",
+    path: "/routines/edit/:name-:id",
     name: "edit",
     component: () => import("../views/EditView.vue"),
+    props: true,
   },
-
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("../views/RegisterView.vue"),
+  },
+  {
+    path: "/verify",
+    name: "verify",
+    component: () => import("../views/VerificationView.vue"),
+  },
 ];
 
 const router = new VueRouter({

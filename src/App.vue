@@ -1,6 +1,9 @@
 <template>
   <v-app style="background: #181818">
-    <v-navigation-drawer app color="transparent" floating clipped>
+    <div v-if="this.$router.currentRoute.name !== 'register'
+    && this.$router.currentRoute.name !== 'verify'">
+    <v-navigation-drawer
+     app color="transparent" floating clipped>
       <v-list nav height="100%">
         <v-list-item-group class="d-flex flex-column" style="height: 100%">
           <v-list-item
@@ -51,6 +54,7 @@
         /></v-avatar>
       </router-link>
     </v-app-bar>
+    </div>
     <v-main>
       <router-view class="pl-4"></router-view>
     </v-main>

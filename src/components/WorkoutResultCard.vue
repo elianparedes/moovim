@@ -1,12 +1,11 @@
 <template>
-  <v-card class="rounded-lg" elevation="0" @click="click" :ripple="false">
+  <v-card class="rounded-lg" flat :ripple="false" @click="click">
     <v-img
       class="pr-16 pa-2 card d-flex"
       style="flex: 1; height: 256px"
       :class="{ 'active-card': active }"
       :src="image"
       :aspect-ratio="16 / 9"
-      :height="height"
       gradient="to right, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 30%,rgba(37, 37, 37, 0.5) 100%"
     >
       <v-card-title class="font-weight-bold text-h4 mb-1">{{
@@ -63,7 +62,11 @@ export default {
     bookmarks: Number,
     verified: Boolean,
     active: Boolean,
-    click: Event,
+    click: {
+      default: () => ({}),
+      type: Function,
+      required: false,
+    },
   },
 };
 </script>

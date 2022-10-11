@@ -46,8 +46,8 @@ import SwitchButton from "../components/SwitchButton.vue";
 import StagesCategoryCard from "@/components/StagesCategoryCard.vue";
 import MusclesCategoryCard from "@/components/MusclesCategoryCard.vue";
 
-import {mapState, mapActions} from "pinia";
-import {useCategoryStore} from "../stores/categoryStore.js"
+import { mapState, mapActions } from "pinia";
+import { useCategoryStore } from "../stores/categoryStore.js";
 export default {
   data: () => ({
     result: {},
@@ -107,27 +107,27 @@ export default {
     MusclesCategoryCard,
   },
   computed: {
-    ...mapState(useCategoryStore, { categories: state => state.items})
+    ...mapState(useCategoryStore, { categories: (state) => state.items }),
   },
-  methods : {
-    ...mapActions(useCategoryStore, {$getAllCategories: 'getAllCategories'}),
-      setResult(result){
-        this.result = result;
-    },  
-    async getAllCategories(){
+  methods: {
+    ...mapActions(useCategoryStore, { $getAllCategories: "getAllCategories" }),
+    setResult(result) {
+      this.result = result;
+    },
+    async getAllCategories() {
       try {
-        this.controller = new AbortController()
+        this.controller = new AbortController();
         const categories = await this.$getAllCategories(this.controller);
-        this.controller = null
-        this.setResult(categories)
-      } catch(e) {
-        this.setResult(e)
+        this.controller = null;
+        this.setResult(categories);
+      } catch (e) {
+        this.setResult(e);
       }
-    }
+    },
   },
-  created(){
+  created() {
     this.getAllCategories();
- }
+  },
 };
 </script>
 

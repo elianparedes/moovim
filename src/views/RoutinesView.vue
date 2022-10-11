@@ -3,6 +3,7 @@
     id="routines"
     class="d-flex"
     style="gap: 32px; height: calc(100vh - 96px)"
+    v-if="!loading"
   >
     <v-item-group
       mandatory
@@ -18,15 +19,20 @@
         <WorkoutResultCard
           :key="routine.id"
           :name="routine.name"
-          :desc="routine.desc"
-          :image="routine.image"
-          :author="routine.author"
-          :avatar="routine.avatar"
+          :desc="routine.detail"
+          :image="routine.metadata.image"
+          :author="routine.user.username"
+          :avatar="routine.metadata.image"
           :verified="routine.verified"
           :stars="routine.stars"
           :bookmarks="routine.bookmarks"
-          :click="toggle"
           :active="active"
+          :click="
+            () => {
+              toggle();
+              fetchRoutineCycles(routine.id);
+            }
+          "
         />
       </v-item>
     </v-item-group>
@@ -47,93 +53,139 @@
         <div
           style="
             height: 64px;
-            width: 100%;
             background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
           "
         ></div>
       </div>
-      <div
-        v-for="(stage, n) in exercises"
-        :key="n"
-        class="d-flex flex-column px-4 mb-4"
-      >
-        <v-row class="text-body-1 mb-4">
-          <v-col cols="4">
-            <div>
-              {{ stage.name
-              }}<span>
-                <v-icon size="24px" class="ml-4 material-icons-round"
-                  >loop</v-icon
-                >
-                {{ stage.loops }}
-              </span>
-            </div>
-          </v-col>
-          <v-spacer></v-spacer>
-          <!---<v-col cols="1" align="center">
-            <v-icon size="24px" class="material-icons-round pl-2"
-              >replay</v-icon
-            >
-          </v-col>
-          <v-col cols="1" align="center">
-            <v-icon size="24px" class="material-icons-round"
-              >fitness_center</v-icon
-            ></v-col
-          >
-          <v-col cols="1" align="center"
-            ><v-icon size="24px" class="material-icons-outlined pr-4"
-              >timer</v-icon
-            >
-          </v-col>
-          <v-spacer> </v-spacer>-->
-        </v-row>
+      <v-scroll-y-transition mode="in" group>
+        <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
+          <v-row class="text-body-1 ma-4" no-gutters>
+            <v-col>
+              <div>
+                {{ cycle.name
+                }}<span>
+                  <v-icon size="24px" class="ml-4 material-icons-round"
+                    >loop</v-icon
+                  >
+                  {{ cycle.repetitions }}
+                </span>
+              </div>
+            </v-col>
 
-        <v-expansion-panels flat style="z-index: 0" multiple>
+            <template v-if="n === 0">
+              <v-col cols="1" class="text-center" align="center">
+                <v-icon size="24px" class="material-icons-round">replay</v-icon>
+              </v-col>
+              <v-col cols="1" class="text-center" align="center">
+                <v-icon size="24px" class="material-icons-round"
+                  >fitness_center</v-icon
+                >
+              </v-col>
+              <v-col cols="1" class="text-center" align="center">
+                <v-icon size="24px" class="material-icons-round">timer</v-icon>
+              </v-col>
+            </template>
+          </v-row>
+
           <ExerciseViewCard
-            v-for="exercise in stage.exercises"
-            :key="exercise.name"
-            :sessions="exercise.sessions"
-            :exercise="exercise.name"
-            :category="exercise.desc"
+            v-for="obj in cycle.exercises"
+            :key="obj.order"
+            :name="obj.exercise.name"
+            :detail="obj.exercise.detail"
+            :duration="obj.duration"
+            :weight="obj.weight"
+            :repetitions="obj.repetitions"
             class="mb-4 rounded-xl"
           ></ExerciseViewCard>
-        </v-expansion-panels>
-      </div>
+        </div>
+      </v-scroll-y-transition>
     </div>
   </div>
 </template>
 
 <script>
 import WorkoutResultCard from "@/components/WorkoutResultCard.vue";
-import routines from "@/assets/mock/routines.json";
-import routinesExercises from "@/assets/mock/routine-exercises.json";
 import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
+
+import { mapActions } from "pinia";
+import { useRoutineStore } from "@/stores/routineStore";
+import { useRoutineCycleStore } from "@/stores/routineCycleStore";
+import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
+
 export default {
   name: "RoutinesView",
   components: {
     WorkoutResultCard,
     ExerciseViewCard,
   },
-  mounted: () => {
-    fetch(
-      "http://localhost:5000/api/users?page=0&size=10&orderBy=username&direction=asc"
-    )
-      .then((res) => JSON.stringify(res))
-      .then((data) => console.log(data));
+  data() {
+    return {
+      loading: true,
+      routines: null,
+      cycles: null,
+
+      selected: null,
+      items: [
+        { icon: "home", title: "Inicio" },
+        { icon: "search", title: "Explorar" },
+        { icon: "fitness_center", title: "Mis Rutinas" },
+      ],
+    };
   },
-  data: () => ({
-    routines: routines,
-    items: [
-      { icon: "home", title: "Inicio" },
-      { icon: "search", title: "Explorar" },
-      { icon: "fitness_center", title: "Mis Rutinas" },
-    ],
-    exercises: routinesExercises,
-    selected: Number,
-  }),
+  created() {
+    this.fetchRoutines();
+  },
+  watch: {
+    $route: "fetchRoutines",
+  },
   methods: {
+    ...mapActions(useRoutineStore, { $getAllRoutine: "getAllRoutine" }),
+    ...mapActions(useRoutineCycleStore, {
+      $getAllRoutineCycles: "getAllRoutineCycles",
+    }),
+    ...mapActions(useExerciseCycleStore, {
+      $getAllExerciseCycles: "getAllExerciseCycles",
+    }),
     editRoutine() {
-      this.$router.push("/routines/edit");
+      this.$router.push({
+        name: "edit",
+        params: {
+          id: this.routines[this.selected]?.id,
+          name: this.routines[this.selected]?.name,
+        },
+      });
+    },
+    fetchRoutines() {
+      this.loading = true;
+      this.$getAllRoutine()
+        .then((routines) => {
+          this.routines = routines.content;
+          return routines.content[0].id;
+        })
+        .then((id) => {
+          this.fetchRoutineCycles(id);
+          this.loading = false;
+        });
+    },
+    fetchRoutineCycles(routineId) {
+      this.$getAllRoutineCycles(routineId).then((cycles) => {
+        Promise.all(
+          cycles.content.map((cycle) =>
+            this.$getAllExerciseCycles(cycle.id).then((exercises) => {
+              cycle["exercises"] = exercises.content;
+              return cycle;
+            })
+          )
+        ).then((cycles) => {
+          console.log(cycles);
+          this.cycles = cycles;
+        });
+      });
+    },
+    fetchCycleExercises(cycleId) {
+      this.$getAllExerciseCycles(cycleId).then((exercises) => {
+        this.exercises[cycleId] = exercises.content;
+      });
     },
   },
 };
@@ -143,10 +195,4 @@ export default {
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
 }
-
-/*.v-main__wrap {
-  display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-}*/
 </style>
