@@ -82,7 +82,9 @@
                 >
               </v-col>
               <v-col cols="1" class="text-center" align="center">
-                <v-icon size="24px" class="material-icons-round">timer</v-icon>
+                <v-icon size="24px" class="material-icons-outlined"
+                  >timer</v-icon
+                >
               </v-col>
             </template>
           </v-row>

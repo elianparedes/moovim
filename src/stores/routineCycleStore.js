@@ -20,9 +20,18 @@ const useRoutineCycleStore = defineStore("routineCycle", {
       const result = await routineCycleApi.getAll(routineId);
       return result;
     },
-    async addRoutineCycle(name, detail, type, repetitions, metadata) {
+    async addRoutineCycle(
+      routineId,
+      name,
+      detail,
+      type,
+      order,
+      repetitions,
+      metadata
+    ) {
       const result = await routineCycleApi.add(
-        new RoutineCycle(name, detail, type, repetitions, metadata)
+        routineId,
+        new RoutineCycle(name, detail, type, order, repetitions, metadata)
       );
       this.items.push(result);
       return result;

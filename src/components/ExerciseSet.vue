@@ -37,36 +37,30 @@
       <v-row>
         <v-col>
           <input
-            @keyup="debounceEdit"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            @input="updateValue('repetitions', $event.target.value)"
+            :value="value.repetitions"
             type="number"
-            maxlength="3"
             class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            :value="repetitions"
             style="width: 100%; text-align: center; background-color: #1e1e1e"
           />
         </v-col>
 
         <v-col>
           <input
-            @keyup="debounceEdit"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            @input="updateValue('weight', $event.target.value)"
+            :value="value.weight"
             type="number"
-            maxlength="3"
             class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            :value="weight"
             style="width: 100%; text-align: center; background-color: #1e1e1e"
           />
         </v-col>
 
         <v-col>
           <input
-            @keyup="debounceEdit"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            @input="updateValue('duration', $event.target.value)"
+            :value="value.duration"
             type="number"
-            maxlength="3"
             class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            :value="duration"
             style="width: 100%; text-align: center; background-color: #1e1e1e"
           />
         </v-col>
@@ -93,6 +87,10 @@ export default {
       type: Number,
       required: false,
     },
+    value: {
+      type: Object,
+      required: true,
+    },
   },
   data: () => ({
     debounce: null,
@@ -101,8 +99,13 @@ export default {
     debounceEdit() {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(() => {
-        console.log("autosave");
+        this.$emit("debounce");
       }, 2000);
+    },
+    updateValue(key, value) {
+      if (value.length > 3) value = value.slice(0, 3);
+
+      this.$emit("input", { ...this.value, [key]: Number(value) });
     },
   },
 };
