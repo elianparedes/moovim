@@ -124,7 +124,7 @@ export default {
             }
             return toReturn;
         },
-        async onRegister() {
+        onRegister() {
             this.$router.push({ name: 'register' });
         }
     }
