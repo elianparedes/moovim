@@ -75,13 +75,40 @@
               class="font-weight-bold"
               color="red"
               :loading="buttonLoading"
-              @click="buttonLoading = true"
+              @click="saveChanges"
               >Crear ciclo</v-btn
             >
           </div>
         </v-card></v-dialog
       >
     </div>
+
+    <v-snackbar v-model="error" color="red" rounded="lg">
+      Se ha producido un error
+
+      <template>
+        <v-icon
+          class="float-right material-icons-round"
+          size="18"
+          color="white"
+        >error_outline</v-icon>
+      </template>
+    </v-snackbar>
+
+    <v-snackbar v-model="saving" rounded="lg">
+      Guardando cambios
+
+      <template>
+        <v-progress-circular
+          class="float-right"
+          :width="2"
+          :size="18"
+          indeterminate
+          color="white"
+        ></v-progress-circular>
+      </template>
+    </v-snackbar>
+
     <div class="d-flex">
       <div style="width: 50%">
         <v-item-group v-model="selected">
@@ -189,6 +216,7 @@ export default {
     selected: undefined,
     createGroupDialog: false,
     buttonLoading: false,
+    saving: false,
   }),
   created() {
     this.fetchRoutine(this.id);
@@ -236,6 +264,16 @@ export default {
     },
     selectExercise(exercise) {
       this.selectedExercise = { ...exercise };
+    },
+    saveChanges() {
+      this.saving = true;
+      setTimeout(() => {
+        this.saving = false;
+        this.error = true;
+        setTimeout(() => {
+          this.error = false;
+        }, 1000)
+      }, 3000);
     },
   },
 };
