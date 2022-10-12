@@ -18,13 +18,16 @@ const routes = [
         path: "categories",
         name: "Categorias",
         component: () => import("../views/CategoriesView.vue"),
-        props:{ viewIndex: 0}
       },
       {
         path: "discover",
         name: "Descubrir",
         component: () => import("../views/DiscoverView.vue"),
-        props:{ viewIndex: 1}
+      },
+      {
+        path: "search",
+        name: "Buscar",
+        component: () => import("../views/SearchView"),
       }
     ]
   },

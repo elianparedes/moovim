@@ -1,10 +1,18 @@
 <template>
 <div>
-  <v-text-field background-color="#252525" solo flat label="Buscar" class="rounded-lg" style="width: 50%">
+  <v-text-field
+      v-model="input"
+      background-color="#252525"
+      solo
+      flat
+      label="Buscar"
+      class="rounded-lg"
+      @keydown.enter="search"
+      style="width: 50%">
     <template v-slot:prepend-inner><v-icon class="mr-2" color="#4a4a4a">mdi-magnify</v-icon></template>
     <template v-slot:label ><span style="color: #4a4a4a;">Buscar</span></template>
   </v-text-field>
-  <SwitchButton :chip-content="contents"  :selected-chip="getIndex()"  @switch="switchHandler"></SwitchButton>
+  <SwitchButton v-if="getIndex() !== -1" :chip-content="contents"  :selected-chip="getIndex()"  @switch="switchHandler"></SwitchButton>
   <router-view/>
 </div>
 </template>
@@ -22,7 +30,8 @@ export default {
       route: router.currentRoute.path.substring("/explore/".length),
       contents: ["Categorias","Descubrir"],
       slugs: ["categories","discover"],
-      index: 0
+      index: 0,
+      input: ''
     }
   },
   methods:{
@@ -31,23 +40,20 @@ export default {
       router.push("/explore/"+this.slugs[i])
     },
     getIndex(){
-      console.log(this.slugs.indexOf(router.currentRoute.path.substring("/explore/".length)))
       return this.slugs.indexOf(router.currentRoute.path.substring("/explore/".length))
+    },
+    search(){
+      if(this.slugs.indexOf(this.input)=== -1) {
+        router.push({path: "search", query: {query: this.input}})
+      }
     }
   },
-  mounted() {
+  create(){
 
   }
 }
 </script>
 
 <style scoped>
-.selectedClass {
-  background-color: aqua;
-  max-width: 100px;
-}
-.nonSelected {
-  background-color: #f44336;
-  max-width: 100px;
-}
+
 </style>
