@@ -125,20 +125,9 @@ export default {
 };
 </script>
 
-<style>
-::-webkit-scrollbar {
-  height: 12px;
-}
-::-webkit-scrollbar-thumb {
-  background: #2e2e2e;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
+<style scoped>
 ::-webkit-scrollbar-track {
   margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
-  background-color: #1e1e1e;
-  border-radius: 8px;
 }
 
 .v-responsive__sizer {

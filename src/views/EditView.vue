@@ -50,6 +50,7 @@
         }}</v-card-text>
       </v-img>
     </v-card>
+
     <div>
       <v-dialog
         v-model="createCycleDialog"
@@ -121,67 +122,95 @@
     <div class="d-flex">
       <div style="width: 50%">
         <v-item-group v-model="selected">
-          <div
-            v-for="(cycle, cycleIndex) in cycles"
-            :key="cycleIndex"
-            class="d-flex flex-column mb-4"
-          >
-            <v-hover v-slot="{ hover }" close-delay="100">
-              <div>
-                <v-row class="text-body-1 mb-4 pr-4 align-center">
-                  <v-col>
-                    <div>
-                      {{ cycle.name
-                      }}<span>
-                        <v-icon size="18px" class="ml-4 material-icons-round"
-                          >loop</v-icon
-                        >
-                        {{ cycle.repetitions }}
-                      </span>
-                    </div>
-                  </v-col>
+          <v-scroll-y-transition group hide-on-leave>
+            <div
+              v-for="(cycle, cycleIndex) in cycles"
+              :key="cycleIndex"
+              class="d-flex flex-column mb-4"
+            >
+              <v-hover v-slot="{ hover }" close-delay="100">
+                <div>
+                  <v-row cols="6" class="text-body-1 mb-4 align-center">
+                    <v-col>
+                      <div class="py-2">
+                        {{ cycle.name
+                        }}<span>
+                          <v-icon size="18px" class="ml-4 material-icons-round"
+                            >loop</v-icon
+                          >
+                          {{ cycle.repetitions }}
+                        </span>
+                      </div>
+                    </v-col>
+                    <v-col>Icons</v-col>
 
-                  <v-fade-transition>
-                    <span v-if="hover">
-                      <v-btn icon>
-                        <v-icon class="material-icons-round">edit</v-icon>
-                      </v-btn>
-                      <v-btn icon class="ml-4">
-                        <v-icon class="material-icons-round">add</v-icon>
-                      </v-btn>
-                    </span>
-                  </v-fade-transition>
-                </v-row>
+                    <v-col cols="2" align="end">
+                      <v-fade-transition>
+                        <span v-if="hover">
+                          <v-tooltip
+                            top
+                            color="black"
+                            transition="fade-transition"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn icon v-bind="attrs" v-on="on">
+                                <v-icon class="material-icons-round"
+                                  >edit</v-icon
+                                >
+                              </v-btn>
+                            </template>
+                            <span>Editar ciclo</span>
+                          </v-tooltip>
 
-                <v-item
-                  v-slot="{ active, toggle }"
-                  v-for="(obj, exerciseIndex) in cycle.exercises"
-                  :key="exerciseIndex"
-                >
-                  <ExerciseViewCard
-                    :name="obj.exercise.name"
-                    :detail="obj.exercise.detail"
-                    :duration="obj.duration"
-                    :weight="obj.weight"
-                    :repetitions="obj.repetitions"
-                    class="mb-4 rounded-xl included"
-                    :click="
-                      () => {
-                        toggle();
-                        selectExercise({
-                          name: obj.exercise.name,
-                          detail: obj.exercise.detail,
-                          exercise: exerciseIndex,
-                          cycle: cycleIndex,
-                        });
-                      }
-                    "
-                    :active="active"
-                  />
-                </v-item>
-              </div>
-            </v-hover>
-          </div>
+                          <v-tooltip
+                            top
+                            color="black"
+                            transition="fade-transition"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn icon class="ml-4" v-bind="attrs" v-on="on">
+                                <v-icon class="material-icons-round"
+                                  >add</v-icon
+                                >
+                              </v-btn>
+                            </template>
+                            <span>Añadir ejercicio</span>
+                          </v-tooltip>
+                        </span>
+                      </v-fade-transition></v-col
+                    >
+                  </v-row>
+
+                  <v-item
+                    v-slot="{ active, toggle }"
+                    v-for="(obj, exerciseIndex) in cycle.exercises"
+                    :key="exerciseIndex"
+                  >
+                    <ExerciseViewCard
+                      :name="obj.exercise.name"
+                      :detail="obj.exercise.detail"
+                      :duration="obj.duration"
+                      :weight="obj.weight"
+                      :repetitions="obj.repetitions"
+                      class="mb-4 rounded-xl included"
+                      :click="
+                        () => {
+                          toggle();
+                          selectExercise({
+                            name: obj.exercise.name,
+                            detail: obj.exercise.detail,
+                            exercise: exerciseIndex,
+                            cycle: cycleIndex,
+                          });
+                        }
+                      "
+                      :active="active"
+                    />
+                  </v-item>
+                </div>
+              </v-hover>
+            </div>
+          </v-scroll-y-transition>
         </v-item-group>
       </div>
       <div class="pa-12" style="width: 50%">
