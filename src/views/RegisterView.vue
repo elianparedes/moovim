@@ -108,8 +108,6 @@ export default {
             this.snackbarLoading();
             this.$signUp(new SignCredentials(this.username, this.password, this.email))
             .then( () => {
-                localStorage.setItem('username', this.username);
-                localStorage.setItem('password', this.password);
                 localStorage.setItem('email', this.email);
                 this.$router.push({ name: 'verify' });})
             .catch((result) => this.handleResult(result))

@@ -36,25 +36,25 @@
 
 <script>
 import { mapActions } from "pinia";
-import { Credentials, VerifyCredentials } from "../api/user";
+import { VerifyCredentials } from "../api/user";
 import { useSecurityStore } from "../stores/securityStore.js";
 
 export default {
-  data: () => ({
-    username: localStorage.getItem('username'),
-    password: localStorage.getItem('password'),
-    email: localStorage.getItem('email'),
-    otp: '',
-    result: {},
-    controller: null,
-    length: 6,
-    snackbar: false,
-    loading: true,
-    error: false,
-    snackbarText: 'Cargando',
-    snackbarColor: 'primary',
-    timeout: 10 * 1000,
-  }),
+  data() {
+    return {
+      email: this.email = this.$route.params.email || localStorage.getItem('email'),
+      otp: '',
+      result: {},
+      controller: null,
+      length: 6,
+      snackbar: false,
+      loading: true,
+      error: false,
+      snackbarText: 'Cargando',
+      snackbarColor: 'primary',
+      timeout: 10 * 1000,
+    }
+  },
   computed: {
     valid() {
       return this.otp.length === this.length;
@@ -90,21 +90,10 @@ export default {
       this.timeout = 5 * 1000;
       this.snackbar = true;
     },
-    async login() {
-      try {
-        const credentials = new Credentials(this.username, this.password)
-        const result = await this.$login(credentials, true)
-        this.setResult(result);
-      } catch (e) {
-        this.setResult(e)
-      }
-    },
     onFinish() {
       this.snackbarLoading();
-      this.$verify(new VerifyCredentials(this.email, this.otp)).then((response) => {
-        console.log(JSON.stringify(response))
-        this.login();
-        this.$router.push({ name: 'home' });
+      this.$verify(new VerifyCredentials(this.email, this.otp)).then(() => {
+        this.$router.push({ name: 'login' });
       })
         .catch((e) => this.handleResult(e));
     },

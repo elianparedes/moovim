@@ -58,7 +58,7 @@ const routes = [
     component: () => import("../views/RegisterView.vue"),
   },
   {
-    path: "/verify",
+    path: "/verify/:email?",
     name: "verify",
     component: () => import("../views/VerificationView.vue"),
   },

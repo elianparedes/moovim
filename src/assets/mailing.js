@@ -30,30 +30,6 @@ module.exports = {
                         min-width: fit-content;
                         margin: auto;
                     }
-            
-                    .button_home {
-                        display: block;
-                        width: 15%;
-                        min-width: fit-content;
-                        height: 25px;
-                        color: white;
-                        padding: 12px;
-                        text-align: center;
-                        line-height: 25px;
-                        border-radius: 4px;
-                        font-weight: normal;
-                        text-decoration: none;
-                        transition-duration: 0.4s;
-                        margin-left: auto;
-                        margin-top: auto;
-                        margin-bottom: auto;
-                    }
-            
-                    .button_home:hover {
-                        filter: brightness(110%);
-                        background-color: #252525;
-                    }
-            
                     .button {
                         display: block;
                         width: 20%;
@@ -64,7 +40,7 @@ module.exports = {
                         padding: 12px;
                         text-align: center;
                         line-height: 25px;
-                        border-radius: 4px;
+                        border-radius: 28px;
                         font-weight: bold;
                         text-decoration: none;
                         transition-duration: 0.4s;
@@ -95,9 +71,6 @@ module.exports = {
                         <h1 style="text-align:left">
                             Logo
                         </h1>
-                        <a class="button_home">
-                            Ir a Inicio
-                        </a>
                     </div>
                     <h1 style="text-align: left;">
                         Bienvenido a GymApp, <%USERNAME%>
@@ -118,8 +91,9 @@ module.exports = {
                     </p>
                 </div>
             </body>
+            
             </html>`,
-        confirmationLink: 'http://localhost:8081/verification/<%USER_ID%>/<%CODE%>',
+        confirmationLink: 'http://localhost:8081/verify/<%EMAIL%>',
         codeExpirationInterval: 24 * 60 * 60 * 1000
     }
 }
