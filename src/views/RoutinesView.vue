@@ -59,12 +59,12 @@
       </div>
       <v-scroll-y-transition mode="in" group hide-on-leave>
         <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
-          <v-row class="text-body-1 ma-4" no-gutters>
+          <v-row class="text-body-1 ma-4">
             <v-col>
-              <div>
+              <div class="py-2">
                 {{ cycle.name
                 }}<span>
-                  <v-icon size="24px" class="ml-4 material-icons-round"
+                  <v-icon size="18px" class="ml-4 material-icons-round"
                     >loop</v-icon
                   >
                   {{ cycle.repetitions }}

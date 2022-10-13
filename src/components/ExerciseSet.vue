@@ -5,12 +5,14 @@
     color="#252525"
     flat
   >
-    <v-card-title class="font-weight-bold text-h4">{{ name }}</v-card-title>
-    <v-card-subtitle class="text-h6 font-weight-regular pr-8">{{
-      detail
-    }}</v-card-subtitle>
-    <div class="pr-8 pb-16">
-      <v-chip class="px-10 float-right" color="white" outlined>
+    <div class="font-weight-bold text-h4">{{ name }}</div>
+    <div class="text-h6 font-weight-regular pr-8 mb-16">{{ detail }}</div>
+    <div class="pb-8 mt-8" align="end">
+      <v-chip class="px-10" color="white" outlined @click="onDelete">
+        <v-icon left small class="material-icons-round">delete</v-icon>
+        Eliminar
+      </v-chip>
+      <v-chip class="px-10 ml-4" color="white" outlined>
         <v-icon left small class="material-icons-round">info_outline</v-icon>
         Ver detalles
       </v-chip>
@@ -91,6 +93,14 @@ export default {
       type: Object,
       required: true,
     },
+    exerciseId: {
+      type: Number,
+      required: true,
+    },
+    cycleId: {
+      type: Number,
+      required: true,
+    },
   },
   data: () => ({
     debounce: null,
@@ -106,6 +116,9 @@ export default {
       if (value.length > 3) value = value.slice(0, 3);
 
       this.$emit("input", { ...this.value, [key]: Number(value) });
+    },
+    onDelete() {
+      this.$emit("delete", this.name);
     },
   },
 };

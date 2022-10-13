@@ -4,18 +4,14 @@
       Cambios guardados correctamente
 
       <template>
-        <v-icon class="float-right material-icons-round" size="18" color="white"
-          >check_circle</v-icon
-        >
+        <v-icon class="float-right material-icons-round" size="18" color="white">check_circle</v-icon>
       </template>
     </v-snackbar>
     <v-snackbar v-model="error" color="orange" rounded="lg">
       No se pudieron guardar los cambios
 
       <template>
-        <v-icon class="float-right material-icons-round" size="18" color="white"
-          >error</v-icon
-        >
+        <v-icon class="float-right material-icons-round" size="18" color="white">error</v-icon>
       </template>
     </v-snackbar>
 
@@ -23,41 +19,25 @@
       Guardando cambios
 
       <template>
-        <v-progress-circular
-          class="float-right"
-          :width="2"
-          :size="18"
-          indeterminate
-          color="white"
-        >
+        <v-progress-circular class="float-right" :width="2" :size="18" indeterminate color="white">
         </v-progress-circular>
       </template>
     </v-snackbar>
 
     <v-card elevation="0" class="rounded-xl" color="transparent">
-      <v-img
-        class="pl-4 pr-16 pt-4"
-        style="width: 100%; height: 350px; border: red 2px"
-        :src="routine.metadata.image"
-        :aspect-ratio="16 / 9"
-        gradient="to right, #212121 0%, rgba(43, 43, 43, 1) 15%, rgba(43, 43, 43, 0.6) 50%"
-      >
+      <v-img class="pl-4 pr-16 pt-4" style="width: 100%; height: 350px; border: red 2px" :src="routine.metadata.image"
+        :aspect-ratio="16 / 9" gradient="to right, #212121 0%, rgba(43, 43, 43, 1) 15%, rgba(43, 43, 43, 0.6) 50%">
         <v-card-title class="font-weight-bold text-h3">{{
-          routine.name
+        routine.name
         }}</v-card-title>
         <v-card-text class="text-h6 font-weight-light pr-8">{{
-          routine.detail
+        routine.detail
         }}</v-card-text>
       </v-img>
     </v-card>
 
     <div>
-      <v-dialog
-        v-model="createCycleDialog"
-        width="500"
-        transition="fade-transition"
-        class="rounded-xl"
-      >
+      <v-dialog v-model="createCycleDialog" width="500" transition="fade-transition" class="rounded-xl">
         <template v-slot:activator="{ on, attrs }">
           <v-chip class="px-10" color="white" outlined v-bind="attrs" v-on="on">
             <v-icon left small class="material-icons-round">add</v-icon>
@@ -78,42 +58,27 @@
             </v-btn>
           </div>
 
-          <v-text-field
-            solo
-            placeholder="Nombre"
-            flat
-            v-model="newCycleName"
-          ></v-text-field>
+          <v-text-field solo placeholder="Nombre" flat v-model="newCycleName"></v-text-field>
 
           <v-divider class="mb-8"></v-divider>
           <v-row class="mb-4">
             <v-col class="text-center">
-              <v-icon size="24px" class="material-icons-round mr-2">loop</v-icon
-              >Repeticiones
+              <v-icon size="24px" class="material-icons-round mr-2">loop</v-icon>Repeticiones
             </v-col>
           </v-row>
 
-          <input
-            placeholder="1"
-            type="number"
-            maxlength="3"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2 mb-16"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
-            v-model="newCycleRepetitions"
-          />
+          <input placeholder="1" type="number" maxlength="3" class="
+              white--text
+              rounded-lg
+              text-h6
+              font-weight-regular
+              py-2
+              mb-16
+            " style="width: 100%; text-align: center; background-color: #1e1e1e" v-model="newCycleRepetitions" />
 
           <div class="d-flex">
-            <v-btn
-              large
-              style="flex: 1"
-              rounded
-              elevation="0"
-              class="font-weight-bold"
-              color="red"
-              :loading="buttonLoading"
-              @click="createCycle"
-              >Crear ciclo</v-btn
-            >
+            <v-btn large style="flex: 1" rounded elevation="0" class="font-weight-bold" color="red"
+              :loading="buttonLoading" @click="createCycle">Crear ciclo</v-btn>
           </div>
         </v-card>
       </v-dialog>
@@ -123,77 +88,61 @@
       <div style="width: 50%">
         <v-item-group v-model="selected">
           <v-scroll-y-transition group hide-on-leave>
-            <div
-              v-for="(cycle, cycleIndex) in cycles"
-              :key="cycleIndex"
-              class="d-flex flex-column mb-4"
-            >
+            <div v-for="(cycle, cycleIndex) in cycles" :key="cycleIndex" class="d-flex flex-column mb-4">
               <v-hover v-slot="{ hover }" close-delay="100">
                 <div>
-                  <v-row cols="6" class="text-body-1 mb-4 align-center">
+                  <v-row class="text-body-1 mb-4 align-center">
                     <v-col>
                       <div class="py-2">
                         {{ cycle.name
                         }}<span>
-                          <v-icon size="18px" class="ml-4 material-icons-round"
-                            >loop</v-icon
-                          >
+                          <v-icon size="18px" class="ml-4 material-icons-round">loop</v-icon>
                           {{ cycle.repetitions }}
                         </span>
                       </div>
                     </v-col>
-                    <v-col>Icons</v-col>
+
+                    <template v-if="cycleIndex === 0">
+                      <v-col cols="1" class="text-center" align="center">
+                        <v-icon size="24px" class="material-icons-round">replay</v-icon>
+                      </v-col>
+                      <v-col cols="1" class="text-center" align="center">
+                        <v-icon size="24px" class="material-icons-round">fitness_center</v-icon>
+                      </v-col>
+                      <v-col cols="1" class="text-center" align="center">
+                        <v-icon size="24px" class="material-icons-outlined">timer</v-icon>
+                      </v-col>
+                    </template>
 
                     <v-col cols="2" align="end">
                       <v-fade-transition>
                         <span v-if="hover">
-                          <v-tooltip
-                            top
-                            color="black"
-                            transition="fade-transition"
-                          >
+                          <v-tooltip top color="black" transition="fade-transition">
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn icon v-bind="attrs" v-on="on">
-                                <v-icon class="material-icons-round"
-                                  >edit</v-icon
-                                >
+                                <v-icon class="material-icons-round">edit</v-icon>
                               </v-btn>
                             </template>
                             <span>Editar ciclo</span>
                           </v-tooltip>
 
-                          <v-tooltip
-                            top
-                            color="black"
-                            transition="fade-transition"
-                          >
+                          <v-tooltip top color="black" transition="fade-transition">
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn icon class="ml-4" v-bind="attrs" v-on="on">
-                                <v-icon class="material-icons-round"
-                                  >add</v-icon
-                                >
+                                <v-icon class="material-icons-round">add</v-icon>
                               </v-btn>
                             </template>
                             <span>Añadir ejercicio</span>
                           </v-tooltip>
                         </span>
-                      </v-fade-transition></v-col
-                    >
+                      </v-fade-transition>
+                    </v-col>
                   </v-row>
 
-                  <v-item
-                    v-slot="{ active, toggle }"
-                    v-for="(obj, exerciseIndex) in cycle.exercises"
-                    :key="exerciseIndex"
-                  >
-                    <ExerciseViewCard
-                      :name="obj.exercise.name"
-                      :detail="obj.exercise.detail"
-                      :duration="obj.duration"
-                      :weight="obj.weight"
-                      :repetitions="obj.repetitions"
-                      class="mb-4 rounded-xl included"
-                      :click="
+                  <v-item v-slot="{ active, toggle }" v-for="(obj, exerciseIndex) in cycle.exercises"
+                    :key="exerciseIndex">
+                    <ExerciseViewCard :name="obj.exercise.name" :detail="obj.exercise.detail" :duration="obj.duration"
+                      :weight="obj.weight" :repetitions="obj.repetitions" class="mb-4 rounded-xl included" :click="
                         () => {
                           toggle();
                           selectExercise({
@@ -203,9 +152,7 @@
                             cycle: cycleIndex,
                           });
                         }
-                      "
-                      :active="active"
-                    />
+                      " :active="active" />
                   </v-item>
                 </div>
               </v-hover>
@@ -215,17 +162,13 @@
       </div>
       <div class="pa-12" style="width: 50%">
         <v-slide-y-transition>
-          <ExerciseSet
-            v-if="selected !== undefined"
-            style="position: sticky; top: 128px"
-            :name="selectedExercise.name"
-            :detail="selectedExercise.detail"
-            v-model="
+          <ExerciseSet v-if="selected !== undefined" style="position: sticky; top: 128px" :name="selectedExercise.name"
+            :detail="selectedExercise.detail" v-model="
               cycles[selectedExercise.cycle].exercises[
                 selectedExercise.exercise
               ]
-            "
-          />
+            " 
+            @delete="deleteExercise" />
         </v-slide-y-transition>
       </div>
     </div>
@@ -383,6 +326,9 @@ export default {
           }, 2000);
         });
     },
+    deleteExercise(name) {
+      console.log(name);
+    }
   },
 };
 </script>

@@ -13,7 +13,7 @@
       style="background-color: #252525"
       :class="{ 'active-card': active }"
     >
-      <v-col cols="6">
+      <v-col cols="7">
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6 font-weight-bold">
@@ -53,11 +53,13 @@
       </v-col>
       <v-spacer></v-spacer>
 
-      <v-col cols="1"
+      <v-col cols="1" align="center"
         ><v-menu bottom left rounded="lg" offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-on="on" v-bind="attrs"
-              ><v-icon class="material-icons-round">more_vert</v-icon></v-btn
+              ><v-icon class="material-icons-round text-center"
+                >more_vert</v-icon
+              ></v-btn
             >
           </template>
 
