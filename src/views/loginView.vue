@@ -2,9 +2,12 @@
     <div class="d-flex mt-16">
         <v-card elevation="0" class="form pa-4">
             <v-card-title>
-                Inicia sesión en GymApp
+                Inicia sesión en GymApp.
             </v-card-title>
-            <v-card-text class="pt-8">
+            <v-card-subtitle class="pt-2">
+                Crear, compartir y buscar rutinas al alcance de tu mano.
+            </v-card-subtitle>
+            <v-card-text class="pt-4">
                 <v-form ref="login" v-model="valid">
                     <v-text-field v-model="username" label="Nombre de usuario" :rules="nameRules" required outlined>
 
@@ -61,68 +64,48 @@ export default {
         snackbarColor: 'primary',
         snackbarText: 'Cargando',
         loading: true,
+        timeout: 10 * 1000,
     }),
     methods: {
         ...mapActions(useSecurityStore, {
             $login: 'login',
         }),
-        setResult(result) {
-            this.result = result;
-        },
-        clearResult() {
-            this.result = null
-        },
-        async login() {
-            try {
-                this.clearResult();
-                const credentials = new Credentials(this.username, this.password);
-                const result = await this.$login(credentials, true);
-                console.log(JSON.stringify(this.result));
-                this.setResult(result);
-            } catch (e) {
-                this.setResult(e)
-            }
-        },
-        async onLogin() {
+        snackbarLoading() {
             this.loading = true;
+            this.error = false;
+            this.snackbarText = "Cargando";
             this.snackbarColor = 'primary';
-            this.snackbarText = 'Cargando';
+            this.timeout = 65 * 1000;
             this.snackbar = true;
-            const apiTimer = setTimeout(() => {
-                this.loading = false;
-                this.snackbarColor = 'error'
-                this.snackbarText = 'Sin conexión'
-                return;
-            }, 5 * 1000)
-            await this.login();
-            clearTimeout(apiTimer);
-            const result = this.handleResult();
-            if (result === 0) {
-                this.$router.push({ name: 'home' });
-            }
-            else {
-                this.loading = false;
-            }
-
         },
-        handleResult() {
-            let toReturn = -1;
-            if (this.result) {
-                if (this.result.code === 8) {
-                    this.loading = false;
-                    this.snackbarColor = 'error';
-                    this.snackbarText = 'El correo electrónico no está verificado';
-                }
-                else if (this.result.code === 4) {
-                    this.loading = false;
-                    this.snackbarColor = 'error';
-                    this.snackbarText = 'Nombre de usuario o contraseña inválidos';
-                }
+        snackbarError(errorMessage) {
+            this.loading = false;
+            this.error = true;
+            this.snackbarText = errorMessage;
+            this.snackbarColor = 'error';
+            this.timeout = 5 * 1000;
+            this.snackbar = true;
+        },
+        onLogin() {
+            this.snackbarLoading();
+            this.$login(new Credentials(this.username, this.password))
+                .then(() => this.$router.push({ name: 'home' }))
+                .catch((e) => this.handleResult(e));
+        },
+        handleResult(result) {
+            switch (result.code) {
+                case 8:
+                    this.snackbarError('El correo electrónico no está verificado');
+                    break;
+                case 4:
+                    this.snackbarError('El correo electrónico no está verificado');
+                    break;
+                case 99:
+                    this.snackbarError('Sin conexión');
+                    break;
+                default:
+                    break;
             }
-            else {
-                toReturn = 0;
-            }
-            return toReturn;
         },
         onRegister() {
             this.$router.push({ name: 'register' });

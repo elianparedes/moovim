@@ -18,6 +18,10 @@ class UserApi {
     static async verify(credentials, controller){
         return await Api.post(UserApi.getUrl('verify_email'), false, credentials, controller);
     }
+    
+    static async resendVerify(email, controller){
+        return await Api.post(UserApi.getUrl('resend_verification'), false, email, controller);
+    }   
 
     static async logout(controller) {
         return await Api.post(UserApi.getUrl('logout'), true, controller);

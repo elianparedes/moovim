@@ -35,11 +35,11 @@
               alt="saul" />
           </v-avatar>
         </router-link>
-        <v-div v-if="!this.$isLoggedIn" class="d-flex align-center">
+        <div v-if="!this.$isLoggedIn" class="d-flex align-center">
           <v-btn rounded depressed large color="my-8 red" elevation="0" @click="routerHandler('login')">
             Acceder
           </v-btn>
-        </v-div>
+        </div>
       </v-app-bar>
     </div>
     <v-main>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from "pinia";
+import { mapState, mapActions } from "pinia";
 import routines from "./assets/mock/routines.json";
 import { useSecurityStore } from "./stores/securityStore.js";
 
@@ -65,7 +65,7 @@ export default {
     result: null,
     controller: null
   }),
-  computed:{
+  computed: {
     ...mapState(useSecurityStore, {
       $isLoggedIn: 'isLoggedIn',
     })
@@ -78,7 +78,7 @@ export default {
     routerHandler(routerName) {
       this.$router.push({ name: routerName });
     },
-    async logout(){
+    async logout() {
       await this.$logout();
     },
   },
