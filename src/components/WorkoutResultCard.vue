@@ -16,12 +16,13 @@
       }}</v-card-subtitle>
 
       <v-card-subtitle class="d-inline red--text font-weight-medium"
-        ><v-icon class="material-icons-round mr-1" color="red">star</v-icon
+        ><v-icon class="material-icons-round mr-1" color="#BF3D3D">star</v-icon
         >{{ stars }}</v-card-subtitle
       >
 
       <v-card-subtitle class="d-inline red--text font-weight-medium"
-        ><v-icon class="material-icons-round mr-1" color="red">bookmark</v-icon
+        ><v-icon class="material-icons-round mr-1" color="#BF3D3D"
+          >bookmark</v-icon
         >{{ bookmarks }}</v-card-subtitle
       >
 
@@ -92,6 +93,6 @@ export default {
 }
 
 .active-card {
-  outline: solid #f44336 2px;
+  outline: solid #bf3d3d 2px;
 }
 </style>

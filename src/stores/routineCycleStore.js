@@ -47,10 +47,10 @@ const useRoutineCycleStore = defineStore("routineCycle", {
     },
     async modifyRoutineCycle(routineId, fullRoutineCycle) {
       const result = await routineCycleApi.modify(routineId, fullRoutineCycle);
-      const index = this.items.findIndex(fullRoutineCycle);
+      /*const index = this.items.findIndex(fullRoutineCycle);
       if (index >= 0) {
         this.replace(index, result);
-      }
+      }*/
       return result;
     },
     async deleteRoutineCycle(routineId, fullRoutineCycle) {
@@ -65,10 +65,11 @@ const useRoutineCycleStore = defineStore("routineCycle", {
 
 class FullRoutineCycle {
   // type = [warmup, exercise, cooldown]
-  constructor(id, name, detail, type, repetitions, metadata) {
+  constructor(id, name, detail, type, order, repetitions, metadata) {
     this.id = id;
     this.name = name;
     this.detail = detail;
+    this.order = order;
     this.type = type;
     this.repetitions = repetitions;
     this.metadata = metadata;

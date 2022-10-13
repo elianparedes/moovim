@@ -93,14 +93,6 @@ export default {
       type: Object,
       required: true,
     },
-    exerciseId: {
-      type: Number,
-      required: true,
-    },
-    cycleId: {
-      type: Number,
-      required: true,
-    },
   },
   data: () => ({
     debounce: null,

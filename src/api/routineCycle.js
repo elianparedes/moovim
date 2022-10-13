@@ -4,8 +4,8 @@ export { routineCycleApi, RoutineCycle };
 
 class routineCycleApi {
   static getUrl(routineId, cycleId) {
-    return `${Api.baseUrl}/routines${routineId ? `/${routineId}` : ""}
-        /cycles${cycleId ? `/${cycleId}` : ""}`;
+    return `${Api.baseUrl}/routines/${routineId ? `${routineId}` : ""}
+        /cycles/${cycleId ? `${cycleId}` : ""}`;
   }
 
   static async getAll(routineId, controller) {

@@ -138,6 +138,6 @@ export default {
 
 <style>
 .active-card {
-  outline: solid #f44336 2px;
+  outline: solid #bf3d3d 2px;
 }
 </style>
