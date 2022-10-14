@@ -39,7 +39,7 @@
     <div style="flex: 90%; overflow-y: scroll">
       <div style="position: sticky; top: 0px; z-index: 1">
         <v-toolbar color="#181818" flat>
-          <v-toolbar-title class="font-weight-bold text-h3">{{
+          <v-toolbar-title class="font-weight-bold text-h3 pb-4">{{
             routines[selected]?.name
           }}</v-toolbar-title>
           <v-spacer></v-spacer>

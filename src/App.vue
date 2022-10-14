@@ -34,7 +34,7 @@
               <v-icon class="material-icons-round">add_box</v-icon>
             </v-list-item-icon>
 
-            <v-list-item-content link>
+            <v-list-item-content link @click="createRoutineDialog = true">
               <v-list-item-title>Crear rutina</v-list-item-title>
             </v-list-item-content></v-list-item
           >
@@ -74,31 +74,41 @@
       </v-app-bar>
     </div>
     <v-main>
+      <CreateRoutineDialog
+        v-if="createRoutineDialog"
+        v-model="createRoutineDialog"
+        :cycle="{}"
+        :routine-id="1"
+      />
+
       <router-view class="pl-4"></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import routines from "./assets/mock/routines.json";
 import { useSecurityStore } from "./stores/securityStore.js";
+import CreateRoutineDialog from "./components/dialogs/CreateRoutineDialog.vue";
 
 export default {
   name: "App",
-  data: () => ({
-    routines: routines,
-    items: [
-      { icon: "home", title: "Inicio", link: "/" },
-      { icon: "search", title: "Explorar", link: "/explore/categories" },
-      { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
-    ],
-    result: null,
-    controller: null,
-  }),
+  data() {
+    return {
+      items: [
+        { icon: "home", title: "Inicio", link: "/" },
+        { icon: "search", title: "Explorar", link: "/explore/categories" },
+        { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
+      ],
+      result: null,
+      controller: null,
+      createRoutineDialog: false,
+    };
+  },
   created() {
     const securityStore = useSecurityStore();
     securityStore.initialize();
   },
+  components: { CreateRoutineDialog },
 };
 </script>
 

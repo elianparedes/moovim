@@ -35,11 +35,12 @@ class routineApi {
 
 class Routine {
   //Category es un object de ids
-  constructor(name, detail, isPublic, category, difficulty) {
+  constructor(name, detail, isPublic, category, difficulty,metadata) {
     this.name = name;
     this.detail = detail;
     this.isPublic = isPublic;
     this.category = category;
     this.difficulty = difficulty;
+    this.metadata = metadata
   }
 }
