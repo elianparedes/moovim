@@ -38,10 +38,10 @@ const useRoutineStore = defineStore("routine", {
     },
     async modifyRoutine(fullRoutine) {
       const result = await routineApi.modify(fullRoutine);
-      const index = this.items.findIndex(fullRoutine);
+      /*const index = this.items.findIndex(fullRoutine);
       if (index >= 0) {
         this.replace(index, result);
-      }
+      }*/
       return result;
     },
     async deleteRoutine(fullRoutine) {

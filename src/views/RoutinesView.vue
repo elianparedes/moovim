@@ -44,7 +44,7 @@
           }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <div>
-            <v-chip class="px-10" color="white" outlined @click="editRoutine">
+            <v-chip class="px-10" color="gray" outlined @click="editRoutine">
               <v-icon left small class="material-icons-round">edit</v-icon>
               Editar rutina
             </v-chip>
@@ -52,8 +52,11 @@
         </v-toolbar>
         <div
           style="
-            height: 64px;
+            height: 32px;
             background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
+            position: sticky;
+            top: 0px;
+            z-index: 1;
           "
         ></div>
       </div>

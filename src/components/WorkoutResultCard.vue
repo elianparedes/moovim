@@ -2,7 +2,7 @@
   <v-card class="rounded-lg" flat :ripple="false" @click="click">
     <v-img
       class="pr-16 pa-2 card d-flex"
-      style="flex: 1; height: 256px"
+      style="flex: 1; height: 256px; transform: "
       :class="{ 'active-card': active }"
       :src="image"
       :aspect-ratio="16 / 9"
@@ -96,3 +96,4 @@ export default {
   outline: solid #bf3d3d 2px;
 }
 </style>
+

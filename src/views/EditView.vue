@@ -27,6 +27,15 @@
       @success="editCycle"
     />
 
+    <EditRoutineDialog
+      v-model="editRoutineDialog"
+      :routine="{
+        ...routine,
+        metadata: { ...routine.metadata },
+      }"
+      @success="editRoutine"
+    />
+
     <v-snackbar v-model="saving" rounded="lg">
       Guardando cambios
 
@@ -44,7 +53,7 @@
 
     <v-card elevation="0" class="rounded-xl" color="transparent">
       <v-img
-        class="pl-4 pr-16 pt-4"
+        content-class="pl-4 pr-16 pt-4 pb-4 d-flex flex-column"
         style="width: 100%; height: 350px; border: red 2px"
         :src="routine.metadata.image"
         :aspect-ratio="16 / 9"
@@ -56,6 +65,14 @@
         <v-card-text class="text-h6 font-weight-light pr-8">{{
           routine.detail
         }}</v-card-text>
+        <v-fade-transition>
+          <v-card-text
+            v-if="exercisesCount"
+            class="text-body-1 font-weight-light pr-8 mt-auto"
+          >
+            <v-icon class="mr-2">subject</v-icon>{{ exercisesCount }} ejercicios
+          </v-card-text>
+        </v-fade-transition>
       </v-img>
     </v-card>
 
@@ -67,13 +84,28 @@
         class="rounded-xl"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-chip class="px-10" color="white" outlined v-bind="attrs" v-on="on">
+          <v-chip
+            class="px-10 py-4"
+            color="gray"
+            outlined
+            @click="editRoutineDialog = true"
+          >
+            <v-icon left small class="material-icons-round">edit</v-icon>
+            Editar detalles
+          </v-chip>
+          <v-chip
+            class="px-10 py-4 ml-4"
+            color="gray"
+            outlined
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon left small class="material-icons-round">add</v-icon>
             Nuevo ciclo
           </v-chip>
           <v-chip
             class="px-10 py-4 ml-4"
-            color="white"
+            color="gray"
             outlined
             @click="autosave"
           >
@@ -207,7 +239,13 @@
                             transition="fade-transition"
                           >
                             <template v-slot:activator="{ on, attrs }">
-                              <v-btn icon class="ml-4" v-bind="attrs" v-on="on">
+                              <v-btn
+                                icon
+                                class="ml-4"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="addExercise"
+                              >
                                 <v-icon class="material-icons-round"
                                   >add</v-icon
                                 >
@@ -281,6 +319,7 @@ import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 import ExerciseSet from "@/components/ExerciseSet.vue";
 import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
+import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
 
 export default {
   name: "RoutinesView",
@@ -288,6 +327,7 @@ export default {
     ExerciseViewCard,
     ExerciseSet,
     EditCycleDialog,
+    EditRoutineDialog,
   },
   props: ["name", "id"],
   data: () => ({
@@ -299,6 +339,7 @@ export default {
     selected: undefined,
     createCycleDialog: false,
     editCycleDialog: false,
+    editRoutineDialog: false,
     newCycleName: "",
     newCycleRepetitions: 0,
     buttonLoading: false,
@@ -313,6 +354,13 @@ export default {
   computed: {
     newCycleRepetitionsNumber: function () {
       return Number(this.newCycleRepetitions); //Temporary workaround
+    },
+    exercisesCount: function () {
+      if (!this.cycles) return 0;
+      return this.cycles.reduce(
+        (acc, cycle) => acc + cycle.exercises.length,
+        0
+      );
     },
   },
   methods: {
@@ -441,6 +489,41 @@ export default {
       }, 2000);
       this.fetchRoutineCycles(this.routine.id);
     },
+    editRoutine(editedRoutine) {
+      this.routine = {
+        ...editedRoutine,
+      };
+    },
+    addExercise() {
+      this.cycles[0].exercises.push({
+        order: 1,
+        duration: 50,
+        repetitions: 50,
+        exercise: {
+          id: 1,
+          name: "Skipping",
+          detail: "Tren Inferior",
+          type: "exercise",
+          date: 1665378864763,
+          metadata: null,
+        },
+      });
+    },
   },
 };
 </script>
+
+<style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+</style>

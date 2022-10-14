@@ -7,8 +7,8 @@
       "
     >
       <v-navigation-drawer app color="transparent" floating clipped>
-        <v-list nav height="100%">
-          <v-list-item-group class="d-flex flex-column" style="height: 100%">
+        <v-list nav class="d-flex flex-column" style="height: 100%">
+          <v-list-item-group class="d-flex flex-column">
             <v-list-item
               v-for="item in items"
               :key="item.title"
@@ -17,7 +17,7 @@
               :to="item.link"
               flat
             >
-              <v-list-item-icon>
+              <v-list-item-icon class="align-self-center">
                 <v-icon class="material-icons-round">{{ item.icon }}</v-icon>
               </v-list-item-icon>
 
@@ -26,17 +26,31 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item class="mt-auto" flat :ripple="false">
-              <v-list-item-action>
-                <v-icon class="material-icons-round">logout</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title class="text--secondary"
-                  >Logout</v-list-item-title
-                >
-              </v-list-item-content>
-            </v-list-item>
+            <v-divider class="mt-8"></v-divider>
           </v-list-item-group>
+
+          <v-list-item link
+            ><v-list-item-icon class="align-self-center">
+              <v-icon class="material-icons-round">add_box</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content link>
+              <v-list-item-title>Crear rutina</v-list-item-title>
+            </v-list-item-content></v-list-item
+          >
+
+          <v-spacer></v-spacer>
+
+          <v-list-item flat :ripple="false">
+            <v-list-item-action>
+              <v-icon class="material-icons-round">logout</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title class="text--secondary"
+                >Logout</v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
       <v-app-bar
@@ -81,9 +95,9 @@ export default {
     result: null,
     controller: null,
   }),
-  async created() {
+  created() {
     const securityStore = useSecurityStore();
-    await securityStore.initialize();
+    securityStore.initialize();
   },
 };
 </script>
