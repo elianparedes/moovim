@@ -36,6 +36,13 @@ const useRoutineStore = defineStore("routine", {
       const result = await routineApi.getAll();
       return result;
     },
+    async getRoutineQuery(search) {
+      const result = await routineApi.getQuery(
+        //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
+        "" + search
+      );
+      return result;
+    },
     async modifyRoutine(fullRoutine) {
       const result = await routineApi.modify(fullRoutine);
       const index = this.items.findIndex(fullRoutine);
