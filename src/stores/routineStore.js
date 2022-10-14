@@ -46,10 +46,10 @@ const useRoutineStore = defineStore("routine", {
     },
     async deleteRoutine(fullRoutine) {
       await routineApi.delete(fullRoutine.id);
-      const index = this.items.findIndex(fullRoutine);
+      /*const index = this.items.findIndex(fullRoutine);
       if (index >= 0) {
         return this.splice(index);
-      }
+      }*/
     },
   },
 });

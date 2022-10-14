@@ -44,9 +44,18 @@
           }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <div>
-            <v-chip class="px-10" color="gray" outlined @click="editRoutine">
+            <v-chip
+              class="px-8 mr-4"
+              color="gray"
+              outlined
+              @click="deleteRoutine"
+            >
+              <v-icon left small class="material-icons-round">delete</v-icon>
+              Eliminar
+            </v-chip>
+            <v-chip class="px-8" color="gray" outlined @click="editRoutine">
               <v-icon left small class="material-icons-round">edit</v-icon>
-              Editar rutina
+              Editar
             </v-chip>
           </div>
         </v-toolbar>
@@ -144,7 +153,10 @@ export default {
     $route: "fetchRoutines",
   },
   methods: {
-    ...mapActions(useRoutineStore, { $getAllRoutine: "getAllRoutine" }),
+    ...mapActions(useRoutineStore, {
+      $getAllRoutine: "getAllRoutine",
+      $deleteRoutine: "deleteRoutine",
+    }),
     ...mapActions(useRoutineCycleStore, {
       $getAllRoutineCycles: "getAllRoutineCycles",
     }),
@@ -158,6 +170,11 @@ export default {
           id: this.routines[this.selected]?.id,
           name: this.routines[this.selected]?.name,
         },
+      });
+    },
+    deleteRoutine() {
+      this.$deleteRoutine(this.routines[this.selected]).then(() => {
+        this.routines.splice(this.selected, 1);
       });
     },
     fetchRoutines() {
