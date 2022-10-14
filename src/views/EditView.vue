@@ -137,7 +137,7 @@
           <v-divider class="mb-8"></v-divider>
           <v-row class="mb-4">
             <v-col class="text-center">
-              <v-icon size="24px" class="material-icons-round mr-2">loop</v-icon
+              <v-icon size="18px" class="material-icons-round mr-2">loop</v-icon
               >Repeticiones
             </v-col>
           </v-row>
@@ -179,8 +179,8 @@
             >
               <v-hover v-slot="{ hover }" close-delay="100">
                 <div>
-                  <v-row class="text-body-1 mb-4 align-center">
-                    <v-col>
+                  <v-row class="text-body-1 mb-2 align-center pl-4 ">
+                    <v-col cols="5">
                       <div class="py-2">
                         {{ cycle.name
                         }}<span>
@@ -194,21 +194,23 @@
 
                     <template v-if="cycleIndex === 0">
                       <v-col cols="1" class="text-center" align="center">
-                        <v-icon size="24px" class="material-icons-round"
+                        <v-icon size="18px" class="material-icons-round"
                           >replay</v-icon
                         >
                       </v-col>
                       <v-col cols="1" class="text-center" align="center">
-                        <v-icon size="24px" class="material-icons-round"
+                        <v-icon size="18px" class="material-icons-round"
                           >fitness_center</v-icon
                         >
                       </v-col>
                       <v-col cols="1" class="text-center" align="center">
-                        <v-icon size="24px" class="material-icons-outlined"
+                        <v-icon size="18px" class="material-icons-outlined"
                           >timer</v-icon
                         >
                       </v-col>
                     </template>
+
+                    <v-spacer></v-spacer>
 
                     <v-col cols="2" align="end">
                       <v-fade-transition>
@@ -225,7 +227,7 @@
                                 v-on="on"
                                 @click.stop="openEditCycleDialog(cycle)"
                               >
-                                <v-icon class="material-icons-round"
+                                <v-icon class="material-icons-round" size="18px"
                                   >edit</v-icon
                                 >
                               </v-btn>
@@ -241,7 +243,7 @@
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn
                                 icon
-                                class="ml-4"
+                                class="ml-2"
                                 v-bind="attrs"
                                 v-on="on"
                                 @click="addExercise"

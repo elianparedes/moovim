@@ -13,7 +13,7 @@
       style="background-color: #252525"
       :class="{ 'active-card': active }"
     >
-      <v-col cols="7">
+      <v-col cols="5">
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6 font-weight-bold">
