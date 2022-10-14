@@ -1,6 +1,6 @@
 <template>
   <v-app style="background: #181818">
-    <div v-if="this.$router.currentRoute.name !== 'register'
+    <div v-if="this.$router.currentRoute.name !== 'register' && this.$router.currentRoute.name != 'notFound'
     && this.$router.currentRoute.name !== 'verify' && this.$router.currentRoute.name !== 'login'">
       <v-navigation-drawer app color="transparent" floating clipped>
         <v-list nav height="100%">
