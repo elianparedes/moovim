@@ -15,12 +15,13 @@
                     <v-text-field v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="passwordRules" :type="show ? 'text' : 'password'" label="Contraseña"
                         @click:append="show = !show" required outlined></v-text-field>
-                    <div class="d-flex justify-center pb-4">
-                        <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onLogin">
-                            Iniciar sesión
-                        </v-btn>
-                    </div>
                 </v-form>
+                <v-checkbox color="red" v-model="rememberMe" label="Recordarme"></v-checkbox>
+                <div class="d-flex justify-center pb-4">
+                    <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onLogin">
+                        Iniciar sesión
+                    </v-btn>
+                </div>
                 <v-divider></v-divider>
                 <div class="d-flex justify-center pt-4">
                     ¿No tienes una cuenta?
@@ -51,6 +52,7 @@ export default {
         result: {},
         controller: null,
         valid: true,
+        rememberMe: false,
         username: '',
         password: '',
         nameRules: [
@@ -88,7 +90,7 @@ export default {
         },
         onLogin() {
             this.snackbarLoading();
-            this.$login(new Credentials(this.username, this.password), true)
+            this.$login(new Credentials(this.username, this.password), this.rememberMe)
                 .then(() => this.$router.push({ name: 'home' }))
                 .catch((e) => this.handleResult(e));
         },
