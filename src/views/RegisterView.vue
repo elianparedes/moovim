@@ -45,9 +45,7 @@
     </div>
 </template>
 
-
 <script>
-
 import { mapActions } from "pinia";
 import { SignCredentials } from "../api/user";
 import { useSecurityStore } from "../stores/securityStore.js";
@@ -136,7 +134,7 @@ export default {
 
 <style>
 .form {
-    width: 35%;
-    margin: auto;
+  width: 35%;
+  margin: auto;
 }
 </style>

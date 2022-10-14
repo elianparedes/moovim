@@ -1,8 +1,59 @@
 <template>
-  <div class="d-flex flex-column px-4" style="gap: 32px" v-if="!loading">
+  <div class="d-flex flex-column px-4 pb-16" style="gap: 32px" v-if="!loading">
+    <v-snackbar v-model="success" rounded="lg">
+      Cambios guardados correctamente
+
+      <template>
+        <v-icon class="float-right material-icons-round" size="18" color="white"
+          >check_circle</v-icon
+        >
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="error" color="orange" rounded="lg">
+      No se pudieron guardar los cambios
+
+      <template>
+        <v-icon class="float-right material-icons-round" size="18" color="white"
+          >error</v-icon
+        >
+      </template>
+    </v-snackbar>
+
+    <EditCycleDialog
+      v-if="selectedCycle"
+      v-model="editCycleDialog"
+      :cycle="selectedCycle"
+      :routine-id="routine.id"
+      @success="editCycle"
+    />
+
+    <EditRoutineDialog
+      v-model="editRoutineDialog"
+      :routine="{
+        ...routine,
+        metadata: { ...routine.metadata },
+      }"
+      @success="editRoutine"
+    />
+
+    <v-snackbar v-model="saving" rounded="lg">
+      Guardando cambios
+
+      <template>
+        <v-progress-circular
+          class="float-right"
+          :width="2"
+          :size="18"
+          indeterminate
+          color="white"
+        >
+        </v-progress-circular>
+      </template>
+    </v-snackbar>
+
     <v-card elevation="0" class="rounded-xl" color="transparent">
       <v-img
-        class="pl-4 pr-16 pt-4"
+        content-class="pl-4 pr-16 pt-4 pb-4 d-flex flex-column"
         style="width: 100%; height: 350px; border: red 2px"
         :src="routine.metadata.image"
         :aspect-ratio="16 / 9"
@@ -14,71 +65,231 @@
         <v-card-text class="text-h6 font-weight-light pr-8">{{
           routine.detail
         }}</v-card-text>
+        <v-fade-transition>
+          <v-card-text
+            v-if="exercisesCount"
+            class="text-body-1 font-weight-light pr-8 mt-auto"
+          >
+            <v-icon class="mr-2">subject</v-icon>{{ exercisesCount }} ejercicios
+          </v-card-text>
+        </v-fade-transition>
       </v-img>
     </v-card>
+
     <div>
-      <v-chip class="px-10" color="white" outlined>
-        <v-icon left small class="material-icons-round">add</v-icon>
-        Crear grupo
-      </v-chip>
+      <v-dialog
+        v-model="createCycleDialog"
+        width="500"
+        transition="fade-transition"
+        class="rounded-xl"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-chip
+            class="px-10 py-4"
+            color="gray"
+            outlined
+            @click="editRoutineDialog = true"
+          >
+            <v-icon left small class="material-icons-round">edit</v-icon>
+            Editar detalles
+          </v-chip>
+          <v-chip
+            class="px-10 py-4 ml-4"
+            color="gray"
+            outlined
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon left small class="material-icons-round">add</v-icon>
+            Nuevo ciclo
+          </v-chip>
+          <v-chip
+            class="px-10 py-4 ml-4"
+            color="gray"
+            outlined
+            @click="autosave"
+          >
+            <v-icon left small class="material-icons-round">save</v-icon>
+            Guardar cambios
+          </v-chip>
+        </template>
+        <v-card :key="name" class="d-inline-block pa-8" color="#252525" flat>
+          <div class="mb-8 text-center">
+            <div class="d-inline-block font-weight-regular text-h6 text-center">
+              Crear ciclo
+            </div>
+            <v-btn
+              icon
+              style="position: absolute; right: 0px; top: 0px; margin: 32px"
+              @click="createCycleDialog = false"
+            >
+              <v-icon class="material-icons-round">close</v-icon>
+            </v-btn>
+          </div>
+
+          <v-text-field
+            solo
+            placeholder="Nombre"
+            flat
+            v-model="newCycleName"
+          ></v-text-field>
+
+          <v-divider class="mb-8"></v-divider>
+          <v-row class="mb-4">
+            <v-col class="text-center">
+              <v-icon size="18px" class="material-icons-round mr-2">loop</v-icon
+              >Repeticiones
+            </v-col>
+          </v-row>
+
+          <input
+            placeholder="1"
+            type="number"
+            maxlength="3"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2 mb-16"
+            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            v-model="newCycleRepetitions"
+          />
+
+          <div class="d-flex">
+            <v-btn
+              large
+              style="flex: 1"
+              rounded
+              elevation="0"
+              class="font-weight-bold"
+              color="#BF3D3D"
+              :loading="buttonLoading"
+              @click="createCycle"
+              >Crear ciclo</v-btn
+            >
+          </div>
+        </v-card>
+      </v-dialog>
     </div>
+
     <div class="d-flex">
       <div style="width: 50%">
         <v-item-group v-model="selected">
-          <div
-            v-for="(cycle, n) in cycles"
-            :key="n"
-            class="d-flex flex-column mb-4"
-          >
-            <v-row class="text-body-1 mb-4 pr-4">
-              <v-col>
-                <div>
-                  {{ cycle.name
-                  }}<span>
-                    <v-icon size="18px" class="ml-4 material-icons-round"
-                      >loop</v-icon
-                    >
-                    {{ cycle.repetitions }}
-                  </span>
-                </div>
-              </v-col>
-
-              <v-btn icon>
-                <v-icon class="material-icons-round">edit</v-icon>
-              </v-btn>
-              <v-btn icon class="ml-4">
-                <v-icon class="material-icons-round">add</v-icon>
-              </v-btn>
-            </v-row>
-
-            <v-item
-              v-slot="{ active, toggle }"
-              v-for="obj in cycle.exercises"
-              :key="obj.order"
+          <v-slide-x-transition group leave-absolute mode="default">
+            <div
+              v-for="(cycle, cycleIndex) in cycles"
+              :key="cycle.id"
+              class="d-flex flex-column mb-4"
             >
-              <ExerciseViewCard
-                :name="obj.exercise.name"
-                :detail="obj.exercise.detail"
-                :duration="obj.duration"
-                :weight="obj.weight"
-                :repetitions="obj.repetitions"
-                class="mb-4 rounded-xl"
-                :click="
-                  () => {
-                    toggle();
-                    selectExercise({
-                      name: obj.exercise.name,
-                      detail: obj.exercise.detail,
-                      duration: obj.duration,
-                      weight: obj.weight,
-                      repetitions: obj.repetitions,
-                    });
-                  }
-                "
-                :active="active"
-              />
-            </v-item>
-          </div>
+              <v-hover v-slot="{ hover }" close-delay="100">
+                <div>
+                  <v-row class="text-body-1 mb-2 align-center pl-4">
+                    <v-col cols="5">
+                      <div class="py-2">
+                        {{ cycle.name
+                        }}<span>
+                          <v-icon size="18px" class="ml-4 material-icons-round"
+                            >loop</v-icon
+                          >
+                          {{ cycle.repetitions }}
+                        </span>
+                      </div>
+                    </v-col>
+
+                    <template v-if="cycleIndex === 0">
+                      <v-col cols="1" class="text-center" align="center">
+                        <v-icon size="18px" class="material-icons-round"
+                          >replay</v-icon
+                        >
+                      </v-col>
+                      <v-col cols="1" class="text-center" align="center">
+                        <v-icon size="18px" class="material-icons-round"
+                          >fitness_center</v-icon
+                        >
+                      </v-col>
+                      <v-col cols="1" class="text-center" align="center">
+                        <v-icon size="18px" class="material-icons-outlined"
+                          >timer</v-icon
+                        >
+                      </v-col>
+                    </template>
+
+                    <v-spacer></v-spacer>
+
+                    <v-col cols="2" align="end">
+                      <v-fade-transition>
+                        <span v-if="hover">
+                          <v-tooltip
+                            top
+                            color="black"
+                            transition="fade-transition"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn
+                                icon
+                                v-bind="attrs"
+                                v-on="on"
+                                @click.stop="openEditCycleDialog(cycle)"
+                              >
+                                <v-icon class="material-icons-round" size="18px"
+                                  >edit</v-icon
+                                >
+                              </v-btn>
+                            </template>
+                            <span>Editar ciclo</span>
+                          </v-tooltip>
+
+                          <v-tooltip
+                            top
+                            color="black"
+                            transition="fade-transition"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn
+                                icon
+                                class="ml-2"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="deleteCycle(cycleIndex)"
+                              >
+                                <v-icon size="18" class="material-icons-round"
+                                  >delete</v-icon
+                                >
+                              </v-btn>
+                            </template>
+                            <span>Eliminar ciclo</span>
+                          </v-tooltip>
+                        </span>
+                      </v-fade-transition>
+                    </v-col>
+                  </v-row>
+
+                  <v-item
+                    v-slot="{ active, toggle }"
+                    v-for="(obj, exerciseIndex) in cycle.exercises"
+                    :key="exerciseIndex"
+                  >
+                    <ExerciseViewCard
+                      :name="obj.exercise.name"
+                      :detail="obj.exercise.detail"
+                      :duration="obj.duration"
+                      :weight="obj.weight"
+                      :repetitions="obj.repetitions"
+                      class="mb-4 rounded-xl included"
+                      :click="
+                        () => {
+                          toggle();
+                          selectExercise({
+                            name: obj.exercise.name,
+                            detail: obj.exercise.detail,
+                            exercise: exerciseIndex,
+                            cycle: cycleIndex,
+                          });
+                        }
+                      "
+                      :active="active"
+                    />
+                  </v-item>
+                </div>
+              </v-hover>
+            </div>
+          </v-slide-x-transition>
         </v-item-group>
       </div>
       <div class="pa-12" style="width: 50%">
@@ -88,9 +299,12 @@
             style="position: sticky; top: 128px"
             :name="selectedExercise.name"
             :detail="selectedExercise.detail"
-            :repetitions="selectedExercise.repetitions"
-            :weigth="selectedExercise.weigth"
-            :duration="selectedExercise.duration"
+            v-model="
+              cycles[selectedExercise.cycle].exercises[
+                selectedExercise.exercise
+              ]
+            "
+            @delete="deleteExercise"
           />
         </v-slide-y-transition>
       </div>
@@ -106,12 +320,16 @@ import { useRoutineStore } from "@/stores/routineStore";
 import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 import ExerciseSet from "@/components/ExerciseSet.vue";
+import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
+import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
 
 export default {
   name: "RoutinesView",
   components: {
     ExerciseViewCard,
     ExerciseSet,
+    EditCycleDialog,
+    EditRoutineDialog,
   },
   props: ["name", "id"],
   data: () => ({
@@ -119,18 +337,49 @@ export default {
     routine: null,
     cycles: null,
     selectedExercise: null,
+    selectedCycle: null,
     selected: undefined,
+    createCycleDialog: false,
+    editCycleDialog: false,
+    editRoutineDialog: false,
+    newCycleName: "",
+    newCycleRepetitions: 0,
+    buttonLoading: false,
+    saving: false,
+    error: false,
+    success: false,
+    included: [],
   }),
+  watch: {
+    $route: function (val) {
+      this.fetchRoutine(val.params.id);
+    },
+  },
   created() {
     this.fetchRoutine(this.id);
+  },
+  computed: {
+    newCycleRepetitionsNumber: function () {
+      return Number(this.newCycleRepetitions); //Temporary workaround
+    },
+    exercisesCount: function () {
+      if (!this.cycles || this.cycles.length === 0) return 0;
+      return this.cycles.reduce(
+        (acc, cycle) => acc + cycle.exercises.length,
+        0
+      );
+    },
   },
   methods: {
     ...mapActions(useRoutineStore, { $getRoutine: "getRoutine" }),
     ...mapActions(useRoutineCycleStore, {
       $getAllRoutineCycles: "getAllRoutineCycles",
+      $addRoutineCycle: "addRoutineCycle",
+      $deleteRoutineCycle: "deleteRoutineCycle",
     }),
     ...mapActions(useExerciseCycleStore, {
       $getAllExerciseCycles: "getAllExerciseCycles",
+      $modifyExerciseCycle: "modifyExerciseCycle",
     }),
     fetchRoutine(routineId) {
       this.loading = true;
@@ -168,6 +417,129 @@ export default {
     selectExercise(exercise) {
       this.selectedExercise = { ...exercise };
     },
+    openEditCycleDialog(cycle) {
+      this.editCycleDialog = true;
+      this.selectedCycle = { ...cycle };
+    },
+    autosave() {
+      this.saving = true;
+
+      Promise.all(
+        this.cycles.map((cycle) =>
+          cycle.exercises.map((exercise) => {
+            const cycleId = cycle.id;
+            const exerciseId = exercise.exercise.id;
+
+            const body = {
+              order: exercise.order,
+              duration: exercise.duration,
+              repetitions: exercise.repetitions,
+            };
+
+            console.log({ cycleId, exerciseId, body });
+
+            return this.$modifyExerciseCycle(cycleId, exerciseId, body);
+          })
+        )
+      )
+        .then(() => {
+          this.saving = false;
+          this.success = true;
+          setTimeout(() => {
+            this.success = false;
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.saving = false;
+          this.error = true;
+          setTimeout(() => {
+            this.error = false;
+          }, 2000);
+        });
+    },
+    createCycle() {
+      this.saving = true;
+      this.$addRoutineCycle(
+        this.routine.id,
+        this.newCycleName,
+        this.newCycleName,
+        "exercise",
+        this.cycles.length + 1,
+        this.newCycleRepetitionsNumber,
+        null
+      )
+        .then((newCycle) => {
+          this.saving = false;
+          this.success = true;
+          newCycle["exercises"] = [];
+          this.cycles.push(newCycle);
+          this.createCycleDialog = false;
+          setTimeout(() => {
+            this.success = false;
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.saving = false;
+          this.error = true;
+          setTimeout(() => {
+            this.error = false;
+          }, 2000);
+        });
+    },
+    deleteCycle(cycleIndex) {
+      this.$deleteRoutineCycle(this.routine.id, {
+        id: this.cycles[cycleIndex].id,
+      }).then(() => {
+        this.selected = undefined;
+        this.cycles.splice(cycleIndex, 1);
+      });
+    },
+    deleteExercise(name) {
+      console.log({ name });
+    },
+    editCycle() {
+      this.success = true;
+      setTimeout(() => {
+        this.success = false;
+      }, 2000);
+      this.fetchRoutineCycles(this.routine.id);
+    },
+    editRoutine(editedRoutine) {
+      this.routine = {
+        ...editedRoutine,
+      };
+    },
   },
 };
 </script>
+
+<style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+.list-complete-item {
+  transition: all 1s;
+  display: block;
+  margin-right: 10px;
+}
+.list-complete-enter, .list-complete-leave-to, .list-complete-leave-active
+/* .list-complete-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
+}
+</style>

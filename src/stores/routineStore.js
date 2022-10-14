@@ -16,9 +16,9 @@ const useRoutineStore = defineStore("routine", {
     splice(index) {
       this.items.splice(index, 1);
     },
-    async addRoutine(name, detail, isPublic, category, difficulty) {
+    async addRoutine(name, detail, isPublic, category, difficulty, metadata) {
       const result = await routineApi.add(
-        new Routine(name, detail, isPublic, category, difficulty)
+        new Routine(name, detail, isPublic, category, difficulty, metadata)
       );
       this.items.push(result);
       return result;
@@ -45,18 +45,18 @@ const useRoutineStore = defineStore("routine", {
     },
     async modifyRoutine(fullRoutine) {
       const result = await routineApi.modify(fullRoutine);
-      const index = this.items.findIndex(fullRoutine);
+      /*const index = this.items.findIndex(fullRoutine);
       if (index >= 0) {
         this.replace(index, result);
-      }
+      }*/
       return result;
     },
     async deleteRoutine(fullRoutine) {
       await routineApi.delete(fullRoutine.id);
-      const index = this.items.findIndex(fullRoutine);
+      /*const index = this.items.findIndex(fullRoutine);
       if (index >= 0) {
         return this.splice(index);
-      }
+      }*/
     },
   },
 });

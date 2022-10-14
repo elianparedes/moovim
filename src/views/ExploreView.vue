@@ -1,6 +1,6 @@
 <template>
-<div>
-  <v-text-field
+  <div>
+    <v-text-field
       v-model="input"
       background-color="#252525"
       solo
@@ -8,52 +8,59 @@
       label="Buscar"
       class="rounded-lg"
       @keydown.enter="search"
-      style="width: 50%">
-    <template v-slot:prepend-inner><v-icon class="mr-2" color="#4a4a4a">mdi-magnify</v-icon></template>
-    <template v-slot:label ><span style="color: #4a4a4a;">Buscar</span></template>
-  </v-text-field>
-  <SwitchButton v-if="getIndex() !== -1" :chip-content="contents"  :selected-chip="getIndex()"  @switch="switchHandler"></SwitchButton>
-  <router-view/>
-</div>
+      style="width: 50%"
+    >
+      <template v-slot:prepend-inner
+        ><v-icon class="mr-2" color="#4a4a4a">mdi-magnify</v-icon></template
+      >
+      <template v-slot:label
+        ><span style="color: #4a4a4a">Buscar</span></template
+      >
+    </v-text-field>
+    <SwitchButton
+      v-if="getIndex() !== -1"
+      :chip-content="contents"
+      :selected-chip="getIndex()"
+      @switch="switchHandler"
+    ></SwitchButton>
+    <router-view />
+  </div>
 </template>
 
 <script>
-
 import router from "@/router";
 import SwitchButton from "@/components/SwitchButton";
 
 export default {
   name: "ExploreView",
-  components: {SwitchButton},
-  data(){
+  components: { SwitchButton },
+  data() {
     return {
       route: router.currentRoute.path.substring("/explore/".length),
-      contents: ["Categorias","Descubrir"],
-      slugs: ["categories","discover"],
+      contents: ["Categorias", "Descubrir"],
+      slugs: ["categories", "discover"],
       index: 0,
-      input: ''
-    }
+      input: "",
+    };
   },
-  methods:{
-    switchHandler(i){
-      this.index = i
-      router.push("/explore/"+this.slugs[i])
+  methods: {
+    switchHandler(i) {
+      this.index = i;
+      router.push("/explore/" + this.slugs[i]);
     },
-    getIndex(){
-      return this.slugs.indexOf(router.currentRoute.path.substring("/explore/".length))
+    getIndex() {
+      return this.slugs.indexOf(
+        router.currentRoute.path.substring("/explore/".length)
+      );
     },
-    search(){
-      if(this.slugs.indexOf(this.input)=== -1) {
-        router.push({path: "search", query: {query: this.input}})
+    search() {
+      if (this.slugs.indexOf(this.input) === -1) {
+        router.push({ path: "search", query: { query: this.input } });
       }
-    }
+    },
   },
-  create(){
-
-  }
-}
+  create() {},
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

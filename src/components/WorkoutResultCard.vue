@@ -1,10 +1,11 @@
 <template>
-  <v-card class="rounded-lg" flat :ripple="false" @click="click">
+  <v-card class="rounded-xl" flat :ripple="false" @click="click" >
     <v-img
       class="pr-16 pa-2 card d-flex"
-      style="flex: 1; height: 256px"
+      style="flex: 1; height: 256px; transform: "
       :class="{ 'active-card': active }"
       :src="image"
+ 
       :aspect-ratio="16 / 9"
       gradient="to right, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 30%,rgba(37, 37, 37, 0.5) 100%"
     >
@@ -16,12 +17,13 @@
       }}</v-card-subtitle>
 
       <v-card-subtitle class="d-inline red--text font-weight-medium"
-        ><v-icon class="material-icons-round mr-1" color="red">star</v-icon
+        ><v-icon class="material-icons-round mr-1" color="#BF3D3D">star</v-icon
         >{{ stars }}</v-card-subtitle
       >
 
       <v-card-subtitle class="d-inline red--text font-weight-medium"
-        ><v-icon class="material-icons-round mr-1" color="red">bookmark</v-icon
+        ><v-icon class="material-icons-round mr-1" color="#BF3D3D"
+          >bookmark</v-icon
         >{{ bookmarks }}</v-card-subtitle
       >
 
@@ -92,6 +94,8 @@ export default {
 }
 
 .active-card {
-  outline: solid #f44336 2px;
+  outline: solid #bf3d3d 2px;
 }
 </style>
+
+

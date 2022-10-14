@@ -1,14 +1,19 @@
 <template>
   <v-card
-    class="pa-4"
+    class="pl-4 mb-8"
     flat
-    style="background-color: #252525; width: 100%; cursor: pointer"
-    :class="{ 'active-card': active }"
+    style="cursor: pointer"
+    color="transparent"
     :ripple="false"
     @click.native="click"
   >
-    <v-row align="center" class="text-body-1" no-gutters>
-      <v-col>
+    <v-row
+      align="center"
+      class="text-body-1"
+      style="background-color: #252525"
+      :class="{ 'active-card': active }"
+    >
+      <v-col cols="5">
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6 font-weight-bold">
@@ -45,6 +50,30 @@
         class="text-h6 font-weight-light text-center"
       >
         {{ duration }}
+      </v-col>
+      <v-spacer></v-spacer>
+
+      <v-col cols="1" align="center"
+        ><v-menu bottom left rounded="lg" offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-on="on" v-bind="attrs"
+              ><v-icon class="material-icons-round text-center"
+                >more_vert</v-icon
+              ></v-btn
+            >
+          </template>
+
+          <v-list>
+            <v-list-item
+              link
+              v-for="(item, i) in items"
+              :key="i"
+              @click="item.action"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-col>
     </v-row>
   </v-card>
@@ -84,11 +113,31 @@ export default {
       required: false,
     },
   },
+  data() {
+    return {
+      items: [
+        { title: "Ver detalles", action: this.showMore },
+        { title: "Añadir a rutina...", action: this.add },
+        { title: "Compartir", action: this.share },
+      ],
+    };
+  },
+  methods: {
+    add() {
+      console.log("add");
+    },
+    share() {
+      console.log("share");
+    },
+    showMore() {
+      console.log("show more");
+    },
+  },
 };
 </script>
 
 <style>
 .active-card {
-  outline: solid #f44336 2px;
+  outline: solid #bf3d3d 2px;
 }
 </style>
