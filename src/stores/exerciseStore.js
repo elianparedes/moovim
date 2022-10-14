@@ -29,6 +29,13 @@ export const useExerciseStore = defineStore("exercises", {
             this.items.push(result);
             return result;
         },
+        async getExerciseQuery(search) {
+            const result = await exercisesApi.getQuery(
+              //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
+              "" + search
+            );
+            return result;
+          },
         async getAllExercises(){
             const result = await exercisesApi.getAll();
             return result;
