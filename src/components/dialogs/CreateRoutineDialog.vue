@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import router from "@/router";
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 
@@ -114,7 +115,7 @@ export default {
         }
       ).then((routine) => {
         this.success();
-        this.$router.push({
+        router.push({
           name: "edit",
           params: {
             id: routine.id,

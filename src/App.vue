@@ -81,7 +81,7 @@
         :routine-id="1"
       />
 
-      <router-view class="pl-4"></router-view>
+      <router-view class="pl-4 pb-16"></router-view>
     </v-main>
   </v-app>
 </template>
@@ -113,6 +113,10 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  background-color: #181818;
+}
+
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }

@@ -171,15 +171,15 @@
     <div class="d-flex">
       <div style="width: 50%">
         <v-item-group v-model="selected">
-          <v-scroll-y-transition group hide-on-leave>
+          <v-slide-x-transition group leave-absolute mode="default">
             <div
               v-for="(cycle, cycleIndex) in cycles"
-              :key="cycleIndex"
+              :key="cycle.id"
               class="d-flex flex-column mb-4"
             >
               <v-hover v-slot="{ hover }" close-delay="100">
                 <div>
-                  <v-row class="text-body-1 mb-2 align-center pl-4 ">
+                  <v-row class="text-body-1 mb-2 align-center pl-4">
                     <v-col cols="5">
                       <div class="py-2">
                         {{ cycle.name
@@ -246,14 +246,14 @@
                                 class="ml-2"
                                 v-bind="attrs"
                                 v-on="on"
-                                @click="addExercise"
+                                @click="deleteCycle(cycleIndex)"
                               >
-                                <v-icon class="material-icons-round"
-                                  >add</v-icon
+                                <v-icon size="18" class="material-icons-round"
+                                  >delete</v-icon
                                 >
                               </v-btn>
                             </template>
-                            <span>Añadir ejercicio</span>
+                            <span>Eliminar ciclo</span>
                           </v-tooltip>
                         </span>
                       </v-fade-transition>
@@ -289,7 +289,7 @@
                 </div>
               </v-hover>
             </div>
-          </v-scroll-y-transition>
+          </v-slide-x-transition>
         </v-item-group>
       </div>
       <div class="pa-12" style="width: 50%">
@@ -350,6 +350,11 @@ export default {
     success: false,
     included: [],
   }),
+  watch: {
+    $route: function (val) {
+      this.fetchRoutine(val.params.id);
+    },
+  },
   created() {
     this.fetchRoutine(this.id);
   },
@@ -358,7 +363,7 @@ export default {
       return Number(this.newCycleRepetitions); //Temporary workaround
     },
     exercisesCount: function () {
-      if (!this.cycles) return 0;
+      if (!this.cycles || this.cycles.length === 0) return 0;
       return this.cycles.reduce(
         (acc, cycle) => acc + cycle.exercises.length,
         0
@@ -370,6 +375,7 @@ export default {
     ...mapActions(useRoutineCycleStore, {
       $getAllRoutineCycles: "getAllRoutineCycles",
       $addRoutineCycle: "addRoutineCycle",
+      $deleteRoutineCycle: "",
     }),
     ...mapActions(useExerciseCycleStore, {
       $getAllExerciseCycles: "getAllExerciseCycles",
@@ -466,6 +472,7 @@ export default {
         .then((newCycle) => {
           this.saving = false;
           this.success = true;
+          newCycle["exercises"] = [];
           this.cycles.push(newCycle);
           this.createCycleDialog = false;
           setTimeout(() => {
@@ -481,6 +488,10 @@ export default {
           }, 2000);
         });
     },
+    deleteCycle(cycleIndex) {
+      this.selected = undefined;
+      this.cycles.splice(cycleIndex, 1);
+    },
     deleteExercise(name) {
       console.log({ name });
     },
@@ -495,21 +506,6 @@ export default {
       this.routine = {
         ...editedRoutine,
       };
-    },
-    addExercise() {
-      this.cycles[0].exercises.push({
-        order: 1,
-        duration: 50,
-        repetitions: 50,
-        exercise: {
-          id: 1,
-          name: "Skipping",
-          detail: "Tren Inferior",
-          type: "exercise",
-          date: 1665378864763,
-          metadata: null,
-        },
-      });
     },
   },
 };
@@ -527,5 +523,19 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: none;
+}
+
+.list-complete-item {
+  transition: all 1s;
+  display: block;
+  margin-right: 10px;
+}
+.list-complete-enter, .list-complete-leave-to, .list-complete-leave-active
+/* .list-complete-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
 }
 </style>
