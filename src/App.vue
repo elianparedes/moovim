@@ -80,6 +80,7 @@ export default {
     },
     async logout() {
       await this.$logout();
+      this.routerHandler('home');
     },
   },
   async created() {

@@ -88,7 +88,7 @@ export default {
         },
         onLogin() {
             this.snackbarLoading();
-            this.$login(new Credentials(this.username, this.password))
+            this.$login(new Credentials(this.username, this.password), true)
                 .then(() => this.$router.push({ name: 'home' }))
                 .catch((e) => this.handleResult(e));
         },
