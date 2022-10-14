@@ -62,6 +62,9 @@ const routes = [
     name: "verify",
     component: () => import("../views/VerificationView.vue"),
   },
+  { path: '/:pathMatch(.*)*', 
+    name: 'notFound', 
+    component: () => import("../views/NotFoundView.vue")}
 ];
 
 const router = new VueRouter({
