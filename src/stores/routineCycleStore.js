@@ -55,10 +55,10 @@ const useRoutineCycleStore = defineStore("routineCycle", {
     },
     async deleteRoutineCycle(routineId, fullRoutineCycle) {
       await routineCycleApi.delete(routineId, fullRoutineCycle.id);
-      const index = this.items.findIndex(fullRoutineCycle);
+      /*const index = this.items.findIndex(fullRoutineCycle);
       if (index >= 0) {
         return this.splice(index);
-      }
+      }*/
     },
   },
 });

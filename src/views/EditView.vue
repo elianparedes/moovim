@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column px-4" style="gap: 32px" v-if="!loading">
+  <div class="d-flex flex-column px-4 pb-16" style="gap: 32px" v-if="!loading">
     <v-snackbar v-model="success" rounded="lg">
       Cambios guardados correctamente
 
@@ -375,7 +375,7 @@ export default {
     ...mapActions(useRoutineCycleStore, {
       $getAllRoutineCycles: "getAllRoutineCycles",
       $addRoutineCycle: "addRoutineCycle",
-      $deleteRoutineCycle: "",
+      $deleteRoutineCycle: "deleteRoutineCycle",
     }),
     ...mapActions(useExerciseCycleStore, {
       $getAllExerciseCycles: "getAllExerciseCycles",
@@ -489,8 +489,12 @@ export default {
         });
     },
     deleteCycle(cycleIndex) {
-      this.selected = undefined;
-      this.cycles.splice(cycleIndex, 1);
+      this.$deleteRoutineCycle(this.routine.id, {
+        id: this.cycles[cycleIndex].id,
+      }).then(() => {
+        this.selected = undefined;
+        this.cycles.splice(cycleIndex, 1);
+      });
     },
     deleteExercise(name) {
       console.log({ name });

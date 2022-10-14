@@ -217,4 +217,8 @@ export default {
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
 }
+
+.v-card--link:before {
+  background: transparent;
+}
 </style>

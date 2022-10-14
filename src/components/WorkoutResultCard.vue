@@ -1,10 +1,11 @@
 <template>
-  <v-card class="rounded-lg" flat :ripple="false" @click="click">
+  <v-card class="rounded-xl" flat :ripple="false" @click="click" >
     <v-img
       class="pr-16 pa-2 card d-flex"
       style="flex: 1; height: 256px; transform: "
       :class="{ 'active-card': active }"
       :src="image"
+ 
       :aspect-ratio="16 / 9"
       gradient="to right, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.9) 30%,rgba(37, 37, 37, 0.5) 100%"
     >

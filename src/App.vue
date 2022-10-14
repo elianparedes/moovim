@@ -81,7 +81,7 @@
         :routine-id="1"
       />
 
-      <router-view class="pl-4 pb-16"></router-view>
+      <router-view class="pl-4"></router-view>
     </v-main>
   </v-app>
 </template>
