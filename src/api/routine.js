@@ -28,11 +28,23 @@ class routineApi{
         return await Api.get(routineApi.getUrl(), true, controller);
     }
 
+    static async getPage(page, controller){
+        return await Api.get(routineApi.getUrl("?page="+page), true, controller);
+    }
+
     static async getQuery(searchQuery, controller){
         return await Api.get(routineApi.getUrl('?search=' + searchQuery), true, controller);
     }
 
+    static async getQueryPage(searchQuery, page,  controller){
+        return await Api.get(routineApi.getUrl('?search=' + searchQuery + "&page=" + page), true, controller);
+    }
+
     static async getOrderBy(orderQuery, controller){
+        return await Api.get(routineApi.getUrl(orderQuery), true, controller);
+    }
+
+    static async getOrderByPage(orderQuery, controller){
         return await Api.get(routineApi.getUrl(orderQuery), true, controller);
     }
 }
