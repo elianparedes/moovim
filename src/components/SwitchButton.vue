@@ -50,7 +50,7 @@ export default {
   },
   created() {
     for (let i = 0; i < this.chipContent.length; i++) {
-      console.log("Item" + ' ' + i)
+      //console.log("Item" + ' ' + i)
       this.chipStatus.push({ toggle: false });
     }
     this.chipStatus[this.selectedChip].toggle = true;

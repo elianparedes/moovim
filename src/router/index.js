@@ -29,6 +29,11 @@ const routes = [
         name: "Buscar",
         component: () => import("../views/SearchView"),
       },
+      {
+        path: "objective",
+        name: "Objetivos",
+        component: () => import("../views/ObjectiveView"),
+      },
     ],
   },
   {
