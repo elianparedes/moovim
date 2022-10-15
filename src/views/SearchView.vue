@@ -77,19 +77,18 @@
   <div v-show="categoriasArray.includes('Rutinas')">
       <div class="font-weight-thin text-h6 my-8">Rutinas</div>
       <div class="media-scroller">
-        <!--OJO IMAGE DEBERIA SER ROUTINE.METADATA.IMAGE CREO-->
       <WorkoutResultCard v-for="routine in routines.filter(function (item) {
           return dificultadesArray.includes(item.difficulty)
       })"
                           :key="routine.id"
                           class="d-inline-block mr-4"
           :name="routine.name"
-          :desc="routine.desc"
-          :image="routine.image" 
-          :author="routine.author"
+          :desc="routine.detail"
+          :image="routine.metadata.image" 
+          :author="routine.user.username"
           :avatar="routine.avatar"
           :verified="routine.verified"
-          :stars="routine.stars"
+          :stars="routine.score"
           :bookmarks="routine.bookmarks"
       />
       </div>
