@@ -1,121 +1,124 @@
 <template>
-  <div
-    id="routines"
-    class="d-flex"
-    style="gap: 32px; height: calc(100vh - 128px)"
-    v-if="!loading"
-  >
-    <v-item-group
-      mandatory
-      class="px-4 py-1 d-flex flex-column"
-      style="overflow-y: auto; gap: 32px; width: 40%"
-      v-model="selected"
+  <v-slide-x-transition>
+    <div
+      id="routines"
+      class="d-flex"
+      style="gap: 8px; height: calc(100vh - 128px)"
+      v-if="!loading"
     >
-      <v-item
-        v-slot="{ active, toggle }"
-        v-for="routine in routines"
-        :key="routine.id"
+      <v-item-group
+        mandatory
+        class="px-4 py-1 d-flex flex-column"
+        style="overflow-y: auto; gap: 32px; width: 40%"
+        v-model="selected"
       >
-        <WorkoutResultCard
+        <v-item
+          v-slot="{ active, toggle }"
+          v-for="routine in routines"
           :key="routine.id"
-          :name="routine.name"
-          :desc="routine.detail"
-          :image="routine.metadata.image"
-          :author="routine.user.username"
-          :avatar="routine.user.avatarUrl"
-          :verified="routine.verified"
-          :stars="routine.stars"
-          :bookmarks="routine.bookmarks"
-          :active="active"
-          :click="
-            () => {
-              toggle();
-              fetchRoutineCycles(routine.id);
-            }
-          "
-        />
-      </v-item>
-    </v-item-group>
-    <div style="flex: 90%; overflow-y: scroll">
-      <div style="position: sticky; top: 0px; z-index: 1">
-        <v-toolbar color="#181818" flat>
-          <v-toolbar-title class="font-weight-bold text-h3 pb-4">{{
-            routines[selected]?.name
-          }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <div>
-            <v-chip
-              class="px-8 mr-4"
-              color="gray"
-              outlined
-              @click="deleteRoutine"
-            >
-              <v-icon left small class="material-icons-round">delete</v-icon>
-              Eliminar
-            </v-chip>
-            <v-chip class="px-8" color="gray" outlined @click="editRoutine">
-              <v-icon left small class="material-icons-round">edit</v-icon>
-              Editar
-            </v-chip>
-          </div>
-        </v-toolbar>
-        <div
-          style="
-            height: 32px;
-            background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
-            position: sticky;
-            top: 0px;
-            z-index: 1;
-          "
-        ></div>
-      </div>
-      <v-scroll-y-transition mode="in" group hide-on-leave>
-        <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
-          <v-row class="text-body-1 pl-4 mb-4 align-center">
-            <v-col cols="6">
-              <div class="py-2">
-                {{ cycle.name
-                }}<span>
-                  <v-icon size="18px" class="ml-4 material-icons-round"
-                    >loop</v-icon
-                  >
-                  {{ cycle.repetitions }}
-                </span>
-              </div>
-            </v-col>
-
-            <template v-if="n === 0">
-              <v-col cols="1" class="text-center" align="center">
-                <v-icon size="18px" class="material-icons-round">replay</v-icon>
-              </v-col>
-              <v-col cols="1" class="text-center" align="center">
-                <v-icon size="18px" class="material-icons-round"
-                  >fitness_center</v-icon
-                >
-              </v-col>
-              <v-col cols="1" class="text-center" align="center">
-                <v-icon size="18px" class="material-icons-outlined"
-                  >timer</v-icon
-                >
-              </v-col>
-            </template>
-          </v-row>
-
-          <ExerciseViewCard
-            v-for="obj in cycle.exercises"
-            :key="obj.order"
-            :id="obj.exercise.id"
-            :name="obj.exercise.name"
-            :detail="obj.exercise.detail"
-            :duration="obj.duration"
-            :weight="obj.weight"
-            :repetitions="obj.repetitions"
-            class="mb-4 rounded-xl"
-          ></ExerciseViewCard>
+        >
+          <WorkoutResultCard
+            :key="routine.id"
+            :name="routine.name"
+            :desc="routine.detail"
+            :image="routine.metadata.image"
+            :author="routine.user.username"
+            :avatar="routine.user.avatarUrl"
+            :verified="routine.verified"
+            :stars="routine.stars"
+            :bookmarks="routine.bookmarks"
+            :active="active"
+            :click="
+              () => {
+                toggle();
+                fetchRoutineCycles(routine.id);
+              }
+            "
+          />
+        </v-item>
+      </v-item-group>
+      <div style="flex: 90%; overflow-y: scroll" class="pr-4">
+        <div style="position: sticky; top: 0px; z-index: 1">
+          <v-toolbar color="#181818" flat>
+            <v-toolbar-title class="font-weight-bold text-h3 pb-4">{{
+              routines[selected]?.name
+            }}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <div>
+              <v-chip
+                class="px-8 mr-4"
+                color="gray"
+                outlined
+                @click="deleteRoutine"
+              >
+                <v-icon left small class="material-icons-round">delete</v-icon>
+                Eliminar
+              </v-chip>
+              <v-chip class="px-8" color="gray" outlined @click="editRoutine">
+                <v-icon left small class="material-icons-round">edit</v-icon>
+                Editar
+              </v-chip>
+            </div>
+          </v-toolbar>
+          <div
+            style="
+              height: 32px;
+              background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
+              position: sticky;
+              top: 0px;
+              z-index: 1;
+            "
+          ></div>
         </div>
-      </v-scroll-y-transition>
-    </div>
-  </div>
+        <v-scroll-y-transition mode="in" group hide-on-leave>
+          <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
+            <v-row class="text-body-1 pl-4 mb-4 align-center">
+              <v-col cols="6">
+                <div class="py-2">
+                  {{ cycle.name
+                  }}<span>
+                    <v-icon size="18px" class="ml-4 material-icons-round"
+                      >loop</v-icon
+                    >
+                    {{ cycle.repetitions }}
+                  </span>
+                </div>
+              </v-col>
+
+              <template v-if="n === 0">
+                <v-col cols="1" class="text-center" align="center">
+                  <v-icon size="18px" class="material-icons-round"
+                    >replay</v-icon
+                  >
+                </v-col>
+                <v-col cols="1" class="text-center" align="center">
+                  <v-icon size="18px" class="material-icons-round"
+                    >fitness_center</v-icon
+                  >
+                </v-col>
+                <v-col cols="1" class="text-center" align="center">
+                  <v-icon size="18px" class="material-icons-outlined"
+                    >timer</v-icon
+                  >
+                </v-col>
+              </template>
+            </v-row>
+
+            <ExerciseViewCard
+              v-for="obj in cycle.exercises"
+              :key="obj.order"
+              :id="obj.exercise.id"
+              :name="obj.exercise.name"
+              :detail="obj.exercise.detail"
+              :duration="obj.duration"
+              :weight="obj.weight"
+              :repetitions="obj.repetitions"
+              class="mb-4 rounded-xl"
+            ></ExerciseViewCard>
+          </div>
+        </v-scroll-y-transition>
+      </div></div
+  ></v-slide-x-transition>
 </template>
 
 <script>

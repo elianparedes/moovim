@@ -8,7 +8,7 @@
         this.$router.currentRoute.name !== 'login'
       "
     >
-      <v-navigation-drawer app color="transparent" floating>
+      <v-navigation-drawer app color="transparent" floating permanent>
         <v-list nav class="d-flex flex-column" style="height: 100%">
           <div class="ml-2 d-flex flex-column" style="height: 128px">
             <MooveoLogo class="ma-auto ml-3"></MooveoLogo>
@@ -42,6 +42,16 @@
 
             <v-list-item-content link @click="createRoutineDialog = true">
               <v-list-item-title>Crear rutina</v-list-item-title>
+            </v-list-item-content></v-list-item
+          >
+
+          <v-list-item link
+            ><v-list-item-icon class="align-self-center">
+              <v-icon class="material-icons-round">add_circle</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content link @click="createRoutineDialog = true">
+              <v-list-item-title>Crear ejercicio</v-list-item-title>
             </v-list-item-content></v-list-item
           >
 
@@ -114,7 +124,7 @@
 import { mapState, mapActions } from "pinia";
 import { useSecurityStore } from "@/stores/securityStore.js";
 import CreateRoutineDialog from "@/components/dialogs/CreateRoutineDialog.vue";
-import MooveoLogo from "./components/logo/MooveoLogo.vue";
+import MooveoLogo from "./components/logo/MoovimLogo.vue";
 
 export default {
   name: "App",
@@ -122,9 +132,9 @@ export default {
   data() {
     return {
       items: [
-        { icon: "home", title: "Inicio", link: "/" },
         { icon: "search", title: "Explorar", link: "/explore/categories" },
         { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
+        { icon: "bolt", title: "Mis Ejercicios", link: "/exercises" },
       ],
       result: null,
       controller: null,
