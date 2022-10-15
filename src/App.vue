@@ -1,9 +1,19 @@
 <template>
   <v-app style="background: #181818">
-    <div v-if="this.$router.currentRoute.name !== 'register' && this.$router.currentRoute.name != 'notFound'
-    && this.$router.currentRoute.name !== 'verify' && this.$router.currentRoute.name !== 'login'">
-      <v-navigation-drawer app color="transparent" floating clipped>
+    <div
+      v-if="
+        this.$router.currentRoute.name !== 'register' &&
+        this.$router.currentRoute.name != 'notFound' &&
+        this.$router.currentRoute.name !== 'verify' &&
+        this.$router.currentRoute.name !== 'login'
+      "
+    >
+      <v-navigation-drawer app color="transparent" floating>
         <v-list nav class="d-flex flex-column" style="height: 100%">
+          <div class="ml-2 d-flex flex-column" style="height: 128px">
+            <MooveoLogo class="ma-auto ml-3"></MooveoLogo>
+          </div>
+
           <v-list-item-group class="d-flex flex-column">
             <v-list-item
               v-for="item in items"
@@ -62,7 +72,6 @@
         style="background-image: linear-gradient(#181818, rgba(24, 24, 24, 0))"
         class="pl-4 pr-14"
         flat
-        dense
       >
         <v-spacer></v-spacer>
         <router-link v-if="this.$isLoggedIn" to="/profile">
@@ -86,17 +95,18 @@
           </v-btn>
         </div></v-app-bar
       >
-      <v-main>
-        <CreateRoutineDialog
-          v-if="createRoutineDialog"
-          v-model="createRoutineDialog"
-          :cycle="{}"
-          :routine-id="1"
-        />
-
-        <router-view class="pl-4"></router-view>
-      </v-main>
     </div>
+
+    <v-main>
+      <CreateRoutineDialog
+        v-if="createRoutineDialog"
+        v-model="createRoutineDialog"
+        :cycle="{}"
+        :routine-id="1"
+      />
+
+      <router-view class="pl-4"></router-view>
+    </v-main>
   </v-app>
 </template>
 
@@ -104,11 +114,11 @@
 import { mapState, mapActions } from "pinia";
 import { useSecurityStore } from "@/stores/securityStore.js";
 import CreateRoutineDialog from "@/components/dialogs/CreateRoutineDialog.vue";
+import MooveoLogo from "./components/logo/MooveoLogo.vue";
 
 export default {
   name: "App",
-
-  components: { CreateRoutineDialog },
+  components: { CreateRoutineDialog, MooveoLogo },
   data() {
     return {
       items: [
@@ -119,6 +129,7 @@ export default {
       result: null,
       controller: null,
       createRoutineDialog: false,
+      avatar: null,
     };
   },
   computed: {

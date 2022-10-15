@@ -1,27 +1,45 @@
 <template>
-  <v-sheet
+  <v-dialog
+    v-model="show"
+    width="500"
+    transition="fade-transition"
+    class="rounded-xl"
+  >
+    <v-sheet
       color="#252525"
       elevation="16"
       width="100%"
       height="80vh"
-      class="rounded-xl  pb-4 d-flex flex-column"
-  >
-    <div>
-      <div class="d-flex flex-row text-body font-weight-thin justify-center pt-4">
-        Agregar ejercicio
-      </div>
-      <div class="d-flex flex-row  justify-center align-content-space-around py-4">
-        <v-avatar size="32" color="#BF3D3D" class="mx-4 font-weight-black text-h6">
-          {{ number }}
-        </v-avatar>
-        <div class="font-weight-medium text-h6">
-          {{ instruction }}
+      class="rounded-xl pb-4 d-flex flex-column"
+    >
+      <div>
+        <div
+          class="d-flex flex-row text-body font-weight-thin justify-center pt-4"
+        >
+          Agregar ejercicio
+        </div>
+        <div
+          class="d-flex flex-row justify-center align-content-space-around py-4"
+        >
+          <v-avatar
+            size="32"
+            color="#BF3D3D"
+            class="mx-4 font-weight-black text-h6"
+          >
+            {{ number }}
+          </v-avatar>
+          <div class="font-weight-medium text-h6">
+            {{ instruction }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="step < 2" class="px-4 py-4 d-flex flex-column" style="height: 400px ; max-height: 400px">
-      <v-text-field
+      <div
+        v-if="!loading && step < 2"
+        class="px-4 py-4 d-flex flex-column"
+        style="height: 400px; max-height: 400px"
+      >
+        <v-text-field
           v-model="search"
           label="Buscar rutina"
           dark
@@ -32,9 +50,9 @@
           clear-icon="mdi-close-circle-outline"
           style="max-height: 10%"
           class="mb-4"
-      ></v-text-field>
-      <div style="height: 100%" class="my-2">
-        <v-treeview
+        ></v-text-field>
+        <div style="height: 100%" class="my-2">
+          <v-treeview
             :items="items"
             :search="search"
             :filter="filter"
@@ -46,102 +64,120 @@
             rounded
             color="#BF3D3D"
             class="overflow-y-auto"
-            item-key="id"
+            item-key="key"
+            item-children="cycles"
             style="max-height: 270px"
-        >
-
-        </v-treeview>
+          >
+          </v-treeview>
+        </div>
       </div>
-    </div>
 
-    <div v-if="step === 2" class="px-4 py-4 d-flex flex-column justify-center"
-         style="height: 400px ; max-height: 400px">
-      <div class="my-2">
-        <v-row>
-          <v-col class="text-center">
-            <v-icon size="24px" class="material-icons-round mr-2">replay
-            </v-icon
-            >
-            Reps.
-          </v-col>
+      <div
+        v-if="step === 2"
+        class="px-4 py-4 d-flex flex-column justify-center"
+        style="height: 400px; max-height: 400px"
+      >
+        <div class="my-2">
+          <v-row>
+            <v-col class="text-center">
+              <v-icon size="24px" class="material-icons-round mr-2"
+                >replay
+              </v-icon>
+              Reps.
+            </v-col>
 
-          <v-col class="text-center">
-            <v-icon size="24px" class="material-icons-round mr-2"
-            >fitness_center
-            </v-icon
-            >
-            Kg.
-          </v-col>
+            <v-col class="text-center">
+              <v-icon size="24px" class="material-icons-round mr-2"
+                >fitness_center
+              </v-icon>
+              Kg.
+            </v-col>
 
-          <v-col class="text-center">
-            <v-icon size="24px" class="material-icons-outlined mr-2">timer
-            </v-icon
-            >
-            Segs.
-          </v-col>
-        </v-row>
-      </div>
-      <div>
-        <v-row>
-          <v-col>
-            <input
-                @input="(e)=>checkStepInput(e,'repetitions')"
+            <v-col class="text-center">
+              <v-icon size="24px" class="material-icons-outlined mr-2"
+                >timer
+              </v-icon>
+              Segs.
+            </v-col>
+          </v-row>
+        </div>
+        <div>
+          <v-row>
+            <v-col>
+              <input
+                @input="(e) => checkStepInput(e, 'repetitions')"
                 v-model="input.repetitions"
                 type="number"
                 class="white--text rounded-lg text-h6 font-weight-regular py-2"
-                style="width: 100%; text-align: center; background-color: #1e1e1e"
-            />
-          </v-col>
+                style="
+                  width: 100%;
+                  text-align: center;
+                  background-color: #1e1e1e;
+                "
+              />
+            </v-col>
 
-          <v-col>
-            <input
-                @input="(e)=>checkStepInput(e,'weight')"
+            <v-col>
+              <input
+                @input="(e) => checkStepInput(e, 'weight')"
                 :value="input.weight"
                 type="number"
                 class="white--text rounded-lg text-h6 font-weight-regular py-2"
-                style="width: 100%; text-align: center; background-color: #1e1e1e"
-            />
-          </v-col>
+                style="
+                  width: 100%;
+                  text-align: center;
+                  background-color: #1e1e1e;
+                "
+              />
+            </v-col>
 
-          <v-col>
-            <input
-                @input="(e)=>checkStepInput(e,'duration')"
+            <v-col>
+              <input
+                @input="(e) => checkStepInput(e, 'duration')"
                 :value="input.duration"
                 type="number"
                 class="white--text rounded-lg text-h6 font-weight-regular py-2"
-                style="width: 100%; text-align: center; background-color: #1e1e1e">
-          </v-col>
-        </v-row>
+                style="
+                  width: 100%;
+                  text-align: center;
+                  background-color: #1e1e1e;
+                "
+              />
+            </v-col>
+          </v-row>
+        </div>
       </div>
-    </div>
 
-    <div class="d-flex justify-center mx-4 my-auto">
-      <v-btn :ripple="false"
-             elevation="0"
-             class="rounded-xl"
-             color="#BF3D3D"
-             block
-             :disabled="!btnAvailable"
-             @click="checkStepBtn()"
-      >
-        {{ btnMessage }}
-        <v-icon class="material-icons-round">
-          navigate_next
-        </v-icon>
-      </v-btn>
-    </div>
-
-  </v-sheet>
+      <div class="d-flex justify-center mx-4 my-auto">
+        <v-btn
+          :ripple="false"
+          elevation="0"
+          class="rounded-xl"
+          color="#BF3D3D"
+          block
+          :disabled="!btnAvailable"
+          @click="checkStepBtn()"
+        >
+          {{ btnMessage }}
+          <v-icon class="material-icons-round"> navigate_next </v-icon>
+        </v-btn>
+      </div>
+    </v-sheet></v-dialog
+  >
 </template>
 
 <script>
+import { mapActions } from "pinia";
+import { useRoutineStore } from "@/stores/routineStore";
+import { useRoutineCycleStore } from "@/stores/routineCycleStore";
+import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 
 export default {
   name: "AddExcerciseSteps.vue",
   components: {},
   props: {
-    name: {type: String, required: false},
-    detail: {type: String, required: false}
+    exerciseId: { type: Number, required: true },
+    value: Boolean,
   },
   data: () => {
     return {
@@ -154,11 +190,11 @@ export default {
           message: "Continuar",
           toggle: false,
           stepBtnAvailable: function () {
-            return false
+            return false;
           },
           hasNext: (data) => {
-            return (data.open.length > 0)
-          }
+            return data.open.length > 0;
+          },
         },
         {
           num: 2,
@@ -166,10 +202,14 @@ export default {
           message: "Continuar",
           toggle: false,
           stepBtnAvailable: function (data) {
-            return (data.active.length > 0 && data.active[0].path.length > 1 )
+            return data.active.length > 0 && data.active[0].path.length > 1;
           },
           hasNext: (data) => {
-            return (data.active.length > 0 && data.active[0].path.length > 1 && data.steps[data.step].toggle)
+            return (
+              data.active.length > 0 &&
+              data.active[0].path.length > 1 &&
+              data.steps[data.step].toggle
+            );
           },
         },
         {
@@ -178,120 +218,133 @@ export default {
           message: "Finalizar",
           toggle: false,
           stepBtnAvailable: function (data) {
-            return !(data.input.repetitions==='' && data.input.duration === '' && data.input.weight==='')
+            return !(
+              data.input.repetitions === "" &&
+              data.input.duration === "" &&
+              data.input.weight === ""
+            );
           },
           hasNext: () => {
-            return false
+            return false;
           },
         },
       ],
       open: [],
       active: [],
-      items: [{
-        id: 1,
-        name: "Llegar al verano",
-        path: [0],
-        children: [
-          {
-            id: 11,
-            name: "Entrada en calor",
-            path: [0, 0]
-          },
-          {
-            id: 12,
-            name: "Principal 1",
-            path: [0, 1]
-          },
-          {
-            id: 13,
-            name: "Principal 3",
-            path: [0, 2]
-          }
-        ]
-      },
-        {
-          id: 2,
-          name: "Lo mejor de la semana",
-          path: [1],
-          children: [
-            {
-              id: 21,
-              name: "Entrada en calor",
-              path: [1, 0]
-            },
-            {
-
-              id: 22,
-              name: "Ablande",
-              path: [1, 1]
-            }
-          ],
-        },
-        {
-          id: 3,
-          name: "Lo mejor de la semana",
-          path: [2],
-          children: [
-            {
-              id: 31,
-              name: "Entrada en calor",
-              path: [2, 0]
-            },
-            {
-
-              id: 32,
-              name: "Ablande",
-              path: [2, 1]
-            }
-          ],
-        }
-      ],
+      items: [],
+      loading: false,
       input: {
-        repetitions: '',
-        weight: '',
-        duration: ''
-      }
-    }
+        repetitions: "",
+        weight: "",
+        duration: "",
+      },
+    };
   },
   computed: {
     filter() {
       return this.caseSensitive
-          ? (item, search, textKey) => item[textKey].indexOf(search) > -1
-          : undefined
+        ? (item, search, textKey) => item[textKey].indexOf(search) > -1
+        : undefined;
     },
     number() {
-      return this.steps[this.step].num
+      return this.steps[this.step].num;
     },
     instruction() {
-      return this.steps[this.step].instruction
+      return this.steps[this.step].instruction;
     },
     btnMessage() {
-      return this.steps[this.step].message
+      return this.steps[this.step].message;
     },
     btnAvailable() {
-      return this.steps[this.step].stepBtnAvailable(this.$data)
-    }
+      return this.steps[this.step].stepBtnAvailable(this.$data);
+    },
+    show: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
+    },
+  },
+  created() {
+    this.fetchRoutines();
   },
   methods: {
+    ...mapActions(useRoutineStore, {
+      $getAllRoutine: "getAllRoutine",
+    }),
+    ...mapActions(useRoutineCycleStore, {
+      $getAllRoutineCycles: "getAllRoutineCycles",
+    }),
+    ...mapActions(useExerciseCycleStore, {
+      $addExerciseCycle: "addExerciseCycle",
+      $getAllExerciseCycles: "getAllExerciseCycles",
+    }),
     checkStep() {
       if (this.steps[this.step].hasNext(this.$data)) {
         this.step++;
-      }
-      else if (this.step > 0 && !this.steps[this.step - 1].hasNext(this.$data))
+      } else if (
+        this.step > 0 &&
+        !this.steps[this.step - 1].hasNext(this.$data)
+      )
         this.step--;
     },
-    checkStepBtn(){
+    checkStepBtn() {
       this.steps[this.step].toggle = true;
-      if(this.step === 1)
-        this.checkStep()
+      if (this.step === 1) this.checkStep();
       else {
-        this.$emit('finish')
-        console.log("Termine")
+        this.addExercise();
       }
     },
-    checkStepInput(e,value){
-      this.input[value] = e.target.value
-    }
+    checkStepInput(e, value) {
+      this.input[value] = e.target.value;
+    },
+    fetchRoutines() {
+      this.loading = true;
+      let idCounter = 0;
+      this.$getAllRoutine().then((routines) => {
+        this.items = routines.content;
+        Promise.all(
+          this.items.map((routine, routineIndex) => {
+            routine["path"] = [routineIndex];
+            routine["key"] = idCounter++;
+
+            return this.$getAllRoutineCycles(routine.id).then((cycles) => {
+              routine["cycles"] = cycles.content.map((cycle, cycleIndex) => {
+                const path = [...routine.path];
+                path.push(cycleIndex);
+
+                cycle["path"] = path;
+                cycle["key"] = idCounter++;
+                return cycle;
+              });
+              return routine;
+            });
+          })
+        ).then((res) => {
+          console.log(res);
+          this.loading = false;
+        });
+      });
+    },
+    addExercise() {
+      const cycleId = this.active[0].id;
+      this.$getAllExerciseCycles(cycleId)
+        .then((exercises) => exercises.content.length + 1)
+        .then((exercisesCount) =>
+          this.$addExerciseCycle(
+            cycleId,
+            this.exerciseId,
+            exercisesCount,
+            Number(this.input.duration),
+            Number(this.input.repetitions)
+          ).then(() => {
+            this.show = false;
+            this.$emit("finish");
+          })
+        );
+    },
   },
   watch: {
     open() {
@@ -299,9 +352,9 @@ export default {
     },
     active() {
       this.checkStep();
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

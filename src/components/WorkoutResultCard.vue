@@ -16,16 +16,7 @@
         desc
       }}</v-card-subtitle>
 
-      <v-card-subtitle class="d-inline red--text font-weight-medium"
-        ><v-icon class="material-icons-round mr-1" color="#BF3D3D">star</v-icon
-        >{{ stars }}</v-card-subtitle
-      >
-
-      <v-card-subtitle class="d-inline red--text font-weight-medium"
-        ><v-icon class="material-icons-round mr-1" color="#BF3D3D"
-          >bookmark</v-icon
-        >{{ bookmarks }}</v-card-subtitle
-      >
+     
 
       <v-list-item class="bottom mb-2" style="position: absolute; bottom: 0">
         <v-list-item-content>

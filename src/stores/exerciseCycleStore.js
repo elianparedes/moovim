@@ -33,8 +33,10 @@ const useExerciseCycleStore = defineStore("exerciseCycle", {
       this.items.push(result);
       return result;
     },
-    async addExerciseCycle(order, duration, repetitions) {
+    async addExerciseCycle(cycleId, exerciseId, order, duration, repetitions) {
       const result = await exerciseCycleApi.add(
+        cycleId,
+        exerciseId,
         new cycleExercise(order, duration, repetitions)
       );
       this.items.push(result);

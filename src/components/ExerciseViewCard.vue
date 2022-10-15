@@ -7,13 +7,19 @@
     :ripple="false"
     @click.native="click"
   >
+    <AddExerciseSteps
+      v-if="stepDialog"
+      v-model="stepDialog"
+      :exerciseId="id"
+    />
+
     <v-row
       align="center"
       class="text-body-1"
       style="background-color: #252525"
       :class="{ 'active-card': active }"
     >
-      <v-col cols="5">
+      <v-col cols="6">
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6 font-weight-bold">
@@ -80,9 +86,14 @@
 </template>
 
 <script>
+import AddExerciseSteps from "@/components/AddExerciseSteps.vue";
 export default {
   name: "ExerciseViewCard",
   props: {
+    id: {
+      type: Number,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -120,19 +131,27 @@ export default {
         { title: "Añadir a rutina...", action: this.add },
         { title: "Compartir", action: this.share },
       ],
+      stepDialog: false,
     };
   },
   methods: {
     add() {
-      console.log("add");
+      this.stepDialog = true;
     },
     share() {
       console.log("share");
     },
     showMore() {
-      console.log("show more");
+      this.$router.push({
+        name: "exercise",
+        params: {
+          name: this.name,
+          id: this.id,
+        },
+      });
     },
   },
+  components: { AddExerciseSteps },
 };
 </script>
 

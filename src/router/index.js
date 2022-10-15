@@ -28,8 +28,8 @@ const routes = [
         path: "search",
         name: "Buscar",
         component: () => import("../views/SearchView"),
-      }
-    ]
+      },
+    ],
   },
   {
     path: "/routines",
@@ -48,6 +48,12 @@ const routes = [
     props: true,
   },
   {
+    path: "/exercise/:name-:id",
+    name: "exercise",
+    component: () => import("../views/ExerciseView.vue"),
+    props: true,
+  },
+  {
     path: "/login",
     name: "login",
     component: () => import("../views/loginView.vue"),
@@ -62,9 +68,11 @@ const routes = [
     name: "verify",
     component: () => import("../views/VerificationView.vue"),
   },
-  { path: '/:pathMatch(.*)*', 
-    name: 'notFound', 
-    component: () => import("../views/NotFoundView.vue")}
+  {
+    path: "/:pathMatch(.*)*",
+    name: "notFound",
+    component: () => import("../views/NotFoundView.vue"),
+  },
 ];
 
 const router = new VueRouter({

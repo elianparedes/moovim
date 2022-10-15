@@ -93,7 +93,16 @@
             <v-icon left small class="material-icons-round">edit</v-icon>
             Editar detalles
           </v-chip>
+
           <v-chip
+            class="px-10 py-4 ml-4"
+            color="gray"
+            outlined
+            @click="autosave"
+          >
+            <v-icon left small class="material-icons-round">save</v-icon>
+            Guardar cambios </v-chip
+          ><v-chip
             class="px-10 py-4 ml-4"
             color="gray"
             outlined
@@ -102,15 +111,6 @@
           >
             <v-icon left small class="material-icons-round">add</v-icon>
             Nuevo ciclo
-          </v-chip>
-          <v-chip
-            class="px-10 py-4 ml-4"
-            color="gray"
-            outlined
-            @click="autosave"
-          >
-            <v-icon left small class="material-icons-round">save</v-icon>
-            Guardar cambios
           </v-chip>
         </template>
         <v-card :key="name" class="d-inline-block pa-8" color="#252525" flat>
@@ -180,7 +180,7 @@
               <v-hover v-slot="{ hover }" close-delay="100">
                 <div>
                   <v-row class="text-body-1 mb-2 align-center pl-4">
-                    <v-col cols="5">
+                    <v-col cols="6">
                       <div class="py-2">
                         {{ cycle.name
                         }}<span>
@@ -194,17 +194,17 @@
 
                     <template v-if="cycleIndex === 0">
                       <v-col cols="1" class="text-center" align="center">
-                        <v-icon size="18px" class="material-icons-round"
+                        <v-icon size="22px" class="material-icons-round"
                           >replay</v-icon
                         >
                       </v-col>
                       <v-col cols="1" class="text-center" align="center">
-                        <v-icon size="18px" class="material-icons-round"
+                        <v-icon size="22px" class="material-icons-round"
                           >fitness_center</v-icon
                         >
                       </v-col>
                       <v-col cols="1" class="text-center" align="center">
-                        <v-icon size="18px" class="material-icons-outlined"
+                        <v-icon size="22px" class="material-icons-outlined"
                           >timer</v-icon
                         >
                       </v-col>
@@ -266,6 +266,7 @@
                     :key="exerciseIndex"
                   >
                     <ExerciseViewCard
+                      :id="obj.exercise.id"
                       :name="obj.exercise.name"
                       :detail="obj.exercise.detail"
                       :duration="obj.duration"
@@ -534,8 +535,9 @@ input[type="number"] {
   display: block;
   margin-right: 10px;
 }
-.list-complete-enter, .list-complete-leave-to, .list-complete-leave-active
-/* .list-complete-leave-active below version 2.1.8 */ {
+.list-complete-enter,
+.list-complete-leave-to,
+.list-complete-leave-active {
   opacity: 0;
   transform: translateY(30px);
 }

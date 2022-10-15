@@ -2,13 +2,13 @@
   <div
     id="routines"
     class="d-flex"
-    style="gap: 32px; height: calc(100vh - 96px)"
+    style="gap: 32px; height: calc(100vh - 128px)"
     v-if="!loading"
   >
     <v-item-group
       mandatory
       class="px-4 py-1 d-flex flex-column"
-      style="overflow-y: auto; gap: 32px"
+      style="overflow-y: auto; gap: 32px; width: 40%"
       v-model="selected"
     >
       <v-item
@@ -22,7 +22,7 @@
           :desc="routine.detail"
           :image="routine.metadata.image"
           :author="routine.user.username"
-          :avatar="routine.metadata.image"
+          :avatar="routine.user.avatarUrl"
           :verified="routine.verified"
           :stars="routine.stars"
           :bookmarks="routine.bookmarks"
@@ -72,7 +72,7 @@
       <v-scroll-y-transition mode="in" group hide-on-leave>
         <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
           <v-row class="text-body-1 pl-4 mb-4 align-center">
-            <v-col cols="5">
+            <v-col cols="6">
               <div class="py-2">
                 {{ cycle.name
                 }}<span>
@@ -104,6 +104,7 @@
           <ExerciseViewCard
             v-for="obj in cycle.exercises"
             :key="obj.order"
+            :id="obj.exercise.id"
             :name="obj.exercise.name"
             :detail="obj.exercise.detail"
             :duration="obj.duration"
