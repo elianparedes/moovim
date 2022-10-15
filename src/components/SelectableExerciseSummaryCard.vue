@@ -1,59 +1,27 @@
 <template>
-  <v-card
-    class="pl-4 mb-8"
+  <div
+    class="rounded-xl card px-4 py-2 card"
     flat
-    style="cursor: pointer"
-    color="transparent"
+    style="background-color: #252525; cursor: pointer;"
+    :class="{ 'active-card': active }"
+    @click="click"
     :ripple="false"
-    @click.native="click"
   >
     <AddExerciseSteps v-if="stepDialog" v-model="stepDialog" :exerciseId="id" />
 
-    <v-row
-      align="center"
-      class="text-body-1"
-      style="background-color: #252525"
-      :class="{ 'active-card': active }"
-    >
-      <v-col cols="6">
+    <v-row align="center">
+      <v-col>
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6 font-weight-bold">
-              {{ name }}
+              {{ exercise }}
             </v-list-item-title>
             <v-list-item-subtitle class="mt-2">
-              {{ detail }}
+              {{ category }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-col>
-
-      <v-col
-        cols="1"
-        :class="{
-          'grey--text text--darken-2 text-center': repetitions === null,
-        }"
-        class="text-h6 font-weight-light text-center"
-      >
-        {{ repetitions ? repetitions : "•" }}
-      </v-col>
-      <v-col
-        cols="1"
-        :class="{ 'grey--text text--darken-2 text-center': weight === null }"
-        class="text-h6 font-weight-light text-center"
-      >
-        {{ weight ? weight : "•" }}
-      </v-col>
-      <v-col
-        cols="1"
-        :class="{
-          'grey--text text--darken-2 text-center': duration === null,
-        }"
-        class="text-h6 font-weight-light text-center"
-      >
-        {{ duration }}
-      </v-col>
-      <v-spacer></v-spacer>
 
       <v-col cols="1" align="center"
         ><v-menu bottom left rounded="lg" offset-y>
@@ -78,52 +46,32 @@
         </v-menu>
       </v-col>
     </v-row>
-  </v-card>
+  </div>
 </template>
 
 <script>
-import AddExerciseSteps from "@/components/AddExerciseSteps.vue";
+import AddExerciseSteps from "./AddExerciseSteps.vue";
 export default {
-  name: "ExerciseViewCard",
+  name: "ExerciseSummaryCard",
   props: {
     id: {
       type: Number,
       required: true,
     },
-    name: {
+    exercise: {
       type: String,
       required: true,
     },
-    detail: {
+    category: {
       type: String,
       required: true,
     },
-    repetitions: {
-      type: Number,
-      required: false,
-    },
-    duration: {
-      type: Number,
-      required: false,
-    },
-    weight: {
-      type: Number,
-      required: false,
-    },
-    click: {
-      default: () => ({}),
-      type: Function,
-      required: false,
-    },
-    active: {
-      type: Boolean,
-      required: false,
-    },
+    active: Boolean,
+    click: Function,
   },
   data() {
     return {
       items: [
-        { title: "Ver detalles", action: this.showMore },
         { title: "Añadir a rutina...", action: this.add },
         { title: "Compartir", action: this.share },
       ],
@@ -152,7 +100,25 @@ export default {
 </script>
 
 <style>
+.card {
+  transition: all 200ms ease-in;
+  outline: solid transparent 2px;
+}
+
+.card:hover {
+  transition: all 150ms ease-in-out;
+  scale: 1.01;
+}
+
 .active-card {
   outline: solid #bf3d3d 2px;
+}
+
+.v-expansion-panel:not(:first-child)::after {
+  border-top: 0;
+}
+
+.v-card--link:before {
+  background: transparent;
 }
 </style>

@@ -12,15 +12,12 @@ module.exports = {
         subject: 'Confirme su cuenta de GymApp',
         htmlBodyTemplate:
             `<html>
+
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
                 <style>
-                    .header {
-                        display: flex;
-                    }
-            
                     .div {
                         font-family: 'Inter', sans-serif;
                         background-color: #181818;
@@ -30,6 +27,15 @@ module.exports = {
                         min-width: fit-content;
                         margin: auto;
                     }
+            
+                    .header{
+                        display:flex;
+                        justify-content:center;
+                        margin-top: 36px;
+                        margin-bottom: 40px;
+                        translate:-8px 0px;
+                    }
+            
                     .button {
                         display: block;
                         width: 20%;
@@ -68,21 +74,21 @@ module.exports = {
             <body>
                 <div class="div">
                     <div class="header">
-                        <h1 style="text-align:left">
-                            Logo
-                        </h1>
+                        <img src="https://user-images.githubusercontent.com/70670549/196006332-47576d11-52ef-4136-b8d2-2056b5110c8a.svg" alt="moovim" width="30%">
+            
+                        </img>
                     </div>
                     <h1 style="text-align: left;">
-                        Bienvenido a GymApp, <%USERNAME%>
+                        Bienvenido a Moovim, <%USERNAME%>
                     </h1>
-                    <p>Ha recibido este mensaje porque fue registrado recientemente a una cuenta de GymApp.</p>
+                    <p>Ha recibido este mensaje porque fue registrado recientemente a una cuenta de Moovim.</p>
                     <p>Ingrese el código siguiente en el link de abajo para desbloquear su progreso personal:</p>
                     <h1 class="code">
                         <%CODE%>
                     </h1>
                     <a class="button" href="<%CONFIRM_LINK%>">Confirmar email</a>
                     <p>
-                        Si no creó una cuenta de Gymapp, ignore este mensaje.
+                        Si no creó una cuenta de Moovim, ignore este mensaje.
                     </p>
                     <hr class="hr">
                     </hr>
