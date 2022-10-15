@@ -43,6 +43,13 @@ const useRoutineStore = defineStore("routine", {
       );
       return result;
     },
+    async getRoutineOrdered(orderBy, direction) {
+      const result = await routineApi.getOrderBy(
+        //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
+        "?orderBy=" +  orderBy + "&direction=" + direction
+      );
+      return result;
+    },
     async modifyRoutine(fullRoutine) {
       const result = await routineApi.modify(fullRoutine);
       /*const index = this.items.findIndex(fullRoutine);

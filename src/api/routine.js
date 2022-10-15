@@ -31,6 +31,10 @@ class routineApi{
     static async getQuery(searchQuery, controller){
         return await Api.get(routineApi.getUrl('?search=' + searchQuery), true, controller);
     }
+
+    static async getOrderBy(orderQuery, controller){
+        return await Api.get(routineApi.getUrl(orderQuery), true, controller);
+    }
 }
 
 class Routine {

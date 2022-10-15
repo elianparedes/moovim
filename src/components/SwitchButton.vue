@@ -4,7 +4,7 @@
       v-for="(chip, index) in chipContent"
       :key="chip"
       :vue-style=vueStyle
-      @click="changeSelectedChip(index)"
+      @click="changeSelectedChip(index); $emit('newOrder',chipContent[index])"
       :toggle="chipStatus[index].toggle"
       >{{ chip }}</SelectButton
     >
