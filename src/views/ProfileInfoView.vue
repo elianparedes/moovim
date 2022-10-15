@@ -88,13 +88,13 @@ export default {
       timeout: 10 * 1000,
       loading: true,
       nameRules: [
-        v => (v && v.length <= 50) || 'El nombre debe tener menos de 50 caracteres',
+        v => (v.length <= 50) || 'El nombre debe tener menos de 50 caracteres',
       ],
       lastNameRules: [
-        v => (v && v.length <= 50) || 'El apellido debe tener menos de 50 caracteres',
+        v => (v.length <= 50) || 'El apellido debe tener menos de 50 caracteres',
       ],
       URLRules: [
-      v => (v && v.length <= 255) || 'El URL debe tener menos de 255 caracteres',
+      v => (v.length <= 255) || 'El URL debe tener menos de 255 caracteres',
       ],
       URLValid: true,
       userInfoValid: true,

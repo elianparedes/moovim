@@ -44,12 +44,13 @@
           label="Buscar rutina"
           dark
           flat
-          solo-inverted
+          solo
           hide-details
           clearable
           clear-icon="mdi-close-circle-outline"
-          style="max-height: 10%"
-          class="mb-4"
+          background-color="#181818"
+          color="white"
+          class="mb-4 white--text"
         ></v-text-field>
         <div style="height: 100%" class="my-2">
           <v-treeview

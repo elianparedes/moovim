@@ -5,9 +5,9 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+  <link rel="icon" href="<%= BASE_URL %>moovim_logo.svg" />
   <title>
-    <%= htmlWebpackPlugin.options.title %>
+    moovim
   </title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" />
@@ -24,30 +24,39 @@
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
       <style>
         .div {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           font-family: 'Inter', sans-serif;
           background-color: #181818;
-          display:flex;
           color: #FFFFFF;
-          width: 50%;
-          height: 100vh;
-          flex-direction: column;
+        }
+
+        .header {
+          display: flex;
+          justify-content: left;
+          margin-top: 36px;
+          margin-bottom: 40px;
+          translate: -8px 0px;
         }
       </style>
     </head>
 
     <body class="div">
-      <div style="display:flex; margin:auto;">
-        <div>
-          <h1>
-            Lo sentimos, pero <%= htmlWebpackPlugin.options.title %> no funciona correctamente sin Javascript habilitado.
-          </h1>
-          <h2>
-            Habilita Javascript para continuar.
-          </h2>
-        </div>
-        <div style="margin-left: 16px; display:flex; align-items:center; ">
-          <img src="js_logo.png" alt="Javascript" width="130px">
-        </div>
+      <div class="header">
+        <img src="https://user-images.githubusercontent.com/70670549/196006332-47576d11-52ef-4136-b8d2-2056b5110c8a.svg"
+          alt="moovim" width="30%">
+
+        </img>
+      </div>
+      <div>
+        <h1>
+          Lo sentimos, pero Moovim no funciona correctamente sin Javascript habilitado.
+        </h1>
+        <p>
+          Habilita Javascript para continuar.
+        </p>
       </div>
     </body>
 

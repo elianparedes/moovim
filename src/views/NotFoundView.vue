@@ -1,6 +1,9 @@
 <template>
     <div class="d-flex flex-column" style="height:100vh;">
         <div class="ma-auto">
+            <v-img class="my-8" src="/moovim.svg" width="35%" style="translate:-8px 0px;">
+
+            </v-img>
             <h1 style="font-size:200px; line-height: 12rem;">
                 404
             </h1>
@@ -22,8 +25,8 @@
 <script>
 export default {
     methods: {
-        onClick(){
-            this.$router.push({name: 'home'});
+        onClick() {
+            this.$router.push({ name: 'home' });
         }
     }
 }

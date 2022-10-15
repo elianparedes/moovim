@@ -1,46 +1,26 @@
 <template>
   <div class="d-flex mt-16">
     <v-card elevation="0" class="form pa-4">
-      <v-card-title> Inicia sesión en GymApp. </v-card-title>
+      <v-card-title class="d-flex flex-column">
+        <v-img class="my-8" src="/moovim.svg" width="35%" style="translate:-8px 0px;">
+
+        </v-img>
+        <div class="d-flex align-self-start">Inicia sesión en Moovim.</div>
+      </v-card-title>
       <v-card-subtitle class="pt-2">
         Crear, compartir y buscar rutinas al alcance de tu mano.
       </v-card-subtitle>
       <v-card-text class="pt-4">
         <v-form ref="login" v-model="valid">
-          <v-text-field
-            v-model="username"
-            label="Nombre de usuario"
-            :rules="nameRules"
-            required
-            outlined
-          >
+          <v-text-field v-model="username" label="Nombre de usuario" :rules="nameRules" required outlined>
           </v-text-field>
-          <v-text-field
-            v-model="password"
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            :type="show ? 'text' : 'password'"
-            label="Contraseña"
-            @click:append="show = !show"
-            required
-            outlined
-          ></v-text-field>
+          <v-text-field v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :rules="passwordRules"
+            :type="show ? 'text' : 'password'" label="Contraseña" @click:append="show = !show" required outlined>
+          </v-text-field>
         </v-form>
-        <v-checkbox
-          color="red"
-          v-model="rememberMe"
-          label="Recordarme"
-        ></v-checkbox>
+        <v-checkbox color="red" v-model="rememberMe" label="Recordarme"></v-checkbox>
         <div class="d-flex justify-center pb-4">
-          <v-btn
-            rounded
-            depressed
-            large
-            color="red"
-            elevation="0"
-            :disabled="!valid"
-            @click="onLogin"
-          >
+          <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onLogin">
             Iniciar sesión
           </v-btn>
         </div>
@@ -52,14 +32,8 @@
       </v-card-text>
       <v-snackbar rounded="lg" v-model="snackbar" :color="snackbarColor">
         <strong class="mr-4">{{ snackbarText }}</strong>
-        <v-progress-circular
-          class="float-right"
-          :width="2"
-          :size="18"
-          v-if="loading"
-          indeterminate
-          color="white"
-        ></v-progress-circular>
+        <v-progress-circular class="float-right" :width="2" :size="18" v-if="loading" indeterminate color="white">
+        </v-progress-circular>
         <v-icon class="float-right" :width="2" :size="18" v-if="!loading">
           mdi-alert-circle
         </v-icon>
@@ -121,11 +95,11 @@ export default {
     },
     handleResult(result) {
       switch (result.code) {
-        case 8:
-          this.snackbarError("El correo electrónico no está verificado");
-          break;
         case 4:
-          this.snackbarError("El correo electrónico no está verificado");
+          this.snackbarError("El nombre de usuario no existe");
+          break;
+        case 8:
+          this.snackbarError("El correo electrónico no está verificado")
           break;
         case 99:
           this.snackbarError("Sin conexión");

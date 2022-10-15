@@ -16,9 +16,15 @@ export const useSecurityStore = defineStore("security", {
   },
   actions: {
     initialize() {
-      const token = localStorage.getItem(SECURITY_TOKEN_KEY);
+      let token = localStorage.getItem(SECURITY_TOKEN_KEY);
       if (token) {
         this.setToken(token);
+        return;
+      }
+      token=sessionStorage.getItem(SECURITY_TOKEN_KEY);
+      if (token) {
+        this.setToken(token);
+        return;
       }
     },
     setUser(user) {
@@ -29,7 +35,11 @@ export const useSecurityStore = defineStore("security", {
       Api.token = token;
     },
     updateToken(token, rememberMe) {
-      if (rememberMe) localStorage.setItem(SECURITY_TOKEN_KEY, token);
+      if (rememberMe) 
+        localStorage.setItem(SECURITY_TOKEN_KEY, token);
+      else {
+        sessionStorage.setItem(SECURITY_TOKEN_KEY, token);
+      }
       this.setToken(token);
     },
     removeToken() {
@@ -52,6 +62,7 @@ export const useSecurityStore = defineStore("security", {
     async logout() {
       await UserApi.logout();
       this.removeToken();
+      this.setUser(null);
     },
     async getCurrentUser() {
       if (this.user) return this.user;

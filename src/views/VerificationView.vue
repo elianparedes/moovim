@@ -1,22 +1,19 @@
 <template>
   <div class="d-flex mt-16">
     <v-card elevation="0" class="form pa-4">
-      <v-card-title> Verificación de correo electrónico </v-card-title>
+      <v-card-title class="d-flex flex-column">
+        <v-img class="mt-4 mb-8" src="/moovim.svg" width="35%" style="translate:-8px 0px;">
+
+        </v-img>
+        <div class="d-flex align-self-start">Verificación de correo electrónico.</div>
+      </v-card-title>
       <v-card-subtitle class="pt-2">
         Se envió un código al correo {{ this.email }}
       </v-card-subtitle>
       <v-card-text class="pt-4">
         <v-otp-input v-model="otp" :length="length"> </v-otp-input>
         <div class="d-flex justify-center pt-2">
-          <v-btn
-            rounded
-            depressed
-            large
-            color="red"
-            elevation="0"
-            :disabled="!valid"
-            @click="onFinish"
-          >
+          <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onFinish">
             Verificar
           </v-btn>
         </div>
@@ -28,12 +25,7 @@
       <v-snackbar :timeout="timeout" v-model="snackbar" :color="snackbarColor">
         <div class="d-flex align-center justify-center">
           <strong class="mr-4">{{ snackbarText }}</strong>
-          <v-progress-circular
-            size="20"
-            v-if="loading"
-            indeterminate
-            color="white"
-          ></v-progress-circular>
+          <v-progress-circular size="20" v-if="loading" indeterminate color="white"></v-progress-circular>
           <v-icon class="ml-4" v-if="error"> mdi-alert-circle </v-icon>
         </div>
       </v-snackbar>
@@ -49,8 +41,7 @@ import { useSecurityStore } from "../stores/securityStore.js";
 export default {
   data() {
     return {
-      email: (this.email =
-        this.$route.params.email || localStorage.getItem("email")),
+      email: this.$route.params.email || sessionStorage.getItem("email"),
       otp: "",
       result: {},
       controller: null,

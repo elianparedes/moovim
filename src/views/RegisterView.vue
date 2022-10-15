@@ -1,8 +1,11 @@
 <template>
     <div class="d-flex mt-16">
         <v-card elevation="0" class="form pa-4">
-            <v-card-title>
-                Regístrate en GymApp.
+            <v-card-title class="d-flex flex-column">
+                <v-img class="my-8" src="/moovim.svg" width="35%" style="translate:-8px 0px;">
+
+                </v-img>
+                <div class="d-flex align-self-start">Regístrate en Moovim.</div>
             </v-card-title>
             <v-card-subtitle class="pt-2">
                 Supérate a ti mismo.
@@ -105,19 +108,20 @@ export default {
         onClicked() {
             this.snackbarLoading();
             this.$signUp(new SignCredentials(this.username, this.password, this.email))
-            .then( () => {
-                localStorage.setItem('email', this.email);
-                this.$router.push({ name: 'verify' });})
-            .catch((result) => this.handleResult(result))
+                .then(() => {
+                    sessionStorage.setItem('email', this.email);
+                    this.$router.push({ name: 'verify' });
+                })
+                .catch((result) => this.handleResult(result))
         },
-        handleResult(result){
-            switch(result.code){
+        handleResult(result) {
+            switch (result.code) {
                 case 2:
-                if (result.details[0].includes('username'))
-                    this.snackbarError('El nombre de usuario ya existe');
-                else
-                    this.snackbarError("Ya existe una cuenta registrada con este correo");
-                break;
+                    if (result.details[0].includes('username'))
+                        this.snackbarError('El nombre de usuario ya existe');
+                    else
+                        this.snackbarError("Ya existe una cuenta registrada con este correo");
+                    break;
                 case 99:
                     this.snackbarError("Sin conexión");
                     break;
@@ -134,7 +138,7 @@ export default {
 
 <style>
 .form {
-  width: 35%;
-  margin: auto;
+    width: 35%;
+    margin: auto;
 }
 </style>

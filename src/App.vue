@@ -11,7 +11,7 @@
       <v-navigation-drawer app color="transparent" floating permanent>
         <v-list nav class="d-flex flex-column" style="height: 100%">
           <div class="ml-2 d-flex flex-column" style="height: 128px">
-            <MooveoLogo class="ma-auto ml-3"></MooveoLogo>
+            <MoovimLogo class="ma-auto ml-3"></MoovimLogo>
           </div>
 
           <v-list-item-group class="d-flex flex-column">
@@ -124,11 +124,11 @@
 import { mapState, mapActions } from "pinia";
 import { useSecurityStore } from "@/stores/securityStore.js";
 import CreateRoutineDialog from "@/components/dialogs/CreateRoutineDialog.vue";
-import MooveoLogo from "./components/logo/MoovimLogo.vue";
+import MoovimLogo from "@/components/logo/MoovimLogo"
 
 export default {
   name: "App",
-  components: { CreateRoutineDialog, MooveoLogo },
+  components: { CreateRoutineDialog, MoovimLogo },
   data() {
     return {
       items: [
