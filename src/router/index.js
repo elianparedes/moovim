@@ -37,6 +37,11 @@ const routes = [
     component: () => import("../views/RoutinesView.vue"),
   },
   {
+    path: "/exercises",
+    name: "exercises",
+    component: () => import("../views/ExercisesView.vue"),
+  },
+  {
     path: "/profile",
     name: "profile",
     component: () => import("../views/ProfileInfoView.vue"),
@@ -48,8 +53,8 @@ const routes = [
     props: true,
   },
   {
-    path: "/exercise/:name-:id",
-    name: "exercise",
+    path: "/exercises/:name-:id",
+    name: "exercises_detail",
     component: () => import("../views/ExerciseView.vue"),
     props: true,
   },

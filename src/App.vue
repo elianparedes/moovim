@@ -1,12 +1,14 @@
 <template>
   <v-app style="background: #181818">
-    <div v-if="
-      this.$router.currentRoute.name !== 'register' &&
-      this.$router.currentRoute.name != 'notFound' &&
-      this.$router.currentRoute.name !== 'verify' &&
-      this.$router.currentRoute.name !== 'login'
-    ">
-      <v-navigation-drawer app color="transparent" floating>
+    <div
+      v-if="
+        this.$router.currentRoute.name !== 'register' &&
+        this.$router.currentRoute.name != 'notFound' &&
+        this.$router.currentRoute.name !== 'verify' &&
+        this.$router.currentRoute.name !== 'login'
+      "
+    >
+      <v-navigation-drawer app color="transparent" floating permanent>
         <v-list nav class="d-flex flex-column" style="height: 100%">
           <div class="ml-2 d-flex flex-column" style="height: 128px">
             <MoovimLogo class="ma-auto ml-3"></MoovimLogo>
@@ -35,6 +37,26 @@
               <v-list-item-title>Crear rutina</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item link
+            ><v-list-item-icon class="align-self-center">
+              <v-icon class="material-icons-round">add_circle</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content link @click="createRoutineDialog = true">
+              <v-list-item-title>Crear ejercicio</v-list-item-title>
+            </v-list-item-content></v-list-item
+          >
+
+          <v-list-item link
+            ><v-list-item-icon class="align-self-center">
+              <v-icon class="material-icons-round">add_circle</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content link @click="createRoutineDialog = true">
+              <v-list-item-title>Crear ejercicio</v-list-item-title>
+            </v-list-item-content></v-list-item
+          >
 
           <v-spacer></v-spacer>
 
@@ -84,9 +106,9 @@ export default {
   data() {
     return {
       items: [
-        { icon: "home", title: "Inicio", link: "/" },
         { icon: "search", title: "Explorar", link: "/explore/categories" },
         { icon: "fitness_center", title: "Mis Rutinas", link: "/routines" },
+        { icon: "bolt", title: "Mis Ejercicios", link: "/exercises" },
       ],
       result: null,
       controller: null,
