@@ -45,7 +45,7 @@ export const useExerciseImageStore = defineStore("exerciseImage", {
         */
         return result;
       },
-      async deleteExercise(exerciseId, imageId) {
+      async deleteExerciseImage(exerciseId, imageId) {
         await exerciseImageApi.delete(exerciseId, imageId);
         /*
         const index = this.items.findIndex(fullExercise);
