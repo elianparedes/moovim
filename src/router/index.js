@@ -39,7 +39,7 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-    component: () => import("../views/ProfileView.vue"),
+    component: () => import("../views/ProfileInfoView.vue"),
   },
   {
     path: "/routines/edit/:name-:id",
@@ -58,10 +58,13 @@ const routes = [
     component: () => import("../views/RegisterView.vue"),
   },
   {
-    path: "/verify",
+    path: "/verify/:email?",
     name: "verify",
     component: () => import("../views/VerificationView.vue"),
   },
+  { path: '/:pathMatch(.*)*', 
+    name: 'notFound', 
+    component: () => import("../views/NotFoundView.vue")}
 ];
 
 const router = new VueRouter({

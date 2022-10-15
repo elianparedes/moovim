@@ -39,32 +39,44 @@
     <div style="flex: 90%; overflow-y: scroll">
       <div style="position: sticky; top: 0px; z-index: 1">
         <v-toolbar color="#181818" flat>
-          <v-toolbar-title class="font-weight-bold text-h3">{{
+          <v-toolbar-title class="font-weight-bold text-h3 pb-4">{{
             routines[selected]?.name
           }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <div>
-            <v-chip class="px-10" color="white" outlined @click="editRoutine">
+            <v-chip
+              class="px-8 mr-4"
+              color="gray"
+              outlined
+              @click="deleteRoutine"
+            >
+              <v-icon left small class="material-icons-round">delete</v-icon>
+              Eliminar
+            </v-chip>
+            <v-chip class="px-8" color="gray" outlined @click="editRoutine">
               <v-icon left small class="material-icons-round">edit</v-icon>
-              Editar rutina
+              Editar
             </v-chip>
           </div>
         </v-toolbar>
         <div
           style="
-            height: 64px;
+            height: 32px;
             background-image: linear-gradient(#181818, rgba(24, 24, 24, 0));
+            position: sticky;
+            top: 0px;
+            z-index: 1;
           "
         ></div>
       </div>
-      <v-scroll-y-transition mode="in" group>
+      <v-scroll-y-transition mode="in" group hide-on-leave>
         <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
-          <v-row class="text-body-1 ma-4" no-gutters>
-            <v-col>
-              <div>
+          <v-row class="text-body-1 pl-4 mb-4 align-center">
+            <v-col cols="5">
+              <div class="py-2">
                 {{ cycle.name
                 }}<span>
-                  <v-icon size="24px" class="ml-4 material-icons-round"
+                  <v-icon size="18px" class="ml-4 material-icons-round"
                     >loop</v-icon
                   >
                   {{ cycle.repetitions }}
@@ -74,15 +86,17 @@
 
             <template v-if="n === 0">
               <v-col cols="1" class="text-center" align="center">
-                <v-icon size="24px" class="material-icons-round">replay</v-icon>
+                <v-icon size="18px" class="material-icons-round">replay</v-icon>
               </v-col>
               <v-col cols="1" class="text-center" align="center">
-                <v-icon size="24px" class="material-icons-round"
+                <v-icon size="18px" class="material-icons-round"
                   >fitness_center</v-icon
                 >
               </v-col>
               <v-col cols="1" class="text-center" align="center">
-                <v-icon size="24px" class="material-icons-round">timer</v-icon>
+                <v-icon size="18px" class="material-icons-outlined"
+                  >timer</v-icon
+                >
               </v-col>
             </template>
           </v-row>
@@ -139,7 +153,10 @@ export default {
     $route: "fetchRoutines",
   },
   methods: {
-    ...mapActions(useRoutineStore, { $getAllRoutine: "getAllRoutine" }),
+    ...mapActions(useRoutineStore, {
+      $getAllRoutine: "getAllRoutine",
+      $deleteRoutine: "deleteRoutine",
+    }),
     ...mapActions(useRoutineCycleStore, {
       $getAllRoutineCycles: "getAllRoutineCycles",
     }),
@@ -153,6 +170,11 @@ export default {
           id: this.routines[this.selected]?.id,
           name: this.routines[this.selected]?.name,
         },
+      });
+    },
+    deleteRoutine() {
+      this.$deleteRoutine(this.routines[this.selected]).then(() => {
+        this.routines.splice(this.selected, 1);
       });
     },
     fetchRoutines() {
@@ -194,5 +216,9 @@ export default {
 <style>
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
+}
+
+.v-card--link:before {
+  background: transparent;
 }
 </style>

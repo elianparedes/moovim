@@ -20,9 +20,18 @@ const useRoutineCycleStore = defineStore("routineCycle", {
       const result = await routineCycleApi.getAll(routineId);
       return result;
     },
-    async addRoutineCycle(name, detail, type, repetitions, metadata) {
+    async addRoutineCycle(
+      routineId,
+      name,
+      detail,
+      type,
+      order,
+      repetitions,
+      metadata
+    ) {
       const result = await routineCycleApi.add(
-        new RoutineCycle(name, detail, type, repetitions, metadata)
+        routineId,
+        new RoutineCycle(name, detail, type, order, repetitions, metadata)
       );
       this.items.push(result);
       return result;
@@ -38,28 +47,29 @@ const useRoutineCycleStore = defineStore("routineCycle", {
     },
     async modifyRoutineCycle(routineId, fullRoutineCycle) {
       const result = await routineCycleApi.modify(routineId, fullRoutineCycle);
-      const index = this.items.findIndex(fullRoutineCycle);
+      /*const index = this.items.findIndex(fullRoutineCycle);
       if (index >= 0) {
         this.replace(index, result);
-      }
+      }*/
       return result;
     },
     async deleteRoutineCycle(routineId, fullRoutineCycle) {
       await routineCycleApi.delete(routineId, fullRoutineCycle.id);
-      const index = this.items.findIndex(fullRoutineCycle);
+      /*const index = this.items.findIndex(fullRoutineCycle);
       if (index >= 0) {
         return this.splice(index);
-      }
+      }*/
     },
   },
 });
 
 class FullRoutineCycle {
   // type = [warmup, exercise, cooldown]
-  constructor(id, name, detail, type, repetitions, metadata) {
+  constructor(id, name, detail, type, order, repetitions, metadata) {
     this.id = id;
     this.name = name;
     this.detail = detail;
+    this.order = order;
     this.type = type;
     this.repetitions = repetitions;
     this.metadata = metadata;

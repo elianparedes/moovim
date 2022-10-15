@@ -2,9 +2,12 @@
     <div class="d-flex mt-16">
         <v-card elevation="0" class="form pa-4">
             <v-card-title>
-                Regístrate en GymApp
+                Regístrate en GymApp.
             </v-card-title>
-            <v-card-text class="pt-8">
+            <v-card-subtitle class="pt-2">
+                Supérate a ti mismo.
+            </v-card-subtitle>
+            <v-card-text class="pt-4">
                 <v-form ref="registration" v-model="valid">
                     <v-text-field v-model="username" label="Nombre de usuario *" :counter="15" :rules="nameRules"
                         required outlined>
@@ -17,12 +20,17 @@
                     <v-text-field v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="passwordRules" :type="show ? 'text' : 'password'" label="Contraseña *" :counter="15"
                         @click:append="show = !show" required outlined></v-text-field>
-                    <div class="d-flex justify-center pt-8">
-                        <v-btn depressed large color="accent" elevation="0" :disabled="!valid" @click="onClicked">
+                    <div class="d-flex justify-center pb-4">
+                        <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onClicked">
                             Registrarse
                         </v-btn>
                     </div>
                 </v-form>
+                <v-divider></v-divider>
+                <div class="d-flex justify-center pt-4">
+                    ¿Ya tienes una cuenta creada?
+                    <a class="ml-2" @click="onLogin()">Iniciar sesión</a>
+                </div>
             </v-card-text>
             <v-snackbar v-model="snackbar" :color="snackbarColor">
                 <div class="d-flex align-center justify-center">
@@ -37,9 +45,7 @@
     </div>
 </template>
 
-
 <script>
-
 import { mapActions } from "pinia";
 import { SignCredentials } from "../api/user";
 import { useSecurityStore } from "../stores/securityStore.js";
@@ -69,6 +75,7 @@ export default {
         snackbar: false,
         snackbarColor: 'primary',
         snackbarText: 'Cargando',
+        timeout: 10 * 1000,
         loading: true,
     }),
     methods: {
@@ -76,59 +83,50 @@ export default {
             $getCurrentUser: 'getCurrentUser',
             $signUp: 'signUp',
         }),
-        setResult(result) {
-            this.result = result;
-        },
         clearResult() {
             this.result = null
         },
-        async signUp() {
-            try {
-                this.clearResult()
-                const signCredentials = new SignCredentials(this.username, this.password, this.email)
-                await this.$signUp(signCredentials)
-                this.setResult(signCredentials)
-            } catch (e) {
-                this.setResult(e)
-            }
-        },
-        async onClicked() {
-            this.snackbarText = 'Cargando';
-            this.snackbarColor = 'primary';
+        snackbarLoading() {
             this.loading = true;
+            this.error = false;
+            this.snackbarText = "Cargando";
+            this.snackbarColor = 'primary';
+            this.timeout = 65 * 1000;
             this.snackbar = true;
-            const apiTimer = setTimeout(() => {
-                this.loading = false;
-                this.snackbarText = "Sin conexión";
-                this.snackbarColor = 'error';
-                return;
-            }, 5 * 1000)
-            await this.signUp();
-            clearTimeout(apiTimer);
-            const result = this.handleResult();
-            if (result === 0) {
-                localStorage.setItem('username', this.username);
-                localStorage.setItem('password', this.password);
+        },
+        snackbarError(errorMessage) {
+            this.loading = false;
+            this.error = true;
+            this.snackbarText = errorMessage;
+            this.snackbarColor = 'error';
+            this.timeout = 5 * 1000;
+            this.snackbar = true;
+        },
+        onClicked() {
+            this.snackbarLoading();
+            this.$signUp(new SignCredentials(this.username, this.password, this.email))
+            .then( () => {
                 localStorage.setItem('email', this.email);
-                this.$router.push({ name: 'verify' });
-            }
-            else {
-                this.loading = false;
+                this.$router.push({ name: 'verify' });})
+            .catch((result) => this.handleResult(result))
+        },
+        handleResult(result){
+            switch(result.code){
+                case 2:
+                if (result.details[0].includes('username'))
+                    this.snackbarError('El nombre de usuario ya existe');
+                else
+                    this.snackbarError("Ya existe una cuenta registrada con este correo");
+                break;
+                case 99:
+                    this.snackbarError("Sin conexión");
+                    break;
+                default:
+                    break;
             }
         },
-        handleResult() {
-            let toReturn = -1;
-            if (this.result.code === 2) {
-                if (this.result.details[0].includes('username'))
-                    this.snackbarText = "El nombre de usuario ya existe";
-                else
-                    this.snackbarText = "Ya existe una cuenta registrada con este correo";
-                this.snackbarColor = 'error';
-            }
-            else {
-                toReturn = 0;
-            }
-            return toReturn;
+        onLogin() {
+            this.$router.push({ name: 'login' });
         }
     }
 };
@@ -136,7 +134,7 @@ export default {
 
 <style>
 .form {
-    width: 35%;
-    margin: auto;
+  width: 35%;
+  margin: auto;
 }
 </style>
