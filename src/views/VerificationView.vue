@@ -49,8 +49,7 @@ import { useSecurityStore } from "../stores/securityStore.js";
 export default {
   data() {
     return {
-      email: (this.email =
-        this.$route.params.email || localStorage.getItem("email")),
+      email: this.$route.params.email || sessionStorage.getItem("email"),
       otp: "",
       result: {},
       controller: null,

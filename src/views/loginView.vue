@@ -121,11 +121,11 @@ export default {
     },
     handleResult(result) {
       switch (result.code) {
-        case 8:
-          this.snackbarError("El correo electrónico no está verificado");
-          break;
         case 4:
-          this.snackbarError("El correo electrónico no está verificado");
+          this.snackbarError("El nombre de usuario no existe");
+          break;
+        case 8:
+          this.snackbarError("El correo electrónico no está verificado")
           break;
         case 99:
           this.snackbarError("Sin conexión");
