@@ -8,10 +8,11 @@
     <div class="font-weight-bold text-h4">{{ name }}</div>
     <div class="text-h6 font-weight-regular pr-8 mb-16">{{ detail }}</div>
     <div class="pb-8 mt-8" align="end">
-      <v-chip class="px-10" color="gray" outlined @click="onDelete">
-        <v-icon left small class="material-icons-round">delete</v-icon>
-        Eliminar
-      </v-chip>
+      <DeleteButton
+        title="¿Eliminar ejercicio?"
+        message="Si eliminas este ejercicio, se eliminará de forma permanente de esta rutina."
+        @click="deleteExercise"
+      />
       <v-chip class="px-10 ml-4" color="gray" outlined>
         <v-icon left small class="material-icons-round">info_outline</v-icon>
         Ver detalles
@@ -72,9 +73,19 @@
 </template>
 
 <script>
+import DeleteButton from "@/components/buttons/DeleteButton.vue";
 export default {
   name: "ExerciseSet",
+  components: { DeleteButton },
   props: {
+    index: {
+      type: Number,
+      required: true,
+    },
+    cycleIndex: {
+      type: Number,
+      required: true,
+    },
     name: { type: String, required: false },
     detail: { type: String, required: false },
     value: {
@@ -102,8 +113,8 @@ export default {
 
       this.$emit("input", { ...this.value, [key]: Number(value) });
     },
-    onDelete() {
-      this.$emit("delete", this.name);
+    deleteExercise() {
+      this.$emit("delete", this.index, this.cycleIndex);
     },
   },
 };

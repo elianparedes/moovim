@@ -336,12 +336,15 @@ export default {
     addExercise() {
       const cycleId = this.active[0].id;
       this.$getAllExerciseCycles(cycleId)
-        .then((exercises) => exercises.content.length + 1)
-        .then((exercisesCount) =>
+        .then(
+          (exercises) =>
+            exercises.content[exercises.content.length - 1].order + 1
+        )
+        .then((newOrder) =>
           this.$addExerciseCycle(
             cycleId,
             this.exerciseId,
-            exercisesCount,
+            newOrder,
             Number(this.input.duration),
             Number(this.input.repetitions)
           )
@@ -349,9 +352,7 @@ export default {
               this.show = false;
               this.$emit("finish");
             })
-            .catch(() => {
-              console.log("El ejercicio esta repetido");
-            })
+            .catch(() => {})
         );
     },
     async checkExercise() {

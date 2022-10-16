@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column pb-16" style="gap: 32px" v-if="!loading">
+  <div class="d-flex flex-column pb-16 pr-16" style="gap: 32px" v-if="!loading">
     <v-snackbar v-model="success" rounded="lg">
       Cambios guardados correctamente
 
@@ -272,32 +272,36 @@
                   </v-row>
 
                   <template v-if="cycle.exercises.length > 0">
-                    <v-item
-                      v-slot="{ active, toggle }"
-                      v-for="(obj, exerciseIndex) in cycle.exercises"
-                      :key="exerciseIndex"
-                    >
-                      <ExerciseViewCard
-                        :id="obj.exercise.id"
-                        :name="obj.exercise.name"
-                        :detail="obj.exercise.detail"
-                        :duration="obj.duration"
-                        :weight="obj.weight"
-                        :repetitions="obj.repetitions"
-                        class="rounded-xl included"
-                        :click="
-                          () => {
-                            toggle();
-                            selectExercise({
-                              name: obj.exercise.name,
-                              detail: obj.exercise.detail,
-                              exercise: exerciseIndex,
-                              cycle: cycleIndex,
-                            });
-                          }
-                        "
-                        :active="userCanEdit && active"
-                      /> </v-item
+                    <div>
+                      <v-slide-x-transition group leave-absolute>
+                        <v-item
+                          v-slot="{ active, toggle }"
+                          v-for="(obj, exerciseIndex) in cycle.exercises"
+                          :key="obj.exercise.id"
+                        >
+                          <ExerciseViewCard
+                            :id="obj.exercise.id"
+                            :name="obj.exercise.name"
+                            :detail="obj.exercise.detail"
+                            :duration="obj.duration"
+                            :weight="obj.weight"
+                            :repetitions="obj.repetitions"
+                            class="rounded-xl included"
+                            :click="
+                              () => {
+                                toggle();
+                                selectExercise({
+                                  name: obj.exercise.name,
+                                  detail: obj.exercise.detail,
+                                  exercise: exerciseIndex,
+                                  cycle: cycleIndex,
+                                });
+                              }
+                            "
+                            :active="userCanEdit && active"
+                          />
+                        </v-item>
+                      </v-slide-x-transition></div
                   ></template>
                   <template v-else>
                     <div
@@ -320,6 +324,8 @@
           <ExerciseSet
             v-if="userCanEdit && selected !== undefined"
             style="position: sticky; top: 128px"
+            :index="selectedExercise.exercise"
+            :cycleIndex="selectedExercise.cycle"
             :name="selectedExercise.name"
             :detail="selectedExercise.detail"
             v-model="
@@ -336,17 +342,17 @@
 </template>
 
 <script>
-import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
-
 import { mapActions, mapState } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
+import { useSecurityStore } from "@/stores/securityStore";
+
 import ExerciseSet from "@/components/ExerciseSet.vue";
 import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
 import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
 import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
-import { useSecurityStore } from "@/stores/securityStore";
+import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
 
 export default {
   name: "RoutinesView",
@@ -410,6 +416,7 @@ export default {
     ...mapActions(useExerciseCycleStore, {
       $getAllExerciseCycles: "getAllExerciseCycles",
       $modifyExerciseCycle: "modifyExerciseCycle",
+      $deleteExerciseCycle: "deleteExerciseCycle",
     }),
     ...mapState(useSecurityStore, {
       $getUser: "getUser",
@@ -530,8 +537,19 @@ export default {
         this.cycles.splice(cycleIndex, 1);
       });
     },
-    deleteExercise(name) {
-      console.log({ name });
+    deleteExercise(exerciseIndex, cycleIndex) {
+      const cycle = this.cycles[cycleIndex];
+      const cycleId = cycle.id;
+      const exerciseId = cycle.exercises[exerciseIndex].exercise.id;
+
+      console.log(cycleId, exerciseId);
+
+      this.$deleteExerciseCycle(cycleId, exerciseId, { id: exerciseId }).then(
+        () => {
+          this.selected = undefined;
+          this.cycles[cycleIndex].exercises.splice(exerciseIndex, 1);
+        }
+      );
     },
     editCycle() {
       this.success = true;

@@ -4,8 +4,10 @@
     <h2 class="mb-4">Avatar</h2>
     <div class="d-flex mb-4">
       <div class="d-flex flex-column pr-12">
-        <v-avatar class="ma-auto" size="160">
-          <img :src="image" :alt="this.username" />
+        <v-avatar class="ma-auto" size="160" color="#252525">
+          <template v-if="image">
+            <img :src="image" :alt="this.username" />
+          </template>
         </v-avatar>
       </div>
       <div class="mt-4" style="width: 50%">
