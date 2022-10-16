@@ -54,20 +54,15 @@
       <span class="mx-2">Ejercicios</span>
     </div>
     <div>
-      <router-link
-        v-for="exercise in exercises"
-        :key="exercise.id"
-        :to="`exercises/${exercise.name}-${exercise.id}`"
-        style="text-decoration: none; color: inherit"
-      >
         <SelectableExerciseSummaryCard
+            v-for="exercise in exercises"
+            :key="exercise.id"
           :id="exercise.id"
           :category="exercise.detail"
           :exercise="exercise.name"
-          :click="() => ({})"
+          :click="()=>{viewExerciseDetails(exercise)}"
           class="my-4 mr-6"
         ></SelectableExerciseSummaryCard>
-      </router-link>
     </div>
   </div>
 </template>
@@ -79,6 +74,7 @@ import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummar
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useExerciseStore } from "@/stores/exerciseStore";
+import router from "@/router";
 export default {
   name: "DiscoverView",
   components: {
@@ -151,6 +147,9 @@ export default {
             return;
           }
         });
+    },
+    viewExerciseDetails(exercise){
+      router.push(`exercises/${exercise.name}-${exercise.id}`)
     },
     ...mapActions(useRoutineStore, {
       $getPageRoutineOrdered: "getPageRoutineOrdered",
