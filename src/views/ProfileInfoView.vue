@@ -88,16 +88,14 @@
         Guardar cambios
       </v-btn>
     </div>
-    <v-snackbar v-model="snackbar" :color="snackbarColor">
+    <v-snackbar v-model="snackbar" rounded="lg" :color="snackbarColor">
       <div class="d-flex align-center justify-center">
-        <strong class="mr-4">{{ snackbarText }}</strong>
-        <v-progress-circular
-          size="20"
-          v-if="loading"
-          indeterminate
-          color="white"
-        ></v-progress-circular>
-        <v-icon class="ml-4" v-if="!loading"> mdi-alert-circle </v-icon>
+        <strong class="mr-4">{{snackbarText}}</strong>
+        <v-progress-circular size="18" v-if="loading" indeterminate color="white"></v-progress-circular>
+        <v-icon class="ml-4" size="18" v-if="!loading && !done">
+          mdi-alert-circle
+        </v-icon>
+        <v-icon v-if="done" class="float-right material-icons-round" size="18" color="white">check_circle</v-icon>
       </div>
     </v-snackbar>
   </div>
@@ -125,8 +123,8 @@ export default {
       image: "",
       show: false,
       snackbar: false,
-      snackbarColor: "primary",
-      snackbarText: "Cargando",
+      snackbarColor: "#252525",
+      snackbarText: 'Cargando',
       timeout: 10 * 1000,
       loading: true,
       nameRules: [
@@ -137,11 +135,12 @@ export default {
           v.length <= 50 || "El apellido debe tener menos de 50 caracteres",
       ],
       URLRules: [
-        (v) => v.length <= 255 || "El URL debe tener menos de 255 caracteres",
+        v => (v.length <= 255) || 'El URL debe tener menos de 255 caracteres',
       ],
       URLValid: true,
       userInfoValid: true,
-    };
+      done:false,
+    }
   },
   computed: {
     ...mapState(useSecurityStore, {
@@ -159,14 +158,16 @@ export default {
       $deleteAccount: "deleteAccount",
     }),
     snackbarLoading() {
+      this.done=false;
       this.loading = true;
       this.error = false;
       this.snackbarText = "Cargando";
-      this.snackbarColor = "primary";
+      this.snackbarColor = "#252525";
       this.timeout = 65 * 1000;
       this.snackbar = true;
     },
     snackbarError(errorMessage) {
+      this.done=false;
       this.loading = false;
       this.error = true;
       this.snackbarText = errorMessage;
@@ -178,8 +179,9 @@ export default {
       this.loading = false;
       this.error = false;
       this.snackbarText = successMessage;
-      this.snackbarColor = "primary";
+      this.snackbarColor = "#252525";
       this.timeout = 5 * 1000;
+      this.done=true;
       this.snackbar = true;
     },
     saveChanges() {

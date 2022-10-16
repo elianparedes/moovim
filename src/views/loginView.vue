@@ -30,11 +30,11 @@
           <a class="ml-2" @click="onRegister">Registrarse</a>
         </div>
       </v-card-text>
-      <v-snackbar rounded="lg" v-model="snackbar" :color="snackbarColor">
+      <v-snackbar v-model="snackbar" rounded="lg" :color="snackbarColor">
         <strong class="mr-4">{{ snackbarText }}</strong>
-        <v-progress-circular class="float-right" :width="2" :size="18" v-if="loading" indeterminate color="white">
+        <v-progress-circular class="float-right" :size="18" v-if="loading" indeterminate color="white">
         </v-progress-circular>
-        <v-icon class="float-right" :width="2" :size="18" v-if="!loading">
+        <v-icon class="float-right" :size="18" v-if="!loading">
           mdi-alert-circle
         </v-icon>
       </v-snackbar>
@@ -59,7 +59,7 @@ export default {
     passwordRules: [(v) => !!v || "Se debe especificar la contraseña"],
     show: false,
     snackbar: false,
-    snackbarColor: "primary",
+    snackbarColor: "#252525",
     snackbarText: "Cargando",
     loading: true,
     timeout: 10 * 1000,
@@ -72,7 +72,7 @@ export default {
       this.loading = true;
       this.error = false;
       this.snackbarText = "Cargando";
-      this.snackbarColor = "primary";
+      this.snackbarColor = "#252525";
       this.timeout = 65 * 1000;
       this.snackbar = true;
     },
@@ -90,13 +90,13 @@ export default {
         new Credentials(this.username, this.password),
         this.rememberMe
       )
-        .then(() => this.$router.push({ name: "home" }))
+        .then(() => this.$router.push({ name: "Categorias"}))
         .catch((e) => this.handleResult(e));
     },
     handleResult(result) {
       switch (result.code) {
         case 4:
-          this.snackbarError("El nombre de usuario no existe");
+          this.snackbarError("El nombre de usuario y la contraseña no coinciden");
           break;
         case 8:
           this.snackbarError("El correo electrónico no está verificado")

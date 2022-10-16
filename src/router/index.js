@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../views/HomeView.vue"),
+    component: () => import("../views/LandingPage.vue"),
   },
   {
     path: "/explore",
@@ -99,7 +99,7 @@ const routes = [
     path: "/:pathMatch(.*)*",
     name: "notFound",
     component: () => import("../views/NotFoundView.vue"),
-  },
+  }
 ];
 
 const router = new VueRouter({

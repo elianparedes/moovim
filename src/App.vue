@@ -3,8 +3,9 @@
     <div
       v-if="
         this.$isLoggedIn &&
+        this.$router.currentRoute.name !== 'home' &&
         this.$router.currentRoute.name !== 'register' &&
-        this.$router.currentRoute.name !== 'notFound' &&
+        this.$router.currentRoute.name != 'notFound' &&
         this.$router.currentRoute.name !== 'verify' &&
         this.$router.currentRoute.name !== 'login'
       "
@@ -46,15 +47,15 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item link
-            ><v-list-item-icon class="align-self-center">
+          <v-list-item link>
+            <v-list-item-icon class="align-self-center">
               <v-icon class="material-icons-outlined">add_box</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content link @click="createExerciseDialog = true">
               <v-list-item-title>Crear ejercicio</v-list-item-title>
-            </v-list-item-content></v-list-item
-          >
+            </v-list-item-content>
+          </v-list-item>
 
           <v-spacer></v-spacer>
 
@@ -86,9 +87,16 @@
       >
         <v-spacer></v-spacer>
         <router-link v-if="this.$isLoggedIn" to="/profile">
-          <v-avatar class="my-8" size="36px">
-            <img :src="avatarUrl" :alt="username" />
-          </v-avatar>
+          <v-fade-transition>
+            <template v-if="avatarUrl">
+              <v-avatar
+                class="my-8"
+                size="36px"
+                style="background-color: #252525"
+              >
+                <img :src="avatarUrl" :alt="username" />
+              </v-avatar> </template
+          ></v-fade-transition>
         </router-link>
         <div v-if="!this.$isLoggedIn" class="d-flex align-center">
           <v-btn
@@ -165,9 +173,11 @@ export default {
       this.routerHandler("home");
     },
   },
-  created() {
+  beforeCreate() {
     const securityStore = useSecurityStore();
     securityStore.initialize();
+  },
+  beforeUpdate() {
     if (this.$isLoggedIn) {
       this.$getCurrentUser().then((currentUser) => {
         this.avatarUrl = currentUser.avatarUrl;
@@ -202,10 +212,6 @@ body {
   background: #2e2e2e;
   border-radius: 8px;
   background-clip: padding-box;
-}
-
-.v-list-item--link:before {
-  //TODO: scoped?
 }
 
 .v-list-item {
