@@ -10,6 +10,7 @@
           :image="routine.image"
           :name="routine.name"
           :desc="routine.desc"
+          @clicked="searchRoutine($event)"
         />
       </div>
       <div class="font-weight-regular text-subtitle-1">Etapas</div>
@@ -40,6 +41,7 @@
 import WorkoutCategoryCard from "@/components/WorkoutCategoryCard.vue";
 import StagesCategoryCard from "@/components/StagesCategoryCard.vue";
 import MusclesCategoryCard from "@/components/MusclesCategoryCard.vue";
+import router from "@/router";
 
 import { mapState, mapActions } from "pinia";
 import { useCategoryStore } from "../stores/categoryStore.js";
@@ -118,6 +120,9 @@ export default {
         this.setResult(e);
       }
     },
+    searchRoutine(objetivo){
+      router.push({ path: "objective", query: { query: objetivo } });
+    }
   },
   created() {
     this.getAllCategories();

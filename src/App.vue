@@ -48,15 +48,7 @@
             </v-list-item-content></v-list-item
           >
 
-          <v-list-item link
-            ><v-list-item-icon class="align-self-center">
-              <v-icon class="material-icons-round">add_circle</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content link @click="createRoutineDialog = true">
-              <v-list-item-title>Crear ejercicio</v-list-item-title>
-            </v-list-item-content></v-list-item
-          >
+          
 
           <v-spacer></v-spacer>
 

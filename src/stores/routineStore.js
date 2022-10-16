@@ -36,6 +36,10 @@ const useRoutineStore = defineStore("routine", {
       const result = await routineApi.getAll();
       return result;
     },
+    async getPageRoutine(page) {
+      const result = await routineApi.getPage(page);
+      return result;
+    },
     async getRoutineQuery(search) {
       const result = await routineApi.getQuery(
         //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
@@ -43,10 +47,24 @@ const useRoutineStore = defineStore("routine", {
       );
       return result;
     },
+    async getPageRoutineQuery(search, page) {
+      const result = await routineApi.getQuery(
+        //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
+        "" + search, page
+      );
+      return result;
+    },
     async getRoutineOrdered(orderBy, direction) {
       const result = await routineApi.getOrderBy(
         //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
         "?orderBy=" +  orderBy + "&direction=" + direction
+      );
+      return result;
+    },
+    async getPageRoutineOrdered(orderBy, direction, page) {
+      const result = await routineApi.getOrderBy(
+        //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
+        "?orderBy=" +  orderBy + "&direction=" + direction +"&page=" + page
       );
       return result;
     },
