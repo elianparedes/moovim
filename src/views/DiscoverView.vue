@@ -7,14 +7,16 @@
         <v-spacer></v-spacer>
         <SwitchButton
           class="mx-6"
-          :chip-content="['Populares', 'Verificados', 'Recientes']"
+          :chip-content="['Mas recientes', 'Mas antiguos', 'Mas faciles', 'Mas dificiles']"
           :vue-style="'mx-1'"
           v-on:newOrder="
-            $event === 'Recientes'
+            $event === 'Mas recientes'
               ? getOrderedWrapper('date', 'desc')
-              : $event === 'Populares'
-              ? getOrderedWrapper('score', 'desc')
-              : getAllRoutinesWrapper()
+              : $event === 'Mas antiguos'
+              ? getOrderedWrapper('date', 'asc')
+              : $event === 'Mas faciles'
+              ? getOrderedWrapper('difficulty', 'asc')
+              : getOrderedWrapper('difficulty', 'desc')
           "
         ></SwitchButton>
       </div>
