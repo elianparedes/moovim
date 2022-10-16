@@ -2,10 +2,12 @@
   <v-app style="background: #181818">
     <div
       v-if="
+      this.$isLoggedIn &&
         this.$router.currentRoute.name !== 'register' &&
         this.$router.currentRoute.name != 'notFound' &&
         this.$router.currentRoute.name !== 'verify' &&
-        this.$router.currentRoute.name !== 'login'
+        this.$router.currentRoute.name !== 'login' &&
+        this.$router.currentRoute.name !== 'landing'
       "
     >
       <v-navigation-drawer app color="transparent" floating permanent>
@@ -127,7 +129,7 @@ export default {
       this.routerHandler("home");
     },
   },
-  created() {
+  beforeCreate() {
     const securityStore = useSecurityStore();
     securityStore.initialize();
     if (this.$isLoggedIn) {
