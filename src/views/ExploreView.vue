@@ -23,7 +23,7 @@
       :selected-chip="getIndex()"
       @switch="switchHandler"
     ></SwitchButton>
-    <router-view />
+    <router-view class="mt-8" />
   </div>
 </template>
 

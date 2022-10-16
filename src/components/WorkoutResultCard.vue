@@ -10,10 +10,6 @@
     >
       <v-card-title class="font-weight-bold text-h4 mb-1">
         {{ name }}
-        <v-btn icon @click="onFavouriteClick()">
-          <v-icon v-if="!this.isFavourite"> mdi-star-outline </v-icon>
-          <v-icon v-if="this.isFavourite"> mdi-star </v-icon>
-        </v-btn>
       </v-card-title>
       <v-card-subtitle class="text-subtitle-2 font-weight-regular pr-8">{{
         desc
@@ -44,9 +40,6 @@
 </template>
 
 <script>
-import { mapActions } from "pinia";
-import { useFavoritesStore } from "../stores/favoriteStore.js";
-
 export default {
   name: "WorkoutResultCard",
   props: {
@@ -60,40 +53,10 @@ export default {
     bookmarks: Number,
     verified: Boolean,
     active: Boolean,
-    isUserFavourite: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
     click: {
       default: () => ({}),
       type: Function,
       required: false,
-    },
-  },
-  data() {
-    return {
-      isFavourite: this.isUserFavourite,
-    };
-  },
-  methods: {
-    ...mapActions(useFavoritesStore, {
-      $addFavorites: "addFavorites",
-      $deleteFavorite: "deleteFavorite",
-    }),
-    async addFavorites() {
-      await this.$addFavorites(this.routineId);
-    },
-    async deleteFavorite() {
-      await this.$deleteFavorite(this.routineId);
-    },
-    onFavouriteClick() {
-      this.isFavourite = !this.isFavourite;
-      if (this.isFavourite) {
-        this.addFavorites();
-      } else {
-        this.deleteFavorite();
-      }
     },
   },
 };

@@ -1,46 +1,52 @@
 <template>
-  <div>
+  <v-slide-x-transition mode="in-out" appear>
     <div class="d-flex flex-column" style="gap: 32px">
-      <div class="font-weight-thin text-h6 my-4">Objetivos</div>
-      <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
+      <div class="font-weight-thin text-h6">Objetivos</div>
+
+      <div
+        style="
+          white-space: nowrap;
+          overflow: auto;
+          padding-bottom: 16px;
+          padding-top: 8px;
+        "
+      >
         <WorkoutCategoryCard
           v-for="routine in routines"
           :key="routine.name"
-          class="d-inline-block mr-4"
+          class="d-inline-block mr-4 reactive-card"
           :image="routine.image"
           :name="routine.name"
           :desc="routine.desc"
           @clicked="searchRoutine($event)"
         />
       </div>
-      <div class="font-weight-regular text-subtitle-1">Etapas</div>
-      <div style="white-space: nowrap; overflow: auto">
-        <StagesCategoryCard
-          v-for="stage in stages"
-          :key="stage.name"
-          class="d-inline-block mr-4"
-          :image="stage.image"
-          :name="stage.name"
-          :desc="stage.desc"
-        />
-      </div>
-      <div class="font-weight-regular text-subtitle-1">Grupos Musculares</div>
-      <div style="white-space: nowrap; overflow: auto; padding-bottom: 16px">
-        <MusclesCategoryCard
-          v-for="group in groups"
-          :key="group.name"
-          class="d-inline-block mr-4"
-          :name="group.name"
-          @clicked="searchExercise($event)"
-        />
+      <div class="font-weight-thin text-h6">Grupos Musculares</div>
+
+      <div
+        style="
+          padding-bottom: 16px;
+          margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
+        "
+      >
+        <v-row class="mb-6">
+          <v-col cols="4" v-for="group in groups" :key="group.name">
+            <v-fade-transition appear>
+              <MusclesCategoryCard
+                :key="group.name"
+                class="d-inline-block reactive-card"
+                :name="group.name"
+                @clicked="searchExercise($event)"
+            /></v-fade-transition>
+          </v-col>
+        </v-row>
       </div>
     </div>
-  </div>
+  </v-slide-x-transition>
 </template>
 
 <script>
 import WorkoutCategoryCard from "@/components/WorkoutCategoryCard.vue";
-import StagesCategoryCard from "@/components/StagesCategoryCard.vue";
 import MusclesCategoryCard from "@/components/MusclesCategoryCard.vue";
 import router from "@/router";
 
@@ -109,7 +115,6 @@ export default {
   }),
   components: {
     WorkoutCategoryCard,
-    StagesCategoryCard,
     MusclesCategoryCard,
   },
   computed: {
