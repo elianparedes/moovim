@@ -79,7 +79,7 @@
           </v-avatar>
         </router-link>
         <div v-if="!this.$isLoggedIn" class="d-flex align-center">
-          <v-btn rounded depressed large color="my-8 red" elevation="0" @click="routerHandler('login')">
+          <v-btn rounded depressed large color="my-8 primary" elevation="0" @click="routerHandler('login')">
             Acceder
           </v-btn>
         </div>

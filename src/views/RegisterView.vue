@@ -24,7 +24,7 @@
                         :rules="passwordRules" :type="show ? 'text' : 'password'" label="Contraseña *" :counter="15"
                         @click:append="show = !show" required outlined></v-text-field>
                     <div class="d-flex justify-center pb-4">
-                        <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onClicked">
+                        <v-btn rounded depressed large color="primary" elevation="0" :disabled="!valid" @click="onClicked">
                             Registrarse
                         </v-btn>
                     </div>

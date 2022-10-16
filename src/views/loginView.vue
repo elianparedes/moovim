@@ -18,9 +18,9 @@
             :type="show ? 'text' : 'password'" label="Contraseña" @click:append="show = !show" required outlined>
           </v-text-field>
         </v-form>
-        <v-checkbox color="red" v-model="rememberMe" label="Recordarme"></v-checkbox>
+        <v-checkbox color="primary" v-model="rememberMe" label="Recordarme"></v-checkbox>
         <div class="d-flex justify-center pb-4">
-          <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onLogin">
+          <v-btn rounded depressed large color="primary" elevation="0" :disabled="!valid" @click="onLogin">
             Iniciar sesión
           </v-btn>
         </div>
