@@ -36,6 +36,14 @@
       @success="editRoutine"
     />
 
+    <ConfirmationDialog
+      v-if="deleteCycleConfirmationDialog"
+      v-model="deleteCycleConfirmationDialog"
+      title="¿Eliminar ciclo?"
+      message="Si eliminas este ciclo, se eliminará de forma permanente de esta rutina."
+      @confirm="deleteCycle(deleteTargetCycle)"
+    />
+
     <v-snackbar v-model="saving" rounded="lg">
       Guardando cambios
 
@@ -243,18 +251,20 @@
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn
                                 icon
-                                class="ml-2"
-                                v-bind="attrs"
+                                @click="
+                                  deleteCycleConfirmationDialog = true;
+                                  deleteTargetCycle = cycleIndex;
+                                "
                                 v-on="on"
-                                @click="deleteCycle(cycleIndex)"
+                                v-bind="attrs"
                               >
-                                <v-icon size="18" class="material-icons-round"
+                                <v-icon class="material-icons-round" size="18px"
                                   >delete</v-icon
                                 >
                               </v-btn>
                             </template>
-                            <span>Eliminar ciclo</span>
-                          </v-tooltip>
+                            <span>Eliminar ciclo</span></v-tooltip
+                          >
                         </span>
                       </v-fade-transition>
                     </v-col>
@@ -323,6 +333,7 @@ import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 import ExerciseSet from "@/components/ExerciseSet.vue";
 import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
 import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue"
 
 export default {
   name: "RoutinesView",
@@ -331,6 +342,7 @@ export default {
     ExerciseSet,
     EditCycleDialog,
     EditRoutineDialog,
+    ConfirmationDialog
   },
   props: ["name", "id"],
   data: () => ({
@@ -343,6 +355,7 @@ export default {
     createCycleDialog: false,
     editCycleDialog: false,
     editRoutineDialog: false,
+    deleteCycleConfirmationDialog: false,
     newCycleName: "",
     newCycleRepetitions: 1,
     buttonLoading: false,
@@ -350,6 +363,7 @@ export default {
     error: false,
     success: false,
     included: [],
+    deleteTargetCycle: 0,
   }),
   watch: {
     $route: function (val) {

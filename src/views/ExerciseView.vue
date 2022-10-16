@@ -9,15 +9,11 @@
         <div class="font-weight-bold text-h4">{{ name }}</div>
         <div class="text-h6 font-weight-regular">{{ exercise.detail }}</div>
         <div class="d-flex mt-4" style="gap: 16px">
-          <v-chip
-            class="px-10 py-4"
-            color="gray"
-            outlined
+          <DeleteButton
+            title="¿Eliminar ejercicio?"
+            message="Si eliminas este ejercicio, se eliminará de forma permanente de tu biblioteca de ejercicios."
             @click="deleteExercise"
-          >
-            <v-icon left small class="material-icons-round">delete</v-icon>
-            Eliminar
-          </v-chip>
+          />
 
           <v-chip class="px-10 py-4" color="gray" outlined>
             <v-icon left small class="material-icons-round">share</v-icon>
@@ -85,6 +81,7 @@ import { mapActions } from "pinia";
 import { useExerciseStore } from "@/stores/exerciseStore.js";
 import { useExerciseImageStore } from "@/stores/exerciseImageStore.js";
 import EditExerciseDialog from "@/components/dialogs/EditExerciseDialog.vue";
+import DeleteButton from "@/components/buttons/DeleteButton.vue";
 
 export default {
   props: ["name", "id"],
@@ -123,6 +120,6 @@ export default {
       });
     },
   },
-  components: { EditExerciseDialog },
+  components: { EditExerciseDialog, DeleteButton },
 };
 </script>

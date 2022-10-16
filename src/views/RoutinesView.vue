@@ -44,16 +44,12 @@
               routines[selected]?.name
             }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <div>
-              <v-chip
-                class="px-8 mr-4"
-                color="gray"
-                outlined
+            <div class="d-flex" style="gap: 16px">
+              <DeleteButton
+                title="¿Eliminar rutina?"
+                message="Si eliminas esta rutina, se eliminará de forma permanente de tu biblioteca de rutinas."
                 @click="deleteRoutine"
-              >
-                <v-icon left small class="material-icons-round">delete</v-icon>
-                Eliminar
-              </v-chip>
+              />
               <v-chip class="px-8" color="gray" outlined @click="editRoutine">
                 <v-icon left small class="material-icons-round">edit</v-icon>
                 Editar
@@ -129,12 +125,14 @@ import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
+import DeleteButton from "@/components/buttons/DeleteButton.vue";
 
 export default {
   name: "RoutinesView",
   components: {
     WorkoutResultCard,
     ExerciseViewCard,
+    DeleteButton,
   },
   data() {
     return {
