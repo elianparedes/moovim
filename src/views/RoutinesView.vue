@@ -1,5 +1,5 @@
 <template>
-  <v-slide-x-transition>
+  <v-slide-x-transition hide-on-leave>
     <div
       id="routines"
       class="d-flex"
@@ -70,7 +70,7 @@
             "
           ></div>
         </div>
-        <v-scroll-y-transition mode="in" group hide-on-leave>
+        <v-slide-y-transition mode="in" group hide-on-leave>
           <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
             <v-row class="text-body-1 pl-4 mb-4 align-center">
               <v-col cols="6">
@@ -116,7 +116,7 @@
               class="mb-4 rounded-xl"
             ></ExerciseViewCard>
           </div>
-        </v-scroll-y-transition>
+        </v-slide-y-transition>
       </div></div
   ></v-slide-x-transition>
 </template>
