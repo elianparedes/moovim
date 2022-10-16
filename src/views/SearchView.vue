@@ -149,10 +149,10 @@
       <div>
         <ExerciseSummaryCard
           v-for="exercise in exercises.filter(function (item) {
-            return muscularesArray.includes(item.metadata.grupoMuscular);
+            return muscularesArray.includes(item.detail);
           })"
           :key="exercise.id"
-          :category="exercise.type"
+          :category="exercise.detail"
           :exercise="exercise.name"
           class="my-4 mr-6"
         ></ExerciseSummaryCard>
@@ -178,7 +178,7 @@ export default {
   routines: [],
   exercises:[],
   expand: false,
-  muscularesArray: ["Pectorales", "Hombros", "Tríceps", "Gemelos", "Piernas", "Espalda", "Abdominales", "Biceps"],
+  muscularesArray: ["Pectorales", "Hombros", "Tríceps", "Gemelos", "Piernas", "Espalda", "Abdominales", "Bíceps"],
   categoriasArray: ["Rutinas", "Ejercicios"],
   dificultadesArray: ["rookie", "intermediate", "expert"],
   gruposMusculares: [
