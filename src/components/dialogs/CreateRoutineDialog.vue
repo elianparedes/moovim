@@ -1,61 +1,25 @@
 <template>
-  <v-dialog
-    v-model="show"
-    width="30%"
-    transition="fade-transition"
-    class="rounded-xl"
-    overlay-opacity="0.9"
-    overlay-color="#181818"
-  >
+  <v-dialog v-model="show" width="30%" transition="fade-transition" class="rounded-xl" overlay-opacity="0.9"
+    overlay-color="#181818">
     <v-card class="d-inline-block pa-4" color="#1e1e1e" flat>
-      <v-card-title
-        class="d-inline-block font-weight-regular text-center mb-16"
-      >
+      <v-card-title class="d-inline-block font-weight-regular text-center mb-16">
         Nueva rutina
       </v-card-title>
 
       <v-card-text>
-        <v-text-field
-          outlined
-          class="rounded-lg"
-          label="Nombre"
-          v-model="routineName"
-        ></v-text-field>
-        <v-textarea
-          outlined
-          label="Descripción"
-          v-model="routineDetail"
-          counter="100"
-          rows="4"
-          row-height="20"
-          no-resize
-          class="rounded-lg"
-        ></v-textarea>
+        <v-form v-model="valid">
+          <v-text-field :rules=nameRules outlined class="rounded-lg" label="Nombre" v-model="routineName" counter="100"></v-text-field>
+          <v-textarea :rules=detailRules outlined label="Descripción" v-model="routineDetail" counter="100" rows="4" row-height="20"
+            no-resize class="rounded-lg"></v-textarea>
 
-        <v-select
-          outlined
-          class="rounded-lg"
-          :items="items"
-          item-text="category"
-          item-value="id"
-          label="Categoría"
-          item-color="gray"
-          v-model="routineCategory"
-        ></v-select>
+          <v-select outlined class="rounded-lg" :items="items" item-text="category" item-value="id" label="Categoría"
+            item-color="gray" v-model="routineCategory"></v-select>
+        </v-form>
       </v-card-text>
 
       <div class="text-center">
-        <v-btn
-          large
-          style="flex: 1"
-          rounded
-          elevation="0"
-          color="accent"
-          class="px-16 mt-8 mb-8"
-          :loading="loading"
-          @click="create"
-          >Crear rutina</v-btn
-        >
+        <v-btn :disabled="!valid" large style="flex: 1" rounded elevation="0" color="accent" class="px-16 mt-8 mb-8" :loading="loading"
+          @click="create">Crear rutina</v-btn>
       </div>
     </v-card>
   </v-dialog>
@@ -77,6 +41,13 @@ export default {
       routineCategory: "",
       loading: false,
       items: [{ id: 1, category: "Tonificación" }],
+      nameRules:
+        [v => (v.length <= 100) || 'El nombre debe tener menos de 100 caracteres',
+        (v) => !!v || "Se debe especificar el nombre de la rutina"],
+      detailRules:
+        [v => (v.length <= 100) || 'La descripción debe tener menos de 100 caracteres',
+        (v) => !!v || "Se debe especificar la descripción"],
+      valid: false,
     };
   },
   computed: {
