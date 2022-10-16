@@ -40,7 +40,7 @@
                 :desc="routine.detail"
                 :image="routine.metadata.image"
                 :author="routine.user.username"
-                :avatar="routine.avatar"
+                :avatar="routine.user.avatarUrl"
                 :verified="routine.verified"
                 :stars="routine.score"
                 :bookmarks="routine.bookmarks"
