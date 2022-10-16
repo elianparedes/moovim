@@ -26,6 +26,7 @@
                   :key="routine.id" md="4" xs="3">
                   <WorkoutResultCard
                     v-if="routine"
+                    :routineId="routine.id"
                     :name="routine.name"
                     :desc="routine.detail"
                     :image=routine.metadata.image
