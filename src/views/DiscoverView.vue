@@ -11,10 +11,10 @@
           :vue-style="'mx-1'"
           v-on:newOrder="
             $event === 'Recientes'
-              ? getOrdered('date', 'desc')
+              ? getOrderedWrapper('date', 'desc')
               : $event === 'Populares'
-              ? getOrdered('score', 'desc')
-              : getAllRoutines()
+              ? getOrderedWrapper('score', 'desc')
+              : getAllRoutinesWrapper()
           "
         ></SwitchButton>
       </div>
@@ -90,27 +90,63 @@ export default {
         (a, b) => this.routines.slice(k * 3, (k + 1) * 3)[b] || 0
       );
     },
-    getOrdered(orderBy, direction) {
-      this.$getRoutineOrdered(orderBy, direction).then((routines) => {
-        this.routines = routines.content;
-      });
+    getOrderedWrapper(orderBy, direction){
+      this.routines=[]
+      this.getOrdered(orderBy,direction,0)
     },
-    getAllRoutines() {
-      this.$getAllRoutine().then((routines) => {
-        this.routines = routines.content;
-      });
+    getOrdered(orderBy, direction, page){
+      this.$getPageRoutineOrdered(orderBy, direction, page)
+      .then((routines) => {
+        this.routines = this.routines.concat(routines.content);
+        this.isLast=routines.isLastPage;
+        return routines.isLastPage;
+      }).then((isLast) => {
+        if(!isLast && page<6){
+          this.getOrdered(orderBy,direction,page+1)
+          return;
+        }
+      })
+    },
+    getAllRoutinesWrapper(){
+      this.routines=[]
+      this.getAllRoutines(0)
+    },
+    getAllRoutines(page){
+      this.$getPageRoutine(page)
+      .then((routines) => {
+        this.routines = this.routines.concat(routines.content);
+        return routines.isLastPage;
+      }).then((isLast) => {
+        if(!isLast && page<5){
+          this.getAllRoutines(page+1)
+          return;
+        }
+      })
+    },
+    getAllExercisesWrapper(){
+      this.getAllExercises(0)
+    },
+    getAllExercises(page){
+      this.$getPageExercise(page)
+      .then((exercise) => {
+        this.exercises = this.exercises.concat(exercise.content);
+        return exercise.isLastPage;
+      }).then((isLast) => {
+        if(!isLast && page<5){
+          this.getAllExercises(page+1)
+          return;
+        }
+      })
     },
     ...mapActions(useRoutineStore, {
-      $getAllRoutine: "getAllRoutine",
-      $getRoutineOrdered: "getRoutineOrdered",
+      $getPageRoutineOrdered : "getPageRoutineOrdered",
+      $getPageRoutine : "getPageRoutine",
     }),
-    ...mapActions(useExerciseStore, { $getAllExercises: "getAllExercises" }),
+    ...mapActions(useExerciseStore, { $getPageExercise: "getPageExercise" }),
   },
   created() {
-    this.getOrdered("score", "desc");
-    this.$getAllExercises().then((exercises) => {
-      this.exercises = exercises.content;
-    });
+    this.getOrderedWrapper("score", "desc");
+    this.getAllExercisesWrapper()
   },
 };
 </script>
