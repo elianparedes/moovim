@@ -10,7 +10,7 @@
     <v-card class="d-inline-block pa-8" color="#252525" flat>
       <div class="mb-8 text-center">
         <div class="d-inline-block font-weight-regular text-h6 text-center">
-          Crear rutina
+          Crear ejercicio
         </div>
         <v-btn
           icon
@@ -25,33 +25,33 @@
         solo
         placeholder="Nombre"
         flat
-        v-model="routineName"
+        v-model="exerciseName"
       ></v-text-field>
+
+      <v-select
+        class="mt-4"
+        :items="items"
+        item-text="category"
+        item-value="category"
+        placeholder="Músculos principales"
+        solo
+        flat
+        color="gray"
+        item-color="gray"
+        v-model="exerciseDetail"
+      ></v-select>
 
       <v-textarea
         solo
         name="input-7-4"
         placeholder="Descripción"
-        v-model="routineDetail"
+        v-model="exerciseProcedure"
         flat
         counter
         rows="4"
         row-height="20"
         no-resize
       ></v-textarea>
-
-      <v-select
-        class="mt-4"
-        :items="items"
-        item-text="category"
-        item-value="id"
-        placeholder="Categoría"
-        solo
-        flat
-        color="gray"
-        item-color="gray"
-        v-model="routineCategory"
-      ></v-select>
 
       <div class="d-flex mt-8">
         <v-btn
@@ -71,9 +71,8 @@
 </template>
 
 <script>
-import router from "@/router";
 import { mapActions } from "pinia";
-import { useRoutineStore } from "@/stores/routineStore";
+import { useExerciseStore } from "@/stores/exerciseStore";
 
 export default {
   props: {
@@ -81,11 +80,20 @@ export default {
   },
   data() {
     return {
-      routineName: "",
-      routineDetail: "",
-      routineCategory: "",
+      exerciseName: "",
+      exerciseDetail: "",
+      exerciseProcedure: "",
       loading: false,
-      items: [{ id: 1, category: "Tonificación" }],
+      items: [
+        { category: "Pectorales" },
+        { category: "Bíceps" },
+        { category: "Tríceps" },
+        { category: "Espalda" },
+        { category: "Gemelos" },
+        { category: "Abdominales" },
+        { category: "Hombros" },
+        { category: "Piernas" },
+      ],
     };
   },
   computed: {
@@ -99,36 +107,20 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useRoutineStore, {
-      $addRoutine: "addRoutine",
+    ...mapActions(useExerciseStore, {
+      $addexercise: "addExercise",
     }),
     create() {
       this.loading = true;
-      this.$addRoutine(
-        this.routineName,
-        this.routineDetail,
-        true,
-        { id: this.routineCategory },
-        "rookie",
-        {
-          image:
-            "https://images.pexels.com/photos/2425232/pexels-photo-2425232.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        }
-      ).then((routine) => {
+      this.$addexercise(this.exerciseName, "exercise", this.exerciseDetail, {
+        procedure: this.exerciseProcedure,
+      }).then(() => {
         this.success();
-        router.push({
-          name: "edit",
-          params: {
-            id: routine.id,
-            name: routine.name,
-          },
-        });
       });
     },
     success() {
       this.loading = false;
       this.show = false;
-      this.$emit("success", this.editedCycle);
     },
     close() {
       this.$emit("close");

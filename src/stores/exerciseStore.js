@@ -51,10 +51,10 @@ export const useExerciseStore = defineStore("exercises", {
     },
     async deleteExercise(fullExercise) {
       await exercisesApi.delete(fullExercise.id);
-      const index = this.items.findIndex(fullExercise);
+      /*const index = this.items.findIndex(fullExercise);
       if (index >= 0) {
         return this.splice(index);
-      }
+      }*/
     },
   },
 });

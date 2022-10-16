@@ -47,10 +47,10 @@
 
           <v-list-item link
             ><v-list-item-icon class="align-self-center">
-              <v-icon class="material-icons-round">add_circle</v-icon>
+              <v-icon class="material-icons-outlined">add_box</v-icon>
             </v-list-item-icon>
 
-            <v-list-item-content link @click="createRoutineDialog = true">
+            <v-list-item-content link @click="createExerciseDialog = true">
               <v-list-item-title>Crear ejercicio</v-list-item-title>
             </v-list-item-content></v-list-item
           >
@@ -111,8 +111,11 @@
       <CreateRoutineDialog
         v-if="createRoutineDialog"
         v-model="createRoutineDialog"
-        :cycle="{}"
-        :routine-id="1"
+      />
+
+      <CreateExerciseDialog
+        v-if="createExerciseDialog"
+        v-model="createExerciseDialog"
       />
 
       <router-view class="pl-4"></router-view>
@@ -124,11 +127,12 @@
 import { mapState, mapActions } from "pinia";
 import { useSecurityStore } from "@/stores/securityStore.js";
 import CreateRoutineDialog from "@/components/dialogs/CreateRoutineDialog.vue";
-import MoovimLogo from "@/components/logo/MoovimLogo"
+import MoovimLogo from "@/components/logo/MoovimLogo";
+import CreateExerciseDialog from "./components/dialogs/CreateExerciseDialog.vue";
 
 export default {
   name: "App",
-  components: { CreateRoutineDialog, MoovimLogo },
+  components: { CreateRoutineDialog, MoovimLogo, CreateExerciseDialog },
   data() {
     return {
       items: [
@@ -139,6 +143,7 @@ export default {
       result: null,
       controller: null,
       createRoutineDialog: false,
+      createExerciseDialog: false,
       avatar: null,
     };
   },
