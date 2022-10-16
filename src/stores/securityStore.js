@@ -13,6 +13,9 @@ export const useSecurityStore = defineStore("security", {
     isLoggedIn() {
       return this.token != null;
     },
+    getUser() {
+      return this.user;
+    },
   },
   actions: {
     initialize() {
@@ -21,7 +24,7 @@ export const useSecurityStore = defineStore("security", {
         this.setToken(token);
         return;
       }
-      token=sessionStorage.getItem(SECURITY_TOKEN_KEY);
+      token = sessionStorage.getItem(SECURITY_TOKEN_KEY);
       if (token) {
         this.setToken(token);
         return;
@@ -35,8 +38,7 @@ export const useSecurityStore = defineStore("security", {
       Api.token = token;
     },
     updateToken(token, rememberMe) {
-      if (rememberMe) 
-        localStorage.setItem(SECURITY_TOKEN_KEY, token);
+      if (rememberMe) localStorage.setItem(SECURITY_TOKEN_KEY, token);
       else {
         sessionStorage.setItem(SECURITY_TOKEN_KEY, token);
       }
@@ -49,6 +51,8 @@ export const useSecurityStore = defineStore("security", {
     async login(credentials, rememberMe) {
       const result = await UserApi.login(credentials);
       this.updateToken(result.token, rememberMe);
+      const user = await this.getCurrentUser();
+      this.setUser(user);
     },
     async signUp(credentials) {
       await UserApi.signUp(credentials);
@@ -73,14 +77,14 @@ export const useSecurityStore = defineStore("security", {
       return result;
     },
     async modifyUser(data) {
-      const result= await UserApi.modifyUser(data);
+      const result = await UserApi.modifyUser(data);
       this.setUser(result);
     },
     async deleteAccount() {
       await UserApi.deleteAccount();
     },
     async getCurrentUserRoutines() {
-      await UserApi.getCurrentUserRoutines();
-    }
+      return await UserApi.getCurrentUserRoutines();
+    },
   },
 });

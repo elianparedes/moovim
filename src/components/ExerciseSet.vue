@@ -42,8 +42,8 @@
             @input="updateValue('repetitions', $event.target.value)"
             :value="value.repetitions"
             type="number"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2 numeric-input"
+            style="width: 100%; text-align: center"
           />
         </v-col>
 
@@ -52,8 +52,8 @@
             @input="updateValue('weight', $event.target.value)"
             :value="value.weight"
             type="number"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2 numeric-input"
+            style="width: 100%; text-align: center"
           />
         </v-col>
 
@@ -62,8 +62,8 @@
             @input="updateValue('duration', $event.target.value)"
             :value="value.duration"
             type="number"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            class="white--text rounded-lg text-h6 font-weight-regular py-2 numeric-input"
+            style="width: 100%; text-align: center"
           />
         </v-col>
       </v-row>
@@ -77,18 +77,6 @@ export default {
   props: {
     name: { type: String, required: false },
     detail: { type: String, required: false },
-    repetitions: {
-      type: Number,
-      required: false,
-    },
-    weight: {
-      type: Number,
-      required: false,
-    },
-    duration: {
-      type: Number,
-      required: false,
-    },
     value: {
       type: Object,
       required: true,
@@ -148,5 +136,22 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.centered-input >>> input {
+  text-align: center;
+}
+
+.numeric-input:focus-visible,
+.numeric-input:focus {
+  outline: 1.5px #bf3d3d solid !important;
+}
+.numeric-input:hover {
+  outline: 1.5px white solid;
+}
+
+.numeric-input {
+  transition: all 150ms ease-in-out;
+  outline: 1.5px gray solid;
 }
 </style>

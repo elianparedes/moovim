@@ -11,39 +11,40 @@
       <v-card-title
         class="d-inline-block font-weight-regular text-center mb-16"
       >
-        Nueva rutina
+        Nuevo ejercicio
       </v-card-title>
 
       <v-card-text>
         <v-text-field
-          outlined
           class="rounded-lg"
+          outlined
           label="Nombre"
-          v-model="routineName"
+          v-model="exerciseName"
         ></v-text-field>
-        <v-textarea
-          outlined
-          label="Descripción"
-          v-model="routineDetail"
-          counter="100"
-          rows="4"
-          row-height="20"
-          no-resize
-          class="rounded-lg"
-        ></v-textarea>
 
         <v-select
           outlined
           class="rounded-lg"
           :items="items"
           item-text="category"
-          item-value="id"
-          label="Categoría"
+          item-value="category"
+          label="Músculos principales"
           item-color="gray"
-          v-model="routineCategory"
+          v-model="exerciseDetail"
         ></v-select>
-      </v-card-text>
 
+        <v-textarea
+          outlined
+          name="input-7-4"
+          placeholder="Descripción"
+          v-model="exerciseProcedure"
+          counter
+          rows="4"
+          row-height="20"
+          no-resize
+          class="rounded-lg"
+        ></v-textarea>
+      </v-card-text>
       <div class="text-center">
         <v-btn
           large
@@ -51,10 +52,10 @@
           rounded
           elevation="0"
           color="accent"
-          class="px-16 mt-8 mb-8"
+          class="px-16 mb-4 mt-8"
           :loading="loading"
-          @click="create"
-          >Crear rutina</v-btn
+          @click="createExercise"
+          >Crear</v-btn
         >
       </div>
     </v-card>
@@ -62,9 +63,8 @@
 </template>
 
 <script>
-import router from "@/router";
 import { mapActions } from "pinia";
-import { useRoutineStore } from "@/stores/routineStore";
+import { useExerciseStore } from "@/stores/exerciseStore";
 
 export default {
   props: {
@@ -72,11 +72,20 @@ export default {
   },
   data() {
     return {
-      routineName: "",
-      routineDetail: "",
-      routineCategory: "",
+      exerciseName: "",
+      exerciseDetail: "",
+      exerciseProcedure: "",
       loading: false,
-      items: [{ id: 1, category: "Tonificación" }],
+      items: [
+        { category: "Pectorales" },
+        { category: "Bíceps" },
+        { category: "Tríceps" },
+        { category: "Espalda" },
+        { category: "Gemelos" },
+        { category: "Abdominales" },
+        { category: "Hombros" },
+        { category: "Piernas" },
+      ],
     };
   },
   computed: {
@@ -90,36 +99,20 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useRoutineStore, {
-      $addRoutine: "addRoutine",
+    ...mapActions(useExerciseStore, {
+      $addexercise: "addExercise",
     }),
-    create() {
+    createExercise() {
       this.loading = true;
-      this.$addRoutine(
-        this.routineName,
-        this.routineDetail,
-        true,
-        { id: this.routineCategory },
-        "rookie",
-        {
-          image:
-            "https://images.pexels.com/photos/2425232/pexels-photo-2425232.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        }
-      ).then((routine) => {
+      this.$addexercise(this.exerciseName, "exercise", this.exerciseDetail, {
+        procedure: this.exerciseProcedure,
+      }).then(() => {
         this.success();
-        router.push({
-          name: "edit",
-          params: {
-            id: routine.id,
-            name: routine.name,
-          },
-        });
       });
     },
     success() {
       this.loading = false;
       this.show = false;
-      this.$emit("success", this.editedCycle);
     },
     close() {
       this.$emit("close");

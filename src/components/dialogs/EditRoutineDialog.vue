@@ -1,58 +1,76 @@
 <template>
   <v-dialog
     v-model="show"
-    width="500"
+    width="50%"
     transition="fade-transition"
-    class="rounded-xl"
+    overlay-opacity="0.9"
+    overlay-color="#121212"
   >
-    <v-card class="d-inline-block pa-8" color="#252525" flat>
-      <div class="mb-8 text-center">
-        <div class="d-inline-block font-weight-regular text-h6 text-center">
-          Editar rutina
+    <v-card class="pa-4" color="#1e1e1e" flat>
+      <v-card-title
+        class="d-inline-block font-weight-regular text-center mb-16"
+      >
+        Editar rutina
+      </v-card-title>
+      <v-card-text>
+        <div class="d-flex" style="gap: 32px">
+          <div class="d-flex flex-column" style="flex: 50%">
+            <v-text-field
+              outlined
+              label="Nombre"
+              v-model="editedRoutine.name"
+              class="rounded-lg"
+            ></v-text-field>
+
+            <v-textarea
+              outlined
+              label="Descripción"
+              v-model="editedRoutine.detail"
+              counter="100"
+              no-resize
+              rows="4"
+              style="flex: 1"
+              class="rounded-lg"
+            ></v-textarea>
+          </div>
+          <div class="d-flex flex-column" style="flex: 50%">
+            <v-img
+              style="background-color: grey"
+              class="rounded-xl"
+              :src="editedRoutine.metadata.image"
+              :aspect-ratio="16 / 9"
+            />
+          </div>
         </div>
-        <v-btn
-          icon
-          style="position: absolute; right: 0px; top: 0px; margin: 32px"
-          @click.stop="show = false"
-        >
-          <v-icon class="material-icons-round">close</v-icon>
-        </v-btn>
-      </div>
 
-      <v-text-field
-        solo
-        placeholder="Nombre"
-        flat
-        v-model="editedRoutine.name"
-      ></v-text-field>
+        <div class="d-flex mt-8" style="gap: 32px">
+          <div class="d-flex flex-column" style="flex: 50%">
+            <v-select
+              outlined
+              label="Categoría"
+              no-resize
+              class="rounded-lg"
+            ></v-select>
+          </div>
+          <div class="d-flex flex-column" style="flex: 50%">
+            <v-text-field
+              outlined
+              label="Portada"
+              flat
+              class="rounded-lg"
+              v-model="editedRoutine.metadata.image"
+            ></v-text-field>
+          </div></div
+      ></v-card-text>
 
-      <v-textarea
-        solo
-        name="input-7-4"
-        label="Descripción"
-        v-model="editedRoutine.detail"
-        flat
-        counter
-        rows="4"
-        row-height="20"
-        no-resize
-      ></v-textarea>
-
-      <v-text-field
-        solo
-        placeholder="Imagen"
-        flat
-        v-model="editedRoutine.metadata.image"
-      ></v-text-field>
-
-      <div class="d-flex mt-8">
+      <div class="text-center my-4">
         <v-btn
           large
           style="flex: 1"
           rounded
           elevation="0"
-          class="font-weight-bold"
-          color="#BF3D3D"
+          class="px-16"
+          color="accent"
           :loading="loading"
           @click="save"
           >Guardar cambios</v-btn

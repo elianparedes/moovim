@@ -1,5 +1,5 @@
 <template>
-  <v-slide-x-transition>
+  <v-slide-x-transition hide-on-leave>
     <div
       id="routines"
       class="d-flex"
@@ -44,16 +44,12 @@
               routines[selected]?.name
             }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <div>
-              <v-chip
-                class="px-8 mr-4"
-                color="gray"
-                outlined
+            <div class="d-flex" style="gap: 16px">
+              <DeleteButton
+                title="¿Eliminar rutina?"
+                message="Si eliminas esta rutina, se eliminará de forma permanente de tu biblioteca de rutinas."
                 @click="deleteRoutine"
-              >
-                <v-icon left small class="material-icons-round">delete</v-icon>
-                Eliminar
-              </v-chip>
+              />
               <v-chip class="px-8" color="gray" outlined @click="editRoutine">
                 <v-icon left small class="material-icons-round">edit</v-icon>
                 Editar
@@ -70,7 +66,7 @@
             "
           ></div>
         </div>
-        <v-scroll-y-transition mode="in" group hide-on-leave>
+        <v-slide-y-transition mode="in" group hide-on-leave>
           <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
             <v-row class="text-body-1 pl-4 mb-4 align-center">
               <v-col cols="6">
@@ -87,17 +83,17 @@
 
               <template v-if="n === 0">
                 <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="18px" class="material-icons-round"
+                  <v-icon size="24px" class="material-icons-round"
                     >replay</v-icon
                   >
                 </v-col>
                 <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="18px" class="material-icons-round"
+                  <v-icon size="24px" class="material-icons-round"
                     >fitness_center</v-icon
                   >
                 </v-col>
                 <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="18px" class="material-icons-outlined"
+                  <v-icon size="24px" class="material-icons-outlined"
                     >timer</v-icon
                   >
                 </v-col>
@@ -116,7 +112,7 @@
               class="mb-4 rounded-xl"
             ></ExerciseViewCard>
           </div>
-        </v-scroll-y-transition>
+        </v-slide-y-transition>
       </div></div
   ></v-slide-x-transition>
 </template>
@@ -129,19 +125,20 @@ import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
+import DeleteButton from "@/components/buttons/DeleteButton.vue";
 
 export default {
   name: "RoutinesView",
   components: {
     WorkoutResultCard,
     ExerciseViewCard,
+    DeleteButton,
   },
   data() {
     return {
       loading: true,
       routines: null,
       cycles: null,
-
       selected: null,
       items: [
         { icon: "home", title: "Inicio" },

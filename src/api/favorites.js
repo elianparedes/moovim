@@ -5,7 +5,7 @@ export {favoritesApi}
 class favoritesApi{
 
     static getUrl(slug){
-        return `${Api.baseUrl}/favorites${slug ? `/${slug}` : "" }`;
+        return `${Api.baseUrl}/favourites${slug ? `/${slug}` : "" }`;
     }
 
     static async getAll(controller){

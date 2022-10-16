@@ -144,22 +144,41 @@ export default {
 
 }),
   beforeMount() {
-  this.searchQuery();
+  this.searchQueryWrapper();
   },
   
   
   methods: {
-  ...mapActions(useRoutineStore, { $getRoutineQuery: "getRoutineQuery" }),
-  ...mapActions(useExerciseStore, { $getExerciseQuery: "getExerciseQuery" }),
-
-  searchQuery(){
-    this.$getRoutineQuery(this.$route.query.query)
-    .then((routinesQuery) => {
-        this.routines=routinesQuery.content
+  ...mapActions(useRoutineStore, { $getPageRoutineQuery: "getPageRoutineQuery" }),
+  ...mapActions(useExerciseStore, { $getPageExerciseQuery: "getPageExerciseQuery" }),
+  searchQueryWrapper(){
+    this.exercises=[]
+    this.routines=[]
+    this.getAllExercisesQuery(0)
+    this.getAllRoutinesQuery(0)
+  },
+  getAllExercisesQuery(page){
+    this.$getPageExerciseQuery(this.$route.query.query, page)
+    .then((exercise) => {
+      this.exercises = this.exercises.concat(exercise.content);
+      return exercise.isLastPage;
+    }).then((isLast) => {
+      if(!isLast && page<4){
+        this.getAllExercisesQuery(page+1)
+        return;
+      }
     })
-    this.$getExerciseQuery(this.$route.query.query)
-    .then((exerciseQuery) => {
-        this.exercises=exerciseQuery.content
+  },
+  getAllRoutinesQuery(page){
+    this.$getPageRoutineQuery(this.$route.query.query, page)
+    .then((routines) => {
+      this.routines = this.routines.concat(routines.content);
+      return routines.isLastPage;
+    }).then((isLast) => {
+      if(!isLast && page<4){
+        this.getAllRoutinesQuery(page+1)
+        return;
+      }
     })
   },
   restoreFilters(){
@@ -183,7 +202,7 @@ export default {
   
   watch: {
     '$route'(){
-        this.searchQuery();
+        this.searchQueryWrapper();
     }
   }
   

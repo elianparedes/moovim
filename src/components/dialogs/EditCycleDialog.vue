@@ -1,56 +1,50 @@
 <template>
-  <v-dialog
-    v-model="show"
-    width="500"
-    transition="fade-transition"
-    class="rounded-xl"
-  >
-    <v-card class="d-inline-block pa-8" color="#252525" flat>
-      <div class="mb-8 text-center">
-        <div class="d-inline-block font-weight-regular text-h6 text-center">
-          Editar ciclo
-        </div>
-        <v-btn
-          icon
-          style="position: absolute; right: 0px; top: 0px; margin: 32px"
-          @click.stop="show = false"
-        >
-          <v-icon class="material-icons-round">close</v-icon>
-        </v-btn>
-      </div>
+  <v-dialog v-model="show" width="30%" transition="fade-transition">
+    <v-card class="d-inline-block pa-8" color="#1e1e1e" flat>
+      <v-card-title
+        class="d-inline-block font-weight-regular text-center mb-16"
+      >
+        Editar ciclo
+      </v-card-title>
 
-      <v-text-field
-        solo
-        placeholder="Nombre"
-        flat
-        v-model="editedCycle.name"
-      ></v-text-field>
+      <v-card-text>
+        <v-text-field
+          outlined
+          label="Nombre"
+          flat
+          v-model="editedCycle.name"
+          class="rounded-lg"
+        ></v-text-field>
+      </v-card-text>
 
       <v-divider class="mb-8"></v-divider>
-      <v-row class="mb-4">
-        <v-col class="text-center">
-          <v-icon size="24px" class="material-icons-round mr-2">loop</v-icon
-          >Repeticiones
-        </v-col>
-      </v-row>
+      <v-card-text>
+        <v-row class="mb-4">
+          <v-col class="text-center">
+            <v-icon size="24px" class="material-icons-round mr-2">loop</v-icon
+            >Repeticiones
+          </v-col>
+        </v-row>
 
-      <input
-        placeholder="1"
-        type="number"
-        maxlength="3"
-        class="white--text rounded-lg text-h6 font-weight-regular py-2 mb-16"
-        style="width: 100%; text-align: center; background-color: #1e1e1e"
-        v-model.number="editedCycle.repetitions"
-      />
-
-      <div class="d-flex">
+        <v-text-field
+          outlined
+          type="number"
+          maxlength="3"
+          class="white--text rounded-lg text-h6 font-weight-regular centered-input"
+          style="width: 100%; text-align: center"
+          v-model.number="editedCycle.repetitions"
+          hide-spin-buttons
+          hide-details
+        />
+      </v-card-text>
+      <div class="text-center">
         <v-btn
           large
           style="flex: 1"
           rounded
           elevation="0"
-          class="font-weight-bold"
-          color="#BF3D3D"
+          class="px-16 mt-16 mb-4"
+          color="accent"
           :loading="loading"
           @click="save"
           >Guardar cambios</v-btn
@@ -142,5 +136,9 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: none;
+}
+
+.centered-input >>> input {
+  text-align: center;
 }
 </style>

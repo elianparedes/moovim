@@ -28,14 +28,17 @@
         </v-item-group>
       </div>
 
-      <ExerciseView
-        v-if="selectedExercise"
-        :name="selectedExercise.name"
-        :id="selectedExercise.id"
-        :key="selectedExercise.id"
-        class="px-8"
-        style="flex: 50%; overflow-y: auto"
-      /></div
+      <v-fade-transition hide-on-leave>
+        <ExerciseView
+          v-if="selectedExercise"
+          :name="selectedExercise.name"
+          :id="selectedExercise.id"
+          :key="selectedExercise.id"
+          class="px-8"
+          style="flex: 50%; overflow-y: auto"
+          @delete="showDeleted"
+        />
+      </v-fade-transition></div
   ></v-slide-x-transition>
 </template>
 
@@ -70,6 +73,14 @@ export default {
       this.$getAllExercises().then((exercises) => {
         this.exercises = exercises.content;
       });
+    },
+    showDeleted(deletedExercise) {
+      this.exercises.splice(
+        this.exercises.findIndex(
+          (exercise) => exercise.id === deletedExercise.id
+        ),
+        1
+      );
     },
   },
   components: { SelectableExerciseSummaryCard, ExerciseView },

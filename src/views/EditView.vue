@@ -36,6 +36,14 @@
       @success="editRoutine"
     />
 
+    <ConfirmationDialog
+      v-if="deleteCycleConfirmationDialog"
+      v-model="deleteCycleConfirmationDialog"
+      title="¿Eliminar ciclo?"
+      message="Si eliminas este ciclo, se eliminará de forma permanente de esta rutina."
+      @confirm="deleteCycle(deleteTargetCycle)"
+    />
+
     <v-snackbar v-model="saving" rounded="lg">
       Guardando cambios
 
@@ -54,7 +62,7 @@
     <v-card elevation="0" class="rounded-xl" color="transparent">
       <v-img
         content-class="pl-4 pr-16 pt-4 pb-4 d-flex flex-column"
-        style="width: 100%; height: 350px; border: red 2px"
+        style="width: 100%; height: 350px"
         :src="routine.metadata.image"
         :aspect-ratio="16 / 9"
         gradient="to right, #212121 0%, rgba(43, 43, 43, 1) 15%, rgba(43, 43, 43, 0.6) 50%"
@@ -79,9 +87,8 @@
     <div>
       <v-dialog
         v-model="createCycleDialog"
-        width="500"
+        width="30%"
         transition="fade-transition"
-        class="rounded-xl"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-chip
@@ -113,52 +120,53 @@
             Nuevo ciclo
           </v-chip>
         </template>
-        <v-card :key="name" class="d-inline-block pa-8" color="#252525" flat>
-          <div class="mb-8 text-center">
-            <div class="d-inline-block font-weight-regular text-h6 text-center">
-              Crear ciclo
-            </div>
-            <v-btn
-              icon
-              style="position: absolute; right: 0px; top: 0px; margin: 32px"
-              @click="createCycleDialog = false"
-            >
-              <v-icon class="material-icons-round">close</v-icon>
-            </v-btn>
-          </div>
+        <v-card :key="name" class="d-inline-block pa-4" color="#1e1e1e" flat>
+          <v-card-title
+            class="d-inline-block font-weight-regular text-center mb-16"
+          >
+            Nuevo ciclo
+          </v-card-title>
 
-          <v-text-field
-            solo
-            placeholder="Nombre"
-            flat
-            v-model="newCycleName"
-          ></v-text-field>
+          <v-card-text>
+            <v-text-field
+              outlined
+              label="Nombre"
+              flat
+              v-model="newCycleName"
+              class="rounded-lg"
+            ></v-text-field>
+          </v-card-text>
 
-          <v-divider class="mb-8"></v-divider>
-          <v-row class="mb-4">
-            <v-col class="text-center">
-              <v-icon size="18px" class="material-icons-round mr-2">loop</v-icon
-              >Repeticiones
-            </v-col>
-          </v-row>
+          <v-divider class="mb-8 mx-6"></v-divider>
+          <v-card-text>
+            <v-row class="mb-4">
+              <v-col class="text-center">
+                <v-icon size="18px" class="material-icons-round mr-2"
+                  >loop</v-icon
+                >Repeticiones
+              </v-col>
+            </v-row>
 
-          <input
-            placeholder="1"
-            type="number"
-            maxlength="3"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2 mb-16"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
-            v-model="newCycleRepetitions"
-          />
-
-          <div class="d-flex">
+            <v-text-field
+              outlined
+              placeholder="1"
+              type="number"
+              maxlength="3"
+              class="white--text rounded-lg text-h6 font-weight-regularmb-16 centered-input"
+              style="width: 100%; text-align: center"
+              v-model="newCycleRepetitions"
+              hide-spin-buttons
+              hide-details
+            />
+          </v-card-text>
+          <div class="text-center">
             <v-btn
               large
               style="flex: 1"
               rounded
               elevation="0"
-              class="font-weight-bold"
-              color="#BF3D3D"
+              class="px-16 mt-16 mb-4"
+              color="accent"
               :loading="buttonLoading"
               @click="createCycle"
               >Crear ciclo</v-btn
@@ -243,18 +251,20 @@
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn
                                 icon
-                                class="ml-2"
-                                v-bind="attrs"
+                                @click="
+                                  deleteCycleConfirmationDialog = true;
+                                  deleteTargetCycle = cycleIndex;
+                                "
                                 v-on="on"
-                                @click="deleteCycle(cycleIndex)"
+                                v-bind="attrs"
                               >
-                                <v-icon size="18" class="material-icons-round"
+                                <v-icon class="material-icons-round" size="18px"
                                   >delete</v-icon
                                 >
                               </v-btn>
                             </template>
-                            <span>Eliminar ciclo</span>
-                          </v-tooltip>
+                            <span>Eliminar ciclo</span></v-tooltip
+                          >
                         </span>
                       </v-fade-transition>
                     </v-col>
@@ -323,6 +333,7 @@ import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 import ExerciseSet from "@/components/ExerciseSet.vue";
 import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
 import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
 
 export default {
   name: "RoutinesView",
@@ -331,6 +342,7 @@ export default {
     ExerciseSet,
     EditCycleDialog,
     EditRoutineDialog,
+    ConfirmationDialog,
   },
   props: ["name", "id"],
   data: () => ({
@@ -343,13 +355,15 @@ export default {
     createCycleDialog: false,
     editCycleDialog: false,
     editRoutineDialog: false,
+    deleteCycleConfirmationDialog: false,
     newCycleName: "",
-    newCycleRepetitions: 0,
+    newCycleRepetitions: 1,
     buttonLoading: false,
     saving: false,
     error: false,
     success: false,
     included: [],
+    deleteTargetCycle: 0,
   }),
   watch: {
     $route: function (val) {
@@ -543,5 +557,9 @@ input[type="number"] {
 }
 .list-complete-leave-active {
   position: absolute;
+}
+
+.centered-input >>> input {
+  text-align: center;
 }
 </style>

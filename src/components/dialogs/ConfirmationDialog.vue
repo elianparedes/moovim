@@ -5,30 +5,24 @@
     transition="fade-transition"
     class="rounded-xl"
   >
-    <v-card class="d-inline-block pa-8" color="#252525" flat>
-      <div class="mb-8 text-center">
-        <div class="d-inline-block font-weight-regular text-h6 text-center">
-          Confirmar acción
-        </div>
-        <v-btn
-          icon
-          style="position: absolute; right: 0px; top: 0px; margin: 32px"
-          @click.stop="show = false"
-        >
-          <v-icon class="material-icons-round">close</v-icon>
-        </v-btn>
-      </div>
+    <v-card class="d-inline-block pa-8" color="#1e1e1e" flat>
+      <v-card-title class="d-inline-block font-weight-regular text-center mb-4">
+        {{ title }}
+      </v-card-title>
 
-      <div class="my-16">{{ message }}</div>
+      <v-card-text>
+        {{ message }}
+      </v-card-text>
 
-      <div class="d-flex" style="gap: 16px">
+      <v-card-actions class="d-flex mt-8" style="gap: 16px">
         <v-btn
           large
           style="flex: 1"
           rounded
           outlined
           elevation="0"
-          class="font-weight-bold white--text"
+          content-class="white--text"
+          color="grey"
           :loading="loading"
           @click="close"
           >Cancelar</v-btn
@@ -37,14 +31,12 @@
           large
           style="flex: 1"
           rounded
-          elevation="0"
-          class="font-weight-bold"
           color="#BF3D3D"
           :loading="loading"
           @click="confirm"
           >Confirmar</v-btn
         >
-      </div>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -53,6 +45,10 @@
 export default {
   props: {
     message: {
+      type: String,
+      required: true,
+    },
+    title: {
       type: String,
       required: true,
     },
@@ -75,9 +71,11 @@ export default {
   },
   methods: {
     confirm() {
+      this.show = false;
       this.$emit("confirm");
     },
     close() {
+      this.show = false;
       this.$emit("close");
     },
   },
