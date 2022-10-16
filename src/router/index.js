@@ -34,6 +34,11 @@ const routes = [
         name: "Objetivos",
         component: () => import("../views/ObjectiveView"),
       },
+      {
+        path: "muscleGroup",
+        name: "Grupos musculares",
+        component: () => import("../views/muscleGroupView"),
+      },
     ],
   },
   {

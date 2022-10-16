@@ -31,6 +31,7 @@
           :key="group.name"
           class="d-inline-block mr-4"
           :name="group.name"
+          @clicked="searchExercise($event)"
         />
       </div>
     </div>
@@ -95,7 +96,15 @@ export default {
           "https://images.unsplash.com/photo-1562771379-eafdca7a02f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
       },
     ],
-    groups: [{ name: "Tren Superior" }, { name: "Tren Inferior" }],
+    groups: [
+      { name: "Pectorales" }, 
+      { name: "Tríceps" }, 
+      { name: "Gemelos" },
+      { name: "Espalda" },
+      { name: "Bíceps" },
+      { name: "Abdominales" },
+      { name: "Hombros" },
+      { name: "Piernas" }],
   }),
   components: {
     WorkoutCategoryCard,
@@ -122,6 +131,9 @@ export default {
     },
     searchRoutine(objetivo){
       router.push({ path: "objective", query: { query: objetivo } });
+    },
+    searchExercise(musculo){
+      router.push({ path: "muscleGroup", query: { query: musculo } });
     }
   },
   created() {
