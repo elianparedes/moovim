@@ -38,8 +38,8 @@ class UserApi {
     static async deleteAccount(controller){
         return await Api.delete(UserApi.getUrl('current'),true, controller)
     }
-    static async getCurrentUserRoutines(controller){
-        return await Api.get(UserApi.getUrl('current/routines'), true, controller);
+    static async getCurrentUserRoutines(maxRoutines, controller){
+        return await Api.get(UserApi.getUrl('current/routines?size='+maxRoutines), true, controller);
     }
 }
 

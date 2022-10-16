@@ -99,9 +99,9 @@
       </div>
       <div>
       <ExerciseSummaryCard v-for="exercise in exercises.filter( function (item) {
-          return muscularesArray.includes(item.metadata.grupoMuscular)
+          return muscularesArray.includes(item.detail)
       })" 
-      :key="exercise.id" :category="exercise.type" :exercise="exercise.name" class="my-4 mr-6"></ExerciseSummaryCard>
+      :key="exercise.id" :category="exercise.detail" :exercise="exercise.name" class="my-4 mr-6"></ExerciseSummaryCard>
       </div>
   </div>
   </div>
@@ -125,18 +125,18 @@ export default {
   routines: [],
   exercises:[],
   expand: false,
-  muscularesArray: ["Pecho", "Hombros", "Triceps", "Isquiotibiales", "Gluteos", "Espalda", "Abdominales", "Biceps", "Cuadriceps"],
+  muscularesArray: ["Pectorales", "Hombros", "Tríceps", "Gemelos", "Piernas", "Espalda", "Abdominales", "Biceps"],
   categoriasArray: ["Rutinas", "Ejercicios"],
   dificultadesArray: ["rookie", "intermediate", "expert"],
-  gruposMusculares: [{text:"Pecho",toggle:true},
-    {text:"Hombros",toggle:true},
+  gruposMusculares: [
+    {text:"Pectorales",toggle:true},
     {text:"Tríceps",toggle:true},
-    {text:"Isquiotibiales",toggle:true},
-    {text:"Glúteos",toggle: true},
+    {text:"Gemelos",toggle:true},
+    {text:"Hombros",toggle: true},
     {text:"Espalda",toggle:true},
     {text:"Abdominales",toggle:true},
     {text:"Bíceps",toggle:true},
-    {text:"Cuádriceps",toggle:true}],
+    {text:"Piernas",toggle:true}],
   categorias: [{text:"Rutinas",toggle:true},{text:"Ejercicios",toggle:true}],
   dificultades: [{text:"rookie",toggle:true},
     {text:"intermediate",toggle:true},
@@ -161,6 +161,7 @@ export default {
     this.$getPageExerciseQuery(this.$route.query.query, page)
     .then((exercise) => {
       this.exercises = this.exercises.concat(exercise.content);
+      console.log(this.exercises)
       return exercise.isLastPage;
     }).then((isLast) => {
       if(!isLast && page<4){

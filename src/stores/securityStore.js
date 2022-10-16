@@ -83,8 +83,8 @@ export const useSecurityStore = defineStore("security", {
     async deleteAccount() {
       await UserApi.deleteAccount();
     },
-    async getCurrentUserRoutines() {
-      return await UserApi.getCurrentUserRoutines();
+    async getCurrentUserRoutines(maxRoutines) {
+      return await UserApi.getCurrentUserRoutines(maxRoutines);
     },
   },
 });

@@ -57,7 +57,7 @@
       <ExerciseSummaryCard
         v-for="exercise in exercises"
         :key="exercise.name"
-        category="exercise.type"
+        :category="exercise.detail"
         :exercise="exercise.name"
         class="my-4 mr-6"
       ></ExerciseSummaryCard>
