@@ -50,8 +50,8 @@ export const useSecurityStore = defineStore("security", {
     },
     async login(credentials, rememberMe) {
       const result = await UserApi.login(credentials);
-      const user = await this.getCurrentUser();
       this.updateToken(result.token, rememberMe);
+      const user = await this.getCurrentUser();
       this.setUser(user);
     },
     async signUp(credentials) {
@@ -69,6 +69,9 @@ export const useSecurityStore = defineStore("security", {
       this.setUser(null);
     },
     async getCurrentUser() {
+      if (this.user){
+        return this.user;
+      }
       const result = await UserApi.get();
       this.setUser(result);
       return result;

@@ -1,13 +1,11 @@
 <template>
   <v-app style="background: #181818">
-    <div
-      v-if="
-        this.$router.currentRoute.name !== 'register' &&
-        this.$router.currentRoute.name != 'notFound' &&
-        this.$router.currentRoute.name !== 'verify' &&
-        this.$router.currentRoute.name !== 'login'
-      "
-    >
+    <div v-if="
+      this.$router.currentRoute.name !== 'register' &&
+      this.$router.currentRoute.name != 'notFound' &&
+      this.$router.currentRoute.name !== 'verify' &&
+      this.$router.currentRoute.name !== 'login'
+    ">
       <v-navigation-drawer app color="transparent" floating permanent>
         <v-list nav class="d-flex flex-column" style="height: 100%">
           <div class="ml-2 d-flex flex-column" style="height: 128px">
@@ -15,14 +13,7 @@
           </div>
 
           <v-list-item-group class="d-flex flex-column">
-            <v-list-item
-              v-for="item in items"
-              :key="item.title"
-              link
-              :ripple="false"
-              :to="item.link"
-              flat
-            >
+            <v-list-item v-for="item in items" :key="item.title" link :ripple="false" :to="item.link" flat>
               <v-list-item-icon class="align-self-center">
                 <v-icon class="material-icons-round">{{ item.icon }}</v-icon>
               </v-list-item-icon>
@@ -45,44 +36,30 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item link
-            ><v-list-item-icon class="align-self-center">
+          <v-list-item link>
+            <v-list-item-icon class="align-self-center">
               <v-icon class="material-icons-outlined">add_box</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content link @click="createExerciseDialog = true">
               <v-list-item-title>Crear ejercicio</v-list-item-title>
-            </v-list-item-content></v-list-item
-          >
+            </v-list-item-content>
+          </v-list-item>
 
           <v-spacer></v-spacer>
 
-          <v-list-item
-            v-if="this.$isLoggedIn"
-            @click="logout()"
-            class="mt-auto"
-            flat
-            :ripple="false"
-          >
+          <v-list-item v-if="this.$isLoggedIn" @click="logout()" class="mt-auto" flat :ripple="false">
             <v-list-item-action>
               <v-icon class="material-icons-round">logout</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title class="text--secondary"
-                >Logout</v-list-item-title
-              >
+              <v-list-item-title class="text--secondary">Logout</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-app-bar
-        app
-        prominent
-        color="transparent"
-        style="background-image: linear-gradient(#181818, rgba(24, 24, 24, 0))"
-        class="pl-4 pr-14"
-        flat
-      >
+      <v-app-bar app prominent color="transparent"
+        style="background-image: linear-gradient(#181818, rgba(24, 24, 24, 0))" class="pl-4 pr-14" flat>
         <v-spacer></v-spacer>
         <router-link v-if="this.$isLoggedIn" to="/profile">
           <v-avatar class="my-8" size="36px">
@@ -90,14 +67,7 @@
           </v-avatar>
         </router-link>
         <div v-if="!this.$isLoggedIn" class="d-flex align-center">
-          <v-btn
-            rounded
-            depressed
-            large
-            color="my-8 primary"
-            elevation="0"
-            @click="routerHandler('login')"
-          >
+          <v-btn rounded depressed large color="my-8 primary" elevation="0" @click="routerHandler('login')">
             Acceder
           </v-btn>
         </div>
@@ -105,15 +75,9 @@
     </div>
 
     <v-main>
-      <CreateRoutineDialog
-        v-if="createRoutineDialog"
-        v-model="createRoutineDialog"
-      />
+      <CreateRoutineDialog v-if="createRoutineDialog" v-model="createRoutineDialog" />
 
-      <CreateExerciseDialog
-        v-if="createExerciseDialog"
-        v-model="createExerciseDialog"
-      />
+      <CreateExerciseDialog v-if="createExerciseDialog" v-model="createExerciseDialog" />
 
       <router-view class="pl-4"></router-view>
     </v-main>
@@ -167,13 +131,15 @@ export default {
   created() {
     const securityStore = useSecurityStore();
     securityStore.initialize();
+  },
+  beforeUpdate() {
     if (this.$isLoggedIn) {
       this.$getCurrentUser().then((currentUser) => {
         this.avatarUrl = currentUser.avatarUrl;
         this.username = currentUser.username;
       });
     }
-  },
+  }
 };
 </script>
 
