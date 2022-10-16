@@ -39,6 +39,18 @@ const routes = [
         name: "Grupos musculares",
         component: () => import("../views/muscleGroupView"),
       },
+      {
+        path: "routines/:name-:id",
+        name: "explore_routine_detail",
+        component: () => import("../views/EditView.vue"),
+        props: true,
+      },
+      {
+        path: "exercises/:name-:id",
+        name: "explore_exercise_detail",
+        component: () => import("../views/ExerciseView.vue"),
+        props: true,
+      },
     ],
   },
   {
@@ -57,8 +69,8 @@ const routes = [
     component: () => import("../views/ProfileInfoView.vue"),
   },
   {
-    path: "/routines/edit/:name-:id",
-    name: "edit",
+    path: "/routines/:name-:id",
+    name: "routine_detail",
     component: () => import("../views/EditView.vue"),
     props: true,
   },

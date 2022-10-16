@@ -1,5 +1,12 @@
 <template>
-  <v-card :key="name" elevation="0" class="rounded-xl" color="transparent" @click="$emit('clicked', name)">
+  <v-card
+    :key="name"
+    elevation="0"
+    class="rounded-xl"
+    :ripple="false"
+    color="transparent"
+    @click="$emit('clicked', name)"
+  >
     <v-img
       class="pl-2 pr-16"
       style="width: 502px; height: 350px; border: red 2px"

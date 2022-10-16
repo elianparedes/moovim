@@ -67,10 +67,10 @@
           ></div>
         </div>
         <v-slide-y-transition mode="in" group hide-on-leave>
-          <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-4">
-            <v-row class="text-body-1 pl-4 mb-4 align-center">
+          <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-6">
+            <v-row class="text-body-1 pl-4 align-center mb-4">
               <v-col cols="6">
-                <div class="py-2">
+                <div>
                   {{ cycle.name
                   }}<span>
                     <v-icon size="18px" class="ml-4 material-icons-round"
@@ -100,31 +100,45 @@
               </template>
             </v-row>
 
-            <ExerciseViewCard
-              v-for="obj in cycle.exercises"
-              :key="obj.order"
-              :id="obj.exercise.id"
-              :name="obj.exercise.name"
-              :detail="obj.exercise.detail"
-              :duration="obj.duration"
-              :weight="obj.weight"
-              :repetitions="obj.repetitions"
-              class="mb-4 rounded-xl"
-            ></ExerciseViewCard>
+            <template v-if="cycle.exercises.length > 0">
+              <ExerciseViewCard
+                v-for="obj in cycle.exercises"
+                :key="obj.order"
+                :id="obj.exercise.id"
+                :name="obj.exercise.name"
+                :detail="obj.exercise.detail"
+                :duration="obj.duration"
+                :weight="obj.weight"
+                :repetitions="obj.repetitions"
+                class="rounded-xl"
+              ></ExerciseViewCard>
+            </template>
+            <template v-else>
+              <div
+                class="rounded-xl py-6 px-4"
+                style="background-color: #1e1e1e; margin: -12px -12px 0 0"
+              >
+                <v-card-text style="color: gray">
+                  Este ciclo no contiene ejercicios.
+                </v-card-text>
+              </div>
+            </template>
           </div>
         </v-slide-y-transition>
-      </div></div
-  ></v-slide-x-transition>
+      </div>
+    </div></v-slide-x-transition
+  >
 </template>
 
 <script>
 import WorkoutResultCard from "@/components/WorkoutResultCard.vue";
 import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
 
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
+import { useSecurityStore } from "@/stores/securityStore";
 import DeleteButton from "@/components/buttons/DeleteButton.vue";
 
 export default {
@@ -164,9 +178,15 @@ export default {
     ...mapActions(useExerciseCycleStore, {
       $getAllExerciseCycles: "getAllExerciseCycles",
     }),
+    ...mapActions(useSecurityStore, {
+      $getCurrentUserRoutines: "getCurrentUserRoutines",
+    }),
+    ...mapState(useSecurityStore, {
+      $getUser: "getUser",
+    }),
     editRoutine() {
       this.$router.push({
-        name: "edit",
+        name: "routine_detail",
         params: {
           id: this.routines[this.selected]?.id,
           name: this.routines[this.selected]?.name,
@@ -180,9 +200,14 @@ export default {
     },
     fetchRoutines() {
       this.loading = true;
-      this.$getAllRoutine()
+      this.$getCurrentUserRoutines()
         .then((routines) => {
           this.routines = routines.content;
+
+          this.routines.map((routine) => {
+            routine["user"] = this.$getUser();
+          });
+
           return routines.content[0].id;
         })
         .then((id) => {
@@ -217,9 +242,5 @@ export default {
 <style>
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
-}
-
-.v-card--link:before {
-  background: transparent;
 }
 </style>
