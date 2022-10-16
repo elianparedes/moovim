@@ -28,6 +28,10 @@ class exercisesApi{
         return await Api.get(exercisesApi.getUrl(), true, controller);
     }
 
+    static async getPage(page, controller){
+        return await Api.get(exercisesApi.getUrl('?page=' + page), true, controller);
+    }
+
     static async getQuery(searchQuery, controller){
         return await Api.get(exercisesApi.getUrl('?search=' + searchQuery), true, controller);
     }

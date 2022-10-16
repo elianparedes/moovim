@@ -50,7 +50,7 @@ const useRoutineStore = defineStore("routine", {
     async getPageRoutineQuery(search, page) {
       const result = await routineApi.getQuery(
         //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
-        "" + search, page
+        "" + search + "&page=" + page
       );
       return result;
     },

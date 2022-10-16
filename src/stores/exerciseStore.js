@@ -30,10 +30,21 @@ export const useExerciseStore = defineStore("exercises", {
       this.items.push(result);
       return result;
     },
+    async getPageExercise(page) {
+      const result = await exercisesApi.getPage(page);
+      return result;
+    },
     async getExerciseQuery(search) {
       const result = await exercisesApi.getQuery(
         //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
         "" + search
+      );
+      return result;
+    },
+    async getPageExerciseQuery(search, page) {
+      const result = await exercisesApi.getQuery(
+        //new RoutineQuery().setUserId(userId).setCategoryId(categoryId).setDifficulty(difficulty).setSearchQuery(search)
+        "" + search + "&page=" + page
       );
       return result;
     },

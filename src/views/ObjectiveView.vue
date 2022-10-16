@@ -55,12 +55,8 @@
       components: { WorkoutResultCard, SwitchButton },
       routines: [],
       exercises:[],
-      page:0,
-      isLast:true,
       data: () => {
         return {
-          isLast:true,
-          page:0,
           routines: [],
           carousel: 0,
           exercises:[],
@@ -80,7 +76,6 @@
           this.$getPageRoutineOrdered(orderBy, direction, page)
           .then((routines) => {
             this.routines = this.routines.concat(routines.content).filter( (item) => {return item.category.name===this.$route.query.query});
-            this.isLast=routines.isLastPage;
             return routines.isLastPage;
           }).then((isLast) => {
             if(!isLast && page<5){
@@ -97,7 +92,6 @@
           this.$getPageRoutine(page)
           .then((routines) => {
             this.routines = this.routines.concat(routines.content).filter( (item) => {return item.category.name===this.$route.query.query});
-            this.isLast=routines.isLastPage;
             return routines.isLastPage;
           }).then((isLast) => {
             if(!isLast && page<5){
@@ -108,7 +102,8 @@
         },
         ...mapActions(useRoutineStore, {
           $getPageRoutineOrdered : "getPageRoutineOrdered",
-          $getPageRoutine : "getPageRoutine"
+          $getPageRoutine : "getPageRoutine",
+          
         }),
       },
       created() {
