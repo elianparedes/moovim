@@ -149,10 +149,10 @@
       <div>
         <ExerciseSummaryCard
           v-for="exercise in exercises.filter(function (item) {
-            return muscularesArray.includes(item.metadata.grupoMuscular);
+            return muscularesArray.includes(item.detail);
           })"
           :key="exercise.id"
-          :category="exercise.type"
+          :category="exercise.detail"
           :exercise="exercise.name"
           class="my-4 mr-6"
         ></ExerciseSummaryCard>
@@ -172,45 +172,28 @@ import SelectButton from "@/components/SelectButton";
 import { mapActions } from "pinia";
 export default {
   name: "SearchView",
-  components: { WorkoutResultCard, ExerciseSummaryCard, SelectButton },
-
+  components: {WorkoutResultCard, ExerciseSummaryCard, SelectButton},
+  
   data: () => ({
-    routines: [],
-    exercises: [],
-    expand: false,
-    muscularesArray: [
-      "Pecho",
-      "Hombros",
-      "Triceps",
-      "Isquiotibiales",
-      "Gluteos",
-      "Espalda",
-      "Abdominales",
-      "Biceps",
-      "Cuadriceps",
-    ],
-    categoriasArray: ["Rutinas", "Ejercicios"],
-    dificultadesArray: ["rookie", "intermediate", "expert"],
-    gruposMusculares: [
-      { text: "Pecho", toggle: true },
-      { text: "Hombros", toggle: true },
-      { text: "Tríceps", toggle: true },
-      { text: "Isquiotibiales", toggle: true },
-      { text: "Glúteos", toggle: true },
-      { text: "Espalda", toggle: true },
-      { text: "Abdominales", toggle: true },
-      { text: "Bíceps", toggle: true },
-      { text: "Cuádriceps", toggle: true },
-    ],
-    categorias: [
-      { text: "Rutinas", toggle: true },
-      { text: "Ejercicios", toggle: true },
-    ],
-    dificultades: [
-      { text: "rookie", toggle: true },
-      { text: "intermediate", toggle: true },
-      { text: "expert", toggle: true },
-    ],
+  routines: [],
+  exercises:[],
+  expand: false,
+  muscularesArray: ["Pectorales", "Hombros", "Tríceps", "Gemelos", "Piernas", "Espalda", "Abdominales", "Bíceps"],
+  categoriasArray: ["Rutinas", "Ejercicios"],
+  dificultadesArray: ["rookie", "intermediate", "expert"],
+  gruposMusculares: [
+    {text:"Pectorales",toggle:true},
+    {text:"Tríceps",toggle:true},
+    {text:"Gemelos",toggle:true},
+    {text:"Hombros",toggle: true},
+    {text:"Espalda",toggle:true},
+    {text:"Abdominales",toggle:true},
+    {text:"Bíceps",toggle:true},
+    {text:"Piernas",toggle:true}],
+  categorias: [{text:"Rutinas",toggle:true},{text:"Ejercicios",toggle:true}],
+  dificultades: [{text:"rookie",toggle:true},
+    {text:"intermediate",toggle:true},
+    {text:"expert",toggle:true}]
   }),
   beforeMount() {
     this.searchQueryWrapper();
