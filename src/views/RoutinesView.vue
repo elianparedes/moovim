@@ -102,6 +102,7 @@
 
             <template v-if="cycle.exercises.length > 0">
               <ExerciseViewCard
+                  style="cursor: default"
                 v-for="obj in cycle.exercises"
                 :key="obj.order"
                 :id="obj.exercise.id"
