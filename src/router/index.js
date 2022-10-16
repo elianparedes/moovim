@@ -84,10 +84,15 @@ const routes = [
     component: () => import("../views/VerificationView.vue"),
   },
   {
+    path: "/landing",
+    name: "landing",
+    component: () => import("../views/LandingPage.vue"),
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "notFound",
     component: () => import("../views/NotFoundView.vue"),
-  },
+  }
 ];
 
 const router = new VueRouter({
