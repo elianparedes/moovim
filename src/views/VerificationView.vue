@@ -50,7 +50,7 @@ export default {
       loading: true,
       error: false,
       snackbarText: "Cargando",
-      snackbarColor: "primary",
+      snackbarColor: "#252525",
       timeout: 10 * 1000,
     };
   },
@@ -85,7 +85,7 @@ export default {
       this.loading = false;
       this.error = false;
       this.snackbarText = successMessage;
-      this.snackbarColor = "primary";
+      this.snackbarColor = "#252525";
       this.timeout = 5 * 1000;
       this.snackbar = true;
     },
