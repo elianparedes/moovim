@@ -13,7 +13,7 @@
         message="Si eliminas este ejercicio, se eliminará de forma permanente de esta rutina."
         @click="deleteExercise"
       />
-      <v-chip class="px-10 ml-4" color="gray" outlined>
+      <v-chip class="px-10 ml-4" color="gray" outlined @click="showMore">
         <v-icon left small class="material-icons-round">info_outline</v-icon>
         Ver detalles
       </v-chip>
@@ -78,6 +78,10 @@ export default {
   name: "ExerciseSet",
   components: { DeleteButton },
   props: {
+    id: {
+      type: Number,
+      required: true,
+    },
     index: {
       type: Number,
       required: true,
@@ -115,6 +119,15 @@ export default {
     },
     deleteExercise() {
       this.$emit("delete", this.index, this.cycleIndex);
+    },
+    showMore() {
+      this.$router.push({
+        name: "exercises_detail",
+        params: {
+          name: this.name,
+          id: this.id,
+        },
+      });
     },
   },
 };

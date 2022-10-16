@@ -291,6 +291,7 @@
                               () => {
                                 toggle();
                                 selectExercise({
+                                  id: obj.exercise.id,
                                   name: obj.exercise.name,
                                   detail: obj.exercise.detail,
                                   exercise: exerciseIndex,
@@ -324,6 +325,7 @@
           <ExerciseSet
             v-if="userCanEdit && selected !== undefined"
             style="position: sticky; top: 128px"
+            :id="Number(selectedExercise.id)"
             :index="selectedExercise.exercise"
             :cycleIndex="selectedExercise.cycle"
             :name="selectedExercise.name"
@@ -456,7 +458,10 @@ export default {
       });
     },
     selectExercise(exercise) {
-      this.selectedExercise = { ...exercise };
+      console.log(exercise);
+      this.selectedExercise = {
+        ...exercise,
+      };
     },
     openEditCycleDialog(cycle) {
       this.editCycleDialog = true;
