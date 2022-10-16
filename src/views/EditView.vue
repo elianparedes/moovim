@@ -333,7 +333,7 @@ import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 import ExerciseSet from "@/components/ExerciseSet.vue";
 import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
 import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
-import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue"
+import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
 
 export default {
   name: "RoutinesView",
@@ -342,7 +342,7 @@ export default {
     ExerciseSet,
     EditCycleDialog,
     EditRoutineDialog,
-    ConfirmationDialog
+    ConfirmationDialog,
   },
   props: ["name", "id"],
   data: () => ({

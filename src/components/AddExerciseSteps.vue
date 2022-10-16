@@ -1,18 +1,12 @@
 <template>
   <v-dialog
     v-model="show"
-    width="500"
+    width="30%"
     transition="fade-transition"
     class="rounded-xl"
   >
-    <v-sheet
-      color="#252525"
-      elevation="16"
-      width="100%"
-      height="80vh"
-      class="rounded-xl pb-4 d-flex flex-column"
-    >
-      <div>
+    <v-card color="#1e1e1e" class="rounded-xl pb-4 d-flex flex-column">
+      <div class="my-8">
         <div
           class="d-flex flex-row text-body font-weight-thin justify-center pt-4"
         >
@@ -36,41 +30,38 @@
 
       <div
         v-if="!loading && step < 2"
-        class="px-4 py-4 d-flex flex-column"
-        style="height: 400px; max-height: 400px"
+        class="mx-8 d-flex flex-column rounded-lg"
+        style="height: 400px; outline: gray 1px solid"
       >
-        <v-text-field
-          v-model="search"
-          label="Buscar rutina"
-          dark
-          flat
-          solo
-          hide-details
-          clearable
-          clear-icon="mdi-close-circle-outline"
-          background-color="#181818"
-          color="white"
-          class="mb-4 white--text"
-        ></v-text-field>
-        <div style="height: 100%" class="my-2">
-          <v-treeview
-            :items="items"
-            :search="search"
-            :filter="filter"
-            :active.sync="active"
-            :open.sync="open"
-            return-object
-            activatable
-            hoverable
-            rounded
-            color="#BF3D3D"
-            class="overflow-y-auto"
-            item-key="key"
-            item-children="cycles"
-            style="max-height: 260px"
-          >
-          </v-treeview>
+        <div style="border-bottom: gray 1px solid">
+          <v-text-field
+            prepend-inner-icon="search"
+            v-model="search"
+            label="Buscar rutina"
+            solo
+            hide-details
+            clearable
+            clear-icon="mdi-close-circle"
+            color="white"
+            class="white--text rounded-t-lg rounded-b-0"
+          ></v-text-field>
         </div>
+
+        <v-treeview
+          :items="items"
+          :search="search"
+          :filter="filter"
+          :active.sync="active"
+          :open.sync="open"
+          return-object
+          activatable
+          hoverable
+          color="white"
+          class="overflow-y-auto"
+          item-key="key"
+          item-children="cycles"
+        >
+        </v-treeview>
       </div>
 
       <div
@@ -109,7 +100,7 @@
                 @input="(e) => checkStepInput(e, 'repetitions')"
                 v-model="input.repetitions"
                 type="number"
-                class="white--text rounded-lg text-h6 font-weight-regular py-2"
+                class="white--text rounded-lg text-h6 font-weight-regular py-2 numeric-input"
                 style="
                   width: 100%;
                   text-align: center;
@@ -123,7 +114,7 @@
                 @input="(e) => checkStepInput(e, 'weight')"
                 :value="input.weight"
                 type="number"
-                class="white--text rounded-lg text-h6 font-weight-regular py-2"
+                class="white--text rounded-lg text-h6 font-weight-regular py-2 numeric-input"
                 style="
                   width: 100%;
                   text-align: center;
@@ -137,7 +128,7 @@
                 @input="(e) => checkStepInput(e, 'duration')"
                 :value="input.duration"
                 type="number"
-                class="white--text rounded-lg text-h6 font-weight-regular py-2"
+                class="white--text rounded-lg text-h6 font-weight-regular py-2 numeric-input"
                 style="
                   width: 100%;
                   text-align: center;
@@ -148,34 +139,37 @@
           </v-row>
         </div>
       </div>
-      <div class="mt-n8">
-      <div class="d-flex column justify-center mx-4 ">
-        <v-btn
-          :ripple="false"
-          elevation="0"
-          class="rounded-xl"
-          color="#BF3D3D"
-          block
-          :disabled="!btnAvailable"
-          @click="checkStepBtn()"
+      <div class="pt-8 pb-4 text-center">
+        <div>
+          <v-btn
+            large
+            :ripple="false"
+            class="rounded-xl px-16"
+            color="#BF3D3D"
+            :disabled="!btnAvailable"
+            @click="checkStepBtn()"
+          >
+            {{ btnMessage }}
+            <v-icon class="material-icons-round"> navigate_next </v-icon>
+          </v-btn>
+        </div>
+        <div
+          v-if="exerciseRepeated"
+          class="d-flex column justify-center"
+          style="color: #bf3d3d"
         >
-          {{ btnMessage }}
-          <v-icon class="material-icons-round"> navigate_next </v-icon>
-        </v-btn>
-      </div>
-        <div v-if="exerciseRepeated" class="d-flex  column justify-center" style="color: #bf3d3d">
           El ciclo seleccionado ya contiene este ejercicio
         </div>
       </div>
-    </v-sheet></v-dialog
+    </v-card></v-dialog
   >
 </template>
 
 <script>
-import {mapActions} from "pinia";
-import {useRoutineStore} from "@/stores/routineStore";
-import {useRoutineCycleStore} from "@/stores/routineCycleStore";
-import {useExerciseCycleStore} from "@/stores/exerciseCycleStore";
+import { mapActions } from "pinia";
+import { useRoutineStore } from "@/stores/routineStore";
+import { useRoutineCycleStore } from "@/stores/routineCycleStore";
+import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
 
 export default {
   name: "AddExcerciseSteps.vue",
@@ -207,13 +201,14 @@ export default {
           message: "Continuar",
           toggle: false,
           stepBtnAvailable: function (data) {
-            return data.active.length > 0 && data.active[0].path.length > 1
+            return data.active.length > 0 && data.active[0].path.length > 1;
           },
           hasNext: (data) => {
             return (
               data.active.length > 0 &&
               data.active[0].path.length > 1 &&
-              data.steps[data.step].toggle && !data.exerciseRepeated
+              data.steps[data.step].toggle &&
+              !data.exerciseRepeated
             );
           },
         },
@@ -301,10 +296,9 @@ export default {
     },
     checkStepBtn() {
       this.steps[this.step].toggle = true;
-      if (this.step === 1){
-            this.checkStep()
-        }
-      else {
+      if (this.step === 1) {
+        this.checkStep();
+      } else {
         this.addExercise();
       }
     },
@@ -350,60 +344,66 @@ export default {
             exercisesCount,
             Number(this.input.duration),
             Number(this.input.repetitions)
-          ).then(() => {
-            this.show = false;
-            this.$emit("finish");
-          }).catch(()=>{
-            console.log("El ejercicio esta repetido")
-          })
+          )
+            .then(() => {
+              this.show = false;
+              this.$emit("finish");
+            })
+            .catch(() => {
+              console.log("El ejercicio esta repetido");
+            })
         );
     },
-    async checkExercise(){
-      if(this.active.length < 1) {
-        this.exerciseRepeated = false
-        return
+    async checkExercise() {
+      if (this.active.length < 1) {
+        this.exerciseRepeated = false;
+        return;
       }
       const cycleId = this.active[0].id;
-      if(this.containsExercise.includes(cycleId)){
-        this.exerciseRepeated = true
-        return
+      if (this.containsExercise.includes(cycleId)) {
+        this.exerciseRepeated = true;
+        return;
       }
-      if(this.notContainsExercise.includes(cycleId)){
-        this.exerciseRepeated = false
-        return
+      if (this.notContainsExercise.includes(cycleId)) {
+        this.exerciseRepeated = false;
+        return;
       }
       this.$getAllExerciseCycles(cycleId)
-          .then((exercises) => {
-            exercises.content.forEach(aux =>{
-              if(aux.exercise.id === this.exerciseId){
-                console.log("Encontre uno xd")
-                this.containsExercise.push(cycleId)
-              }
-            })
-            return exercises.content.length + 1
-          }).then((counter) => {
-            this.counter = counter
-        if(this.containsExercise.includes(cycleId)){
-          return true
-        } else
-          this.notContainsExercise.push(cycleId)
-        return false
-      }).then((bool) => this.exerciseRepeated=bool)
-
-    }
+        .then((exercises) => {
+          exercises.content.forEach((aux) => {
+            if (aux.exercise.id === this.exerciseId) {
+              console.log("Encontre uno xd");
+              this.containsExercise.push(cycleId);
+            }
+          });
+          return exercises.content.length + 1;
+        })
+        .then((counter) => {
+          this.counter = counter;
+          if (this.containsExercise.includes(cycleId)) {
+            return true;
+          } else this.notContainsExercise.push(cycleId);
+          return false;
+        })
+        .then((bool) => (this.exerciseRepeated = bool));
+    },
   },
   watch: {
     open() {
-      if(this.step === 1){
-        this.checkExercise().then(()=>{this.checkStep()})
-      }else {
+      if (this.step === 1) {
+        this.checkExercise().then(() => {
+          this.checkStep();
+        });
+      } else {
         this.checkStep();
       }
     },
     active() {
-      if(this.step === 1){
-        this.checkExercise().then(()=>{this.checkStep()})
-      }else {
+      if (this.step === 1) {
+        this.checkExercise().then(() => {
+          this.checkStep();
+        });
+      } else {
         this.checkStep();
       }
     },
@@ -427,5 +427,18 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.numeric-input:focus-visible,
+.numeric-input:focus {
+  outline: 1.5px #bf3d3d solid !important;
+}
+.numeric-input:hover {
+  outline: 1.5px white solid;
+}
+
+.numeric-input {
+  transition: all 150ms ease-in-out;
+  outline: 1.5px gray solid;
 }
 </style>
