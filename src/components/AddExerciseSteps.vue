@@ -234,6 +234,7 @@ export default {
       containsExercise: [],
       notContainsExercise: [],
       exerciseRepeated: false,
+      selectedCycle: null,
       counter: 0,
       items: [],
       loading: false,
@@ -297,6 +298,10 @@ export default {
     checkStepBtn() {
       this.steps[this.step].toggle = true;
       if (this.step === 1) {
+        if(this.exerciseRepeated) {
+          this.steps[this.step].toggle = false;
+          return
+        }
         this.checkStep();
       } else {
         this.addExercise();
@@ -373,7 +378,6 @@ export default {
         .then((exercises) => {
           exercises.content.forEach((aux) => {
             if (aux.exercise.id === this.exerciseId) {
-              console.log("Encontre uno xd");
               this.containsExercise.push(cycleId);
             }
           });
