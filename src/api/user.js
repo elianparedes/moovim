@@ -40,27 +40,18 @@ class UserApi {
     );
   }
 
-  static async logout(controller) {
-    return await Api.post(UserApi.getUrl("logout"), true, controller);
-  }
-
-  static async get(controller) {
-    return Api.get(UserApi.getUrl("current"), true, controller);
-  }
-  static async modifyUser(credentials, controller) {
-    return await Api.put(
-      UserApi.getUrl("current"),
-      true,
-      credentials,
-      controller
-    );
-  }
-  static async deleteAccount(controller) {
-    return await Api.delete(UserApi.getUrl("current"), true, controller);
-  }
-  static async getCurrentUserRoutines(controller) {
-    return await Api.get(UserApi.getUrl("current/routines"), true, controller);
-  }
+    static async get(controller) {
+        return Api.get(UserApi.getUrl('current'), true, controller);
+    }
+    static async modifyUser(credentials, controller){
+        return await Api.put(UserApi.getUrl('current'),true,credentials, controller)
+    }
+    static async deleteAccount(controller){
+        return await Api.delete(UserApi.getUrl('current'),true, controller)
+    }
+    static async getCurrentUserRoutines(maxRoutines, controller){
+        return await Api.get(UserApi.getUrl('current/routines?size='+maxRoutines), true, controller);
+    }
 }
 
 class Credentials {

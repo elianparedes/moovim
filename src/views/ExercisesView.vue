@@ -51,14 +51,14 @@ import ExerciseView from "./ExerciseView.vue";
 export default {
   data() {
     return {
-      exercises: null,
+      exercises: [],
       selectedExercise: null,
       images: [],
       selected: null,
     };
   },
   created() {
-    this.fetchAllExercises();
+    this.getAllExercisesWrapper();
   },
   watch: {
     selected: function (val) {
@@ -67,12 +67,22 @@ export default {
   },
   methods: {
     ...mapActions(useExerciseStore, {
-      $getAllExercises: "getAllExercises",
+      $getPageExercise: "getPageExercise"
     }),
-    fetchAllExercises() {
-      this.$getAllExercises().then((exercises) => {
-        this.exercises = exercises.content;
-      });
+    getAllExercisesWrapper(){
+      this.getAllExercises(0)
+    },
+    getAllExercises(page){
+      this.$getPageExercise(page)
+      .then((exercise) => {
+        this.exercises = this.exercises.concat(exercise.content);
+        return exercise.isLastPage;
+      }).then((isLast) => {
+        if(!isLast){
+          this.getAllExercises(page+1)
+          return;
+        }
+      })
     },
     showDeleted(deletedExercise) {
       this.exercises.splice(

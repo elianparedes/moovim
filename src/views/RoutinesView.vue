@@ -201,7 +201,7 @@ export default {
     },
     fetchRoutines() {
       this.loading = true;
-      this.$getCurrentUserRoutines()
+      this.$getCurrentUserRoutines(50)
         .then((routines) => {
           this.routines = routines.content;
 
