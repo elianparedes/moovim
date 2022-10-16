@@ -54,13 +54,20 @@
       <span class="mx-2">Ejercicios</span>
     </div>
     <div>
-      <ExerciseSummaryCard
+      <router-link
         v-for="exercise in exercises"
-        :key="exercise.name"
-        category="exercise.type"
-        :exercise="exercise.name"
-        class="my-4 mr-6"
-      ></ExerciseSummaryCard>
+        :key="exercise.id"
+        :to="`exercises/${exercise.name}-${exercise.id}`"
+        style="text-decoration: none; color: inherit"
+      >
+        <SelectableExerciseSummaryCard
+          :id="exercise.id"
+          :category="exercise.detail"
+          :exercise="exercise.name"
+          :click="() => ({})"
+          class="my-4 mr-6"
+        ></SelectableExerciseSummaryCard>
+      </router-link>
     </div>
   </div>
 </template>
@@ -68,13 +75,17 @@
 <script>
 import SwitchButton from "@/components/SwitchButton";
 import WorkoutResultCard from "@/components/WorkoutResultCard";
-import ExerciseSummaryCard from "@/components/ExerciseSummaryCard";
+import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummaryCard";
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useExerciseStore } from "@/stores/exerciseStore";
 export default {
   name: "DiscoverView",
-  components: { ExerciseSummaryCard, WorkoutResultCard, SwitchButton },
+  components: {
+    SelectableExerciseSummaryCard,
+    WorkoutResultCard,
+    SwitchButton,
+  },
   routines: [],
   exercises: [],
   data: () => {
@@ -90,63 +101,66 @@ export default {
         (a, b) => this.routines.slice(k * 3, (k + 1) * 3)[b] || 0
       );
     },
-    getOrderedWrapper(orderBy, direction){
-      this.routines=[]
-      this.getOrdered(orderBy,direction,0)
+    getOrderedWrapper(orderBy, direction) {
+      this.routines = [];
+      this.getOrdered(orderBy, direction, 0);
     },
-    getOrdered(orderBy, direction, page){
+    getOrdered(orderBy, direction, page) {
       this.$getPageRoutineOrdered(orderBy, direction, page)
-      .then((routines) => {
-        this.routines = this.routines.concat(routines.content);
-        this.isLast=routines.isLastPage;
-        return routines.isLastPage;
-      }).then((isLast) => {
-        if(!isLast && page<6){
-          this.getOrdered(orderBy,direction,page+1)
-          return;
-        }
-      })
+        .then((routines) => {
+          this.routines = this.routines.concat(routines.content);
+          this.isLast = routines.isLastPage;
+          return routines.isLastPage;
+        })
+        .then((isLast) => {
+          if (!isLast && page < 6) {
+            this.getOrdered(orderBy, direction, page + 1);
+            return;
+          }
+        });
     },
-    getAllRoutinesWrapper(){
-      this.routines=[]
-      this.getAllRoutines(0)
+    getAllRoutinesWrapper() {
+      this.routines = [];
+      this.getAllRoutines(0);
     },
-    getAllRoutines(page){
+    getAllRoutines(page) {
       this.$getPageRoutine(page)
-      .then((routines) => {
-        this.routines = this.routines.concat(routines.content);
-        return routines.isLastPage;
-      }).then((isLast) => {
-        if(!isLast && page<5){
-          this.getAllRoutines(page+1)
-          return;
-        }
-      })
+        .then((routines) => {
+          this.routines = this.routines.concat(routines.content);
+          return routines.isLastPage;
+        })
+        .then((isLast) => {
+          if (!isLast && page < 5) {
+            this.getAllRoutines(page + 1);
+            return;
+          }
+        });
     },
-    getAllExercisesWrapper(){
-      this.getAllExercises(0)
+    getAllExercisesWrapper() {
+      this.getAllExercises(0);
     },
-    getAllExercises(page){
+    getAllExercises(page) {
       this.$getPageExercise(page)
-      .then((exercise) => {
-        this.exercises = this.exercises.concat(exercise.content);
-        return exercise.isLastPage;
-      }).then((isLast) => {
-        if(!isLast && page<5){
-          this.getAllExercises(page+1)
-          return;
-        }
-      })
+        .then((exercise) => {
+          this.exercises = this.exercises.concat(exercise.content);
+          return exercise.isLastPage;
+        })
+        .then((isLast) => {
+          if (!isLast && page < 5) {
+            this.getAllExercises(page + 1);
+            return;
+          }
+        });
     },
     ...mapActions(useRoutineStore, {
-      $getPageRoutineOrdered : "getPageRoutineOrdered",
-      $getPageRoutine : "getPageRoutine",
+      $getPageRoutineOrdered: "getPageRoutineOrdered",
+      $getPageRoutine: "getPageRoutine",
     }),
     ...mapActions(useExerciseStore, { $getPageExercise: "getPageExercise" }),
   },
   created() {
     this.getOrderedWrapper("score", "desc");
-    this.getAllExercisesWrapper()
+    this.getAllExercisesWrapper();
   },
 };
 </script>

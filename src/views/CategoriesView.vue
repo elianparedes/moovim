@@ -97,14 +97,15 @@ export default {
       },
     ],
     groups: [
-      { name: "Pectorales" }, 
-      { name: "Tríceps" }, 
+      { name: "Pectorales" },
+      { name: "Tríceps" },
       { name: "Gemelos" },
       { name: "Espalda" },
       { name: "Bíceps" },
       { name: "Abdominales" },
       { name: "Hombros" },
-      { name: "Piernas" }],
+      { name: "Piernas" },
+    ],
   }),
   components: {
     WorkoutCategoryCard,
@@ -129,12 +130,12 @@ export default {
         this.setResult(e);
       }
     },
-    searchRoutine(objetivo){
+    searchRoutine(objetivo) {
       router.push({ path: "objective", query: { query: objetivo } });
     },
-    searchExercise(musculo){
+    searchExercise(musculo) {
       router.push({ path: "muscleGroup", query: { query: musculo } });
-    }
+    },
   },
   created() {
     this.getAllCategories();

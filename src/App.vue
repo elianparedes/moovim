@@ -2,8 +2,9 @@
   <v-app style="background: #181818">
     <div
       v-if="
+        this.$isLoggedIn &&
         this.$router.currentRoute.name !== 'register' &&
-        this.$router.currentRoute.name != 'notFound' &&
+        this.$router.currentRoute.name !== 'notFound' &&
         this.$router.currentRoute.name !== 'verify' &&
         this.$router.currentRoute.name !== 'login'
       "
@@ -213,5 +214,9 @@ body {
 
 .v-image__image--cover {
   border-radius: 24px;
+}
+
+.v-card--link:before {
+  background: transparent;
 }
 </style>

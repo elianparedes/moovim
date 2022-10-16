@@ -21,6 +21,7 @@
           label="Nombre"
           v-model="routineName"
         ></v-text-field>
+
         <v-textarea
           outlined
           label="Descripción"
@@ -108,7 +109,7 @@ export default {
       ).then((routine) => {
         this.success();
         router.push({
-          name: "edit",
+          name: "routine_detail",
           params: {
             id: routine.id,
             name: routine.name,

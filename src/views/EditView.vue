@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column px-4 pb-16" style="gap: 32px" v-if="!loading">
+  <div class="d-flex flex-column pb-16" style="gap: 32px" v-if="!loading">
     <v-snackbar v-model="success" rounded="lg">
       Cambios guardados correctamente
 
@@ -84,7 +84,7 @@
       </v-img>
     </v-card>
 
-    <div>
+    <div v-if="userCanEdit">
       <v-dialog
         v-model="createCycleDialog"
         width="30%"
@@ -222,7 +222,7 @@
 
                     <v-col cols="2" align="end">
                       <v-fade-transition>
-                        <span v-if="hover">
+                        <span v-if="userCanEdit && hover">
                           <v-tooltip
                             top
                             color="black"
@@ -230,6 +230,7 @@
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn
+                                class="mr-2"
                                 icon
                                 v-bind="attrs"
                                 v-on="on"
@@ -270,33 +271,44 @@
                     </v-col>
                   </v-row>
 
-                  <v-item
-                    v-slot="{ active, toggle }"
-                    v-for="(obj, exerciseIndex) in cycle.exercises"
-                    :key="exerciseIndex"
-                  >
-                    <ExerciseViewCard
-                      :id="obj.exercise.id"
-                      :name="obj.exercise.name"
-                      :detail="obj.exercise.detail"
-                      :duration="obj.duration"
-                      :weight="obj.weight"
-                      :repetitions="obj.repetitions"
-                      class="mb-4 rounded-xl included"
-                      :click="
-                        () => {
-                          toggle();
-                          selectExercise({
-                            name: obj.exercise.name,
-                            detail: obj.exercise.detail,
-                            exercise: exerciseIndex,
-                            cycle: cycleIndex,
-                          });
-                        }
-                      "
-                      :active="active"
-                    />
-                  </v-item>
+                  <template v-if="cycle.exercises.length > 0">
+                    <v-item
+                      v-slot="{ active, toggle }"
+                      v-for="(obj, exerciseIndex) in cycle.exercises"
+                      :key="exerciseIndex"
+                    >
+                      <ExerciseViewCard
+                        :id="obj.exercise.id"
+                        :name="obj.exercise.name"
+                        :detail="obj.exercise.detail"
+                        :duration="obj.duration"
+                        :weight="obj.weight"
+                        :repetitions="obj.repetitions"
+                        class="rounded-xl included"
+                        :click="
+                          () => {
+                            toggle();
+                            selectExercise({
+                              name: obj.exercise.name,
+                              detail: obj.exercise.detail,
+                              exercise: exerciseIndex,
+                              cycle: cycleIndex,
+                            });
+                          }
+                        "
+                        :active="userCanEdit && active"
+                      /> </v-item
+                  ></template>
+                  <template v-else>
+                    <div
+                      class="rounded-xl py-6 px-4"
+                      style="background-color: #1e1e1e; margin: -12px -12px 0 0"
+                    >
+                      <v-card-text style="color: gray">
+                        Este ciclo no contiene ejercicios.
+                      </v-card-text>
+                    </div>
+                  </template>
                 </div>
               </v-hover>
             </div>
@@ -306,7 +318,7 @@
       <div class="pa-12" style="width: 50%">
         <v-slide-y-transition>
           <ExerciseSet
-            v-if="selected !== undefined"
+            v-if="userCanEdit && selected !== undefined"
             style="position: sticky; top: 128px"
             :name="selectedExercise.name"
             :detail="selectedExercise.detail"
@@ -326,7 +338,7 @@
 <script>
 import ExerciseViewCard from "@/components/ExerciseViewCard.vue";
 
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useRoutineCycleStore } from "@/stores/routineCycleStore";
 import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
@@ -334,6 +346,7 @@ import ExerciseSet from "@/components/ExerciseSet.vue";
 import EditCycleDialog from "@/components/dialogs/EditCycleDialog.vue";
 import EditRoutineDialog from "../components/dialogs/EditRoutineDialog.vue";
 import ConfirmationDialog from "@/components/dialogs/ConfirmationDialog.vue";
+import { useSecurityStore } from "@/stores/securityStore";
 
 export default {
   name: "RoutinesView",
@@ -346,6 +359,7 @@ export default {
   },
   props: ["name", "id"],
   data: () => ({
+    userCanEdit: false,
     loading: false,
     routine: null,
     cycles: null,
@@ -391,10 +405,14 @@ export default {
       $getAllRoutineCycles: "getAllRoutineCycles",
       $addRoutineCycle: "addRoutineCycle",
       $deleteRoutineCycle: "deleteRoutineCycle",
+      $modifyRoutineCycle: "modifyRoutineCycle",
     }),
     ...mapActions(useExerciseCycleStore, {
       $getAllExerciseCycles: "getAllExerciseCycles",
       $modifyExerciseCycle: "modifyExerciseCycle",
+    }),
+    ...mapState(useSecurityStore, {
+      $getUser: "getUser",
     }),
     fetchRoutine(routineId) {
       this.loading = true;
@@ -402,6 +420,7 @@ export default {
         .then((routine) => {
           console.log(routine);
           this.routine = routine;
+          this.userCanEdit = this.routine.user.id === this.$getUser().id;
           return routine.id;
         })
         .then((id) => {
@@ -480,7 +499,7 @@ export default {
         this.newCycleName,
         this.newCycleName,
         "exercise",
-        this.cycles.length + 1,
+        this.cycles[this.cycles.length - 1].order + 1,
         this.newCycleRepetitionsNumber,
         null
       )
