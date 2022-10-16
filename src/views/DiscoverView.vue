@@ -35,6 +35,7 @@
             >
               <WorkoutResultCard
                 v-if="routine"
+                :routineId="routine.id"
                 :name="routine.name"
                 :desc="routine.detail"
                 :image="routine.metadata.image"
