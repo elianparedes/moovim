@@ -1,15 +1,13 @@
 <template>
   <v-app style="background: #181818">
-    <div
-      v-if="
+    <div v-if="
       this.$isLoggedIn &&
-        this.$router.currentRoute.name !== 'register' &&
-        this.$router.currentRoute.name != 'notFound' &&
-        this.$router.currentRoute.name !== 'verify' &&
-        this.$router.currentRoute.name !== 'login' &&
-        this.$router.currentRoute.name !== 'landing'
-      "
-    >
+      this.$router.currentRoute.name !== 'home' &&
+      this.$router.currentRoute.name !== 'register' &&
+      this.$router.currentRoute.name != 'notFound' &&
+      this.$router.currentRoute.name !== 'verify' &&
+      this.$router.currentRoute.name !== 'login'
+    ">
       <v-navigation-drawer app color="transparent" floating permanent>
         <v-list nav class="d-flex flex-column" style="height: 100%">
           <div class="ml-2 d-flex flex-column" style="height: 128px">

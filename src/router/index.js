@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../views/HomeView.vue"),
+    component: () => import("../views/LandingPage.vue"),
   },
   {
     path: "/explore",
@@ -82,11 +82,6 @@ const routes = [
     path: "/verify/:email?",
     name: "verify",
     component: () => import("../views/VerificationView.vue"),
-  },
-  {
-    path: "/landing",
-    name: "landing",
-    component: () => import("../views/LandingPage.vue"),
   },
   {
     path: "/:pathMatch(.*)*",

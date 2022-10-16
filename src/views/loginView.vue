@@ -90,7 +90,7 @@ export default {
         new Credentials(this.username, this.password),
         this.rememberMe
       )
-        .then(() => this.$router.push({ name: "home" }))
+        .then(() => this.$router.push({ name: "Categorias"}))
         .catch((e) => this.handleResult(e));
     },
     handleResult(result) {
