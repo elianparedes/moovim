@@ -13,7 +13,7 @@
       <v-card-text class="pt-4">
         <v-otp-input v-model="otp" :length="length"> </v-otp-input>
         <div class="d-flex justify-center pt-2">
-          <v-btn rounded depressed large color="red" elevation="0" :disabled="!valid" @click="onFinish">
+          <v-btn rounded depressed large color="primary" elevation="0" :disabled="!valid" @click="onFinish">
             Verificar
           </v-btn>
         </div>

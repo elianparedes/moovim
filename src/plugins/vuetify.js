@@ -29,5 +29,13 @@ Vue.use(Vuetify, {
 export default new Vuetify({
   theme: {
     dark: true,
-  },
-});
+    themes: {
+      dark: {
+        primary: '#BF3D3D',
+        accent: '#BF3D3D',
+        error: '#BF9B3D',
+      }
+    }
+  } 
+}
+);

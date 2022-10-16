@@ -67,7 +67,7 @@
             class="overflow-y-auto"
             item-key="key"
             item-children="cycles"
-            style="max-height: 270px"
+            style="max-height: 260px"
           >
           </v-treeview>
         </div>
@@ -148,8 +148,8 @@
           </v-row>
         </div>
       </div>
-
-      <div class="d-flex justify-center mx-4 my-auto">
+      <div class="mt-n8">
+      <div class="d-flex column justify-center mx-4 ">
         <v-btn
           :ripple="false"
           elevation="0"
@@ -163,15 +163,19 @@
           <v-icon class="material-icons-round"> navigate_next </v-icon>
         </v-btn>
       </div>
+        <div v-if="exerciseRepeated" class="d-flex  column justify-center" style="color: #bf3d3d">
+          El ciclo seleccionado ya contiene este ejercicio
+        </div>
+      </div>
     </v-sheet></v-dialog
   >
 </template>
 
 <script>
-import { mapActions } from "pinia";
-import { useRoutineStore } from "@/stores/routineStore";
-import { useRoutineCycleStore } from "@/stores/routineCycleStore";
-import { useExerciseCycleStore } from "@/stores/exerciseCycleStore";
+import {mapActions} from "pinia";
+import {useRoutineStore} from "@/stores/routineStore";
+import {useRoutineCycleStore} from "@/stores/routineCycleStore";
+import {useExerciseCycleStore} from "@/stores/exerciseCycleStore";
 
 export default {
   name: "AddExcerciseSteps.vue",
@@ -203,13 +207,13 @@ export default {
           message: "Continuar",
           toggle: false,
           stepBtnAvailable: function (data) {
-            return data.active.length > 0 && data.active[0].path.length > 1;
+            return data.active.length > 0 && data.active[0].path.length > 1
           },
           hasNext: (data) => {
             return (
               data.active.length > 0 &&
               data.active[0].path.length > 1 &&
-              data.steps[data.step].toggle
+              data.steps[data.step].toggle && !data.exerciseRepeated
             );
           },
         },
@@ -232,6 +236,10 @@ export default {
       ],
       open: [],
       active: [],
+      containsExercise: [],
+      notContainsExercise: [],
+      exerciseRepeated: false,
+      counter: 0,
       items: [],
       loading: false,
       input: {
@@ -293,7 +301,9 @@ export default {
     },
     checkStepBtn() {
       this.steps[this.step].toggle = true;
-      if (this.step === 1) this.checkStep();
+      if (this.step === 1){
+            this.checkStep()
+        }
       else {
         this.addExercise();
       }
@@ -343,16 +353,59 @@ export default {
           ).then(() => {
             this.show = false;
             this.$emit("finish");
+          }).catch(()=>{
+            console.log("El ejercicio esta repetido")
           })
         );
     },
+    async checkExercise(){
+      if(this.active.length < 1) {
+        this.exerciseRepeated = false
+        return
+      }
+      const cycleId = this.active[0].id;
+      if(this.containsExercise.includes(cycleId)){
+        this.exerciseRepeated = true
+        return
+      }
+      if(this.notContainsExercise.includes(cycleId)){
+        this.exerciseRepeated = false
+        return
+      }
+      this.$getAllExerciseCycles(cycleId)
+          .then((exercises) => {
+            exercises.content.forEach(aux =>{
+              if(aux.exercise.id === this.exerciseId){
+                console.log("Encontre uno xd")
+                this.containsExercise.push(cycleId)
+              }
+            })
+            return exercises.content.length + 1
+          }).then((counter) => {
+            this.counter = counter
+        if(this.containsExercise.includes(cycleId)){
+          return true
+        } else
+          this.notContainsExercise.push(cycleId)
+        return false
+      }).then((bool) => this.exerciseRepeated=bool)
+
+    }
   },
   watch: {
     open() {
-      this.checkStep();
+      if(this.step === 1){
+        this.checkExercise().then(()=>{this.checkStep()})
+      }else {
+        this.checkStep();
+      }
     },
     active() {
-      this.checkStep();
+      if(this.step === 1){
+        this.checkExercise().then(()=>{this.checkStep()})
+      }else {
+        this.checkStep();
+      }
     },
   },
 };

@@ -1,9 +1,8 @@
 <template>
   <v-dialog
     v-model="show"
-    width="30%"
+    width="600"
     transition="fade-transition"
-    class="rounded-xl"
     overlay-opacity="0.9"
     overlay-color="#181818"
   >
@@ -11,53 +10,57 @@
       <v-card-title
         class="d-inline-block font-weight-regular text-center mb-16"
       >
-        Nuevo ejercicio
+        Editar ejercicio
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="d-flex flex-column" style="gap: 16px">
         <v-text-field
           class="rounded-lg"
-          outlined
           label="Nombre"
-          v-model="exerciseName"
+          flat
+          outlined
+          v-model="editedExercise.name"
         ></v-text-field>
 
         <v-select
-          outlined
           class="rounded-lg"
           :items="items"
           item-text="category"
           item-value="category"
           label="Músculos principales"
+          outlined
+          flat
           item-color="gray"
-          v-model="exerciseDetail"
+          v-model="editedExercise.detail"
         ></v-select>
 
         <v-textarea
+          class="rounded-lg"
           outlined
-          name="input-7-4"
-          placeholder="Descripción"
-          v-model="exerciseProcedure"
-          counter
-          rows="4"
+          label="Ejecución"
+          v-model="editedExercise.metadata.procedure"
+          flat
+          counter="350"
+          rows="6"
           row-height="20"
           no-resize
-          class="rounded-lg"
+          :rules="procedureRules"
         ></v-textarea>
+
+        <div class="text-center">
+          <v-btn
+            large
+            style="flex: 1"
+            rounded
+            elevation="0"
+            class="font-weight-bold px-16"
+            color="#BF3D3D"
+            :loading="loading"
+            @click="modifyExercise"
+            >Guardar cambios</v-btn
+          >
+        </div>
       </v-card-text>
-      <div class="text-center">
-        <v-btn
-          large
-          style="flex: 1"
-          rounded
-          elevation="0"
-          color="accent"
-          class="px-16 mb-4 mt-8"
-          :loading="loading"
-          @click="createExercise"
-          >Crear</v-btn
-        >
-      </div>
     </v-card>
   </v-dialog>
 </template>
@@ -68,13 +71,15 @@ import { useExerciseStore } from "@/stores/exerciseStore";
 
 export default {
   props: {
+    exercise: {
+      type: Object,
+      required: true,
+    },
     value: Boolean,
   },
   data() {
     return {
-      exerciseName: "",
-      exerciseDetail: "",
-      exerciseProcedure: "",
+      editedExercise: this.exercise,
       loading: false,
       items: [
         { category: "Pectorales" },
@@ -85,6 +90,11 @@ export default {
         { category: "Abdominales" },
         { category: "Hombros" },
         { category: "Piernas" },
+      ],
+      procedureRules: [
+        (v) =>
+          v.length < 350 ||
+          "El procedimiento debe tener menos de 350 caractéres",
       ],
     };
   },
@@ -100,12 +110,19 @@ export default {
   },
   methods: {
     ...mapActions(useExerciseStore, {
-      $addexercise: "addExercise",
+      $modifyExercise: "modifyExercise",
     }),
-    createExercise() {
+    modifyExercise() {
       this.loading = true;
-      this.$addexercise(this.exerciseName, "exercise", this.exerciseDetail, {
-        procedure: this.exerciseProcedure,
+      this.$modifyExercise({
+        id: this.editedExercise.id,
+        name: this.editedExercise.name,
+        type: "exercise",
+        detail: this.editedExercise.detail,
+        metadata: {
+          pos: this.editedExercise.metadata.pos,
+          procedure: this.editedExercise.metadata.procedure,
+        },
       }).then(() => {
         this.success();
       });

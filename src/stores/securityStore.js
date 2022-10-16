@@ -65,12 +65,12 @@ export const useSecurityStore = defineStore("security", {
       this.setUser(null);
     },
     async getCurrentUser() {
-      if (this.user) return this.user;
       const result = await UserApi.get();
-      this.setUser(result);
+      return result;
     },
     async modifyUser(data) {
-      await UserApi.modifyUser(data);
+      const result= await UserApi.modifyUser(data);
+      this.setUser(result);
     },
     async deleteAccount() {
       await UserApi.deleteAccount();

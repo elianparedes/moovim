@@ -1,69 +1,60 @@
 <template>
   <v-dialog
     v-model="show"
-    width="500"
+    width="30%"
     transition="fade-transition"
     class="rounded-xl"
     overlay-opacity="0.9"
     overlay-color="#181818"
   >
-    <v-card class="d-inline-block pa-8" color="#252525" flat>
-      <div class="mb-8 text-center">
-        <div class="d-inline-block font-weight-regular text-h6 text-center">
-          Crear rutina
-        </div>
-        <v-btn
-          icon
-          style="position: absolute; right: 0px; top: 0px; margin: 32px"
-          @click.stop="show = false"
-        >
-          <v-icon class="material-icons-round">close</v-icon>
-        </v-btn>
-      </div>
+    <v-card class="d-inline-block pa-4" color="#1e1e1e" flat>
+      <v-card-title
+        class="d-inline-block font-weight-regular text-center mb-16"
+      >
+        Nueva rutina
+      </v-card-title>
 
-      <v-text-field
-        solo
-        placeholder="Nombre"
-        flat
-        v-model="routineName"
-      ></v-text-field>
+      <v-card-text>
+        <v-text-field
+          outlined
+          class="rounded-lg"
+          label="Nombre"
+          v-model="routineName"
+        ></v-text-field>
+        <v-textarea
+          outlined
+          label="Descripción"
+          v-model="routineDetail"
+          counter="100"
+          rows="4"
+          row-height="20"
+          no-resize
+          class="rounded-lg"
+        ></v-textarea>
 
-      <v-textarea
-        solo
-        name="input-7-4"
-        placeholder="Descripción"
-        v-model="routineDetail"
-        flat
-        counter
-        rows="4"
-        row-height="20"
-        no-resize
-      ></v-textarea>
+        <v-select
+          outlined
+          class="rounded-lg"
+          :items="items"
+          item-text="category"
+          item-value="id"
+          label="Categoría"
+          item-color="gray"
+          v-model="routineCategory"
+        ></v-select>
+      </v-card-text>
 
-      <v-select
-        class="mt-4"
-        :items="items"
-        item-text="category"
-        item-value="id"
-        placeholder="Categoría"
-        solo
-        flat
-        color="gray"
-        item-color="gray"
-        v-model="routineCategory"
-      ></v-select>
-
-      <div class="d-flex mt-8">
+      <div class="text-center">
         <v-btn
           large
           style="flex: 1"
           rounded
           elevation="0"
-          class="font-weight-bold"
-          color="#BF3D3D"
+          color="accent"
+          class="px-16 mt-8 mb-8"
           :loading="loading"
           @click="create"
-          >Crear</v-btn
+          >Crear rutina</v-btn
         >
       </div>
     </v-card>

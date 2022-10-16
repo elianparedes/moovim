@@ -35,15 +35,15 @@
             <v-divider class="mt-8"></v-divider>
           </v-list-item-group>
 
-          <v-list-item link
-            ><v-list-item-icon class="align-self-center">
+          <v-list-item link>
+            <v-list-item-icon class="align-self-center">
               <v-icon class="material-icons-round">add_box</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content link @click="createRoutineDialog = true">
               <v-list-item-title>Crear rutina</v-list-item-title>
-            </v-list-item-content></v-list-item
-          >
+            </v-list-item-content>
+          </v-list-item>
 
           <v-list-item link
             ><v-list-item-icon class="align-self-center">
@@ -86,10 +86,7 @@
         <v-spacer></v-spacer>
         <router-link v-if="this.$isLoggedIn" to="/profile">
           <v-avatar class="my-8" size="36px">
-            <img
-              src="https://avatars.akamai.steamstatic.com/dfa968b1f7f631cf91c0d26e47e7a6b7d029094b_full.jpg"
-              alt="saul"
-            />
+            <img :src="avatarUrl" :alt="username" />
           </v-avatar>
         </router-link>
         <div v-if="!this.$isLoggedIn" class="d-flex align-center">
@@ -97,14 +94,14 @@
             rounded
             depressed
             large
-            color="my-8 red"
+            color="my-8 primary"
             elevation="0"
             @click="routerHandler('login')"
           >
             Acceder
           </v-btn>
-        </div></v-app-bar
-      >
+        </div>
+      </v-app-bar>
     </div>
 
     <v-main>
@@ -145,6 +142,8 @@ export default {
       createRoutineDialog: false,
       createExerciseDialog: false,
       avatar: null,
+      avatarUrl: null,
+      username: null,
     };
   },
   computed: {
@@ -168,6 +167,12 @@ export default {
   created() {
     const securityStore = useSecurityStore();
     securityStore.initialize();
+    if (this.$isLoggedIn) {
+      this.$getCurrentUser().then((currentUser) => {
+        this.avatarUrl = currentUser.avatarUrl;
+        this.username = currentUser.username;
+      });
+    }
   },
 };
 </script>
@@ -204,5 +209,9 @@ body {
 
 .v-list-item {
   flex: 0;
+}
+
+.v-image__image--cover {
+  border-radius: 24px;
 }
 </style>

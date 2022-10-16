@@ -1,4 +1,5 @@
 import { Api } from "./api.js";
+import profileImage from "../assets/default_image.webp"
 
 export { UserApi, Credentials, SignCredentials, VerifyCredentials, UserData }
 
@@ -12,6 +13,7 @@ class UserApi {
     }
 
     static async signUp(credentials, controller){
+        credentials['avatarUrl']=profileImage;
         return await Api.post(UserApi.getUrl(), false, credentials, controller);
     }
 

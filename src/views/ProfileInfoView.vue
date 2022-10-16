@@ -64,7 +64,6 @@
 import { UserData } from "../api/user";
 import { mapState, mapActions } from "pinia";
 import { useSecurityStore } from "../stores/securityStore.js";
-import profileImage from "../assets/default_image.webp"
 
 export default {
   data() {
@@ -102,7 +101,7 @@ export default {
   },
   computed: {
     ...mapState(useSecurityStore, {
-      $user: 'user',
+      currentUser: 'user',
       $token: 'token'
     }),
     genderApi() {
@@ -151,13 +150,13 @@ export default {
     }
   },
   created() {
-    this.$getCurrentUser().then(() => {
-      this.username = this.$user.username;
-      this.email = this.$user.email;
-      this.firstName = this.$user.firstName;
-      this.lastName = this.$user.lastName;
-      this.gender = Object.keys(this.gendersApi).find(key => this.gendersApi[key] === this.$user.gender);
-      this.image = this.$user.avatarUrl ? this.$user.avatarUrl : profileImage;
+    this.$getCurrentUser().then((currentUser) => {
+      this.username = currentUser.username;
+      this.email = currentUser.email;
+      this.firstName = currentUser.firstName;
+      this.lastName = currentUser.lastName;
+      this.gender = Object.keys(this.gendersApi).find(key => this.gendersApi[key] === currentUser.gender);
+      this.image = currentUser.avatarUrl;
     })
   }
 };

@@ -87,17 +87,17 @@
 
               <template v-if="n === 0">
                 <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="18px" class="material-icons-round"
+                  <v-icon size="24px" class="material-icons-round"
                     >replay</v-icon
                   >
                 </v-col>
                 <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="18px" class="material-icons-round"
+                  <v-icon size="24px" class="material-icons-round"
                     >fitness_center</v-icon
                   >
                 </v-col>
                 <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="18px" class="material-icons-outlined"
+                  <v-icon size="24px" class="material-icons-outlined"
                     >timer</v-icon
                   >
                 </v-col>
@@ -141,7 +141,6 @@ export default {
       loading: true,
       routines: null,
       cycles: null,
-
       selected: null,
       items: [
         { icon: "home", title: "Inicio" },

@@ -1,6 +1,10 @@
 <template>
   <div class="d-flex flex-column pb-16" style="gap: 64px; width: 50%">
     <template v-if="exercise && images">
+      <EditExerciseDialog
+        v-model="editExerciseDialog"
+        :exercise="{ ...exercise, metadata: { ...exercise.metadata } }"
+      />
       <div class="d-flex flex-column" style="gap: 8px">
         <div class="font-weight-bold text-h4">{{ name }}</div>
         <div class="text-h6 font-weight-regular">{{ exercise.detail }}</div>
@@ -19,7 +23,12 @@
             <v-icon left small class="material-icons-round">share</v-icon>
             Compartir
           </v-chip>
-          <v-chip class="px-10 py-4" color="gray" outlined>
+          <v-chip
+            class="px-10 py-4"
+            color="gray"
+            outlined
+            @click="editExerciseDialog = true"
+          >
             <v-icon left small class="material-icons-round">edit</v-icon>
             Editar
           </v-chip>
@@ -75,6 +84,7 @@
 import { mapActions } from "pinia";
 import { useExerciseStore } from "@/stores/exerciseStore.js";
 import { useExerciseImageStore } from "@/stores/exerciseImageStore.js";
+import EditExerciseDialog from "@/components/dialogs/EditExerciseDialog.vue";
 
 export default {
   props: ["name", "id"],
@@ -82,6 +92,7 @@ export default {
     return {
       exercise: null,
       images: null,
+      editExerciseDialog: false,
     };
   },
   created() {
@@ -112,5 +123,6 @@ export default {
       });
     },
   },
+  components: { EditExerciseDialog },
 };
 </script>

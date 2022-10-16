@@ -38,32 +38,41 @@
       </v-row>
       <v-row>
         <v-col>
-          <input
+          <v-text-field
+            outlined
             @input="updateValue('repetitions', $event.target.value)"
             :value="value.repetitions"
             type="number"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            class="white--text rounded-lg text-h6 font-weight-regular centered-input"
+            style="width: 100%; text-align: center"
+            hide-spin-buttons
+            hide-details
           />
         </v-col>
 
         <v-col>
-          <input
+          <v-text-field
+            outlined
             @input="updateValue('weight', $event.target.value)"
             :value="value.weight"
             type="number"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            class="white--text rounded-lg text-h6 font-weight-regular centered-input" 
+            style="width: 100%; text-align: center"
+            hide-spin-buttons
+            hide-details
           />
         </v-col>
 
         <v-col>
-          <input
+          <v-text-field
+            outlined
             @input="updateValue('duration', $event.target.value)"
             :value="value.duration"
             type="number"
-            class="white--text rounded-lg text-h6 font-weight-regular py-2"
-            style="width: 100%; text-align: center; background-color: #1e1e1e"
+            class="white--text rounded-lg text-h6 font-weight-regular  text-center centered-input"
+            style="width: 100%; text-align: center"
+            hide-spin-buttons
+            hide-details
           />
         </v-col>
       </v-row>
@@ -148,5 +157,9 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.centered-input >>> input {
+  text-align: center;
 }
 </style>
