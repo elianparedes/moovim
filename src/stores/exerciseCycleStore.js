@@ -56,11 +56,11 @@ const useExerciseCycleStore = defineStore("exerciseCycle", {
       return result;
     },
     async deleteExerciseCycle(cycleId, exerciseId, fullExerciseCycle) {
-      await exerciseCycleApi.delete(cycleId, exerciseId, fullExerciseCycle.id);
-      const index = this.items.findIndex(fullExerciseCycle);
+      return await exerciseCycleApi.delete(cycleId, exerciseId, fullExerciseCycle.id);
+      /*const index = this.items.findIndex(fullExerciseCycle);
       if (index >= 0) {
         return this.splice(index);
-      }
+      }*/
     },
   },
 });

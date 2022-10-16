@@ -1,51 +1,82 @@
 <template>
-    <div class="d-flex mt-16">
-        <v-card elevation="0" class="form pa-4">
-            <v-card-title class="d-flex flex-column">
-                <v-img class="my-8" src="/moovim.svg" width="35%" style="translate:-8px 0px;">
-
-                </v-img>
-                <div class="d-flex align-self-start">Regístrate en Moovim.</div>
-            </v-card-title>
-            <v-card-subtitle class="pt-2">
-                Supérate a ti mismo.
-            </v-card-subtitle>
-            <v-card-text class="pt-4">
-                <v-form ref="registration" v-model="valid">
-                    <v-text-field v-model="username" label="Nombre de usuario *" :counter="15" :rules="nameRules"
-                        required outlined>
-
-                    </v-text-field>
-                    <v-text-field v-model="email" label="Correo electrónico *" :counter="40" :rules="emailRules"
-                        required outlined>
-
-                    </v-text-field>
-                    <v-text-field v-model="password" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="passwordRules" :type="show ? 'text' : 'password'" label="Contraseña *" :counter="15"
-                        @click:append="show = !show" required outlined></v-text-field>
-                    <div class="d-flex justify-center pb-4">
-                        <v-btn rounded depressed large color="primary" elevation="0" :disabled="!valid" @click="onClicked">
-                            Registrarse
-                        </v-btn>
-                    </div>
-                </v-form>
-                <v-divider></v-divider>
-                <div class="d-flex justify-center pt-4">
-                    ¿Ya tienes una cuenta creada?
-                    <a class="ml-2" @click="onLogin()">Iniciar sesión</a>
-                </div>
-            </v-card-text>
-            <v-snackbar v-model="snackbar" :color="snackbarColor">
-                <div class="d-flex align-center justify-center">
-                    <strong class="mr-4">{{snackbarText}}</strong>
-                    <v-progress-circular size="20" v-if="loading" indeterminate color="white"></v-progress-circular>
-                    <v-icon class="ml-4" v-if="!loading">
-                        mdi-alert-circle
-                    </v-icon>
-                </div>
-            </v-snackbar>
-        </v-card>
-    </div>
+  <div class="d-flex mt-16">
+    <v-card elevation="0" class="form pa-4">
+      <v-card-title class="d-flex flex-column">
+        <v-img
+          class="my-8"
+          src="/moovim.svg"
+          width="35%"
+          style="translate: -8px 0px"
+        >
+        </v-img>
+        <div class="d-flex align-self-start">Regístrate en Moovim.</div>
+      </v-card-title>
+      <v-card-subtitle class="pt-2"> Supérate a ti mismo. </v-card-subtitle>
+      <v-card-text class="pt-4">
+        <v-form ref="registration" v-model="valid">
+          <v-text-field
+            v-model="username"
+            label="Nombre de usuario *"
+            :counter="15"
+            :rules="nameRules"
+            required
+            outlined
+          >
+          </v-text-field>
+          <v-text-field
+            v-model="email"
+            label="Correo electrónico *"
+            :counter="40"
+            :rules="emailRules"
+            required
+            outlined
+          >
+          </v-text-field>
+          <v-text-field
+            v-model="password"
+            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="passwordRules"
+            :type="show ? 'text' : 'password'"
+            label="Contraseña *"
+            :counter="15"
+            @click:append="show = !show"
+            required
+            outlined
+          ></v-text-field>
+          <div class="d-flex justify-center pb-4">
+            <v-btn
+              rounded
+              depressed
+              large
+              color="primary"
+              elevation="0"
+              :disabled="!valid"
+              @click="onClicked"
+            >
+              Registrarse
+            </v-btn>
+          </div>
+        </v-form>
+        <v-divider></v-divider>
+        <div class="d-flex justify-center pt-4">
+          ¿Ya tienes una cuenta creada?
+          <a class="ml-2" @click="onLogin()">Iniciar sesión</a>
+        </div>
+      </v-card-text>
+      <v-snackbar v-model="snackbar" :color="snackbarColor">
+        <div class="d-flex align-center justify-center">
+          <strong class="mr-4">{{ snackbarText }}</strong>
+          <v-progress-circular
+            size="20"
+            v-if="loading"
+            indeterminate
+            color="white"
+          ></v-progress-circular>
+          <v-icon class="ml-4" v-if="!loading"> mdi-alert-circle </v-icon>
+        </div>
+      </v-snackbar>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -138,7 +169,7 @@ export default {
 
 <style>
 .form {
-    width: 35%;
-    margin: auto;
+  width: 35%;
+  margin: auto;
 }
 </style>
