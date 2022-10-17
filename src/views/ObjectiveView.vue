@@ -1,46 +1,49 @@
 <template>
-  <div>
-    <div style="height: 80px">
-      <v-spacer class="my-8"></v-spacer>
-      <div class="font-weight-thin text-h6 d-flex row">
-        <span class="mx-2">Rutinas de {{ this.$route.query.query }}</span>
-        <v-spacer></v-spacer>
-        <SwitchButton
-          class="mx-6"
-          :chip-content="['Mas recientes', 'Mas antiguos', 'Mas faciles', 'Mas dificiles']"
-          :vue-style="'mx-1'"
-          v-on:newOrder="
-            $event === 'Mas recientes'
-              ? getOrderedWrapper('date', 'desc')
-              : $event === 'Mas antiguos'
-              ? getOrderedWrapper('date', 'asc')
-              : $event === 'Mas faciles'
-              ? getOrderedWrapper('difficulty', 'asc')
-              : getOrderedWrapper('difficulty', 'desc')
-          "
-        ></SwitchButton>
-      </div>
-    </div>
-    <div class="mr-6">
-      <v-carousel hide-delimiters height="100%" cycle show-arrows-on-hover>
-        <v-carousel-item
-          v-for="i in Math.ceil(routines.length / 6)"
-          :key="i"
-          height="100%"
+  <v-slide-y-transition appear>
+    <div>
+      <div style="height: 80px">
+        <v-spacer class="my-8"></v-spacer>
+        <div
+          class="font-weight-thin text-h6 d-flex row"
+          style="margin-right: calc(100vw - (500px * 3 + 16px * 6 + 256px))"
         >
-          <v-row v-for="k in [(i - 1) * 2, (i - 1) * 2 + 1]" :key="k">
-            <v-col
-              v-for="routine in getArray(k)"
-              :key="routine.id"
-              md="4"
-              xs="3"
-            >
+          <span class="mx-2">Rutinas de {{ this.$route.query.query }}</span>
+          <v-spacer></v-spacer>
+          <SwitchButton
+            :chip-content="[
+              'Mas recientes',
+              'Mas antiguos',
+              'Mas faciles',
+              'Mas dificiles',
+            ]"
+            :vue-style="'mx-1'"
+            v-on:newOrder="
+              $event === 'Mas recientes'
+                ? getOrderedWrapper('date', 'desc')
+                : $event === 'Mas antiguos'
+                ? getOrderedWrapper('date', 'asc')
+                : $event === 'Mas faciles'
+                ? getOrderedWrapper('difficulty', 'asc')
+                : getOrderedWrapper('difficulty', 'desc')
+            "
+          ></SwitchButton>
+        </div>
+      </div>
+
+      <div
+        style="
+          padding-bottom: 16px;
+          margin-right: calc(100vw - (500px * 3 + 16px * 6 + 256px));
+        "
+      >
+        <v-row class="mb-6">
+          <v-col cols="4" v-for="routine in routines" :key="routine.name">
+            <v-fade-transition appear>
               <router-link
                 :to="`routines/${routine.name}-${routine.id}`"
                 style="text-decoration: none; color: inherit"
               >
                 <WorkoutResultCard
-                  v-if="routine"
                   :routineId="routine.id"
                   :name="routine.name"
                   :desc="routine.detail"
@@ -49,15 +52,12 @@
                   :avatar="routine.user.avatarUrl"
                   :verified="routine.verified"
                   :stars="routine.score"
-                  :bookmarks="routine.bookmarks"
-                />
-              </router-link>
-            </v-col>
-          </v-row>
-        </v-carousel-item>
-      </v-carousel>
-    </div>
-  </div>
+                  :bookmarks="routine.bookmarks" /></router-link
+            ></v-fade-transition>
+          </v-col>
+        </v-row>
+      </div></div
+  ></v-slide-y-transition>
 </template>
 
 <script>
@@ -140,7 +140,7 @@ export default {
     },
   },
   created() {
-    this.getOrderedWrapper("score", "desc");
+    this.getOrderedWrapper("date", "desc");
   },
 };
 </script>

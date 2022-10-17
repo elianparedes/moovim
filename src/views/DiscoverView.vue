@@ -1,10 +1,10 @@
 <template>
-  <v-slide-x-transition mode="in-out" appear>
+  <v-slide-x-transition mode="in-out" appear hide-on-leave>
     <div class="d-flex flex-column" style="gap: 32px">
       <div>
         <div
           class="d-flex"
-          style="margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px))"
+          style="margin-right: calc(100vw - (500px * 3 + 16px * 6 + 256px))"
         >
           <span class="mx-2 font-weight-thin text-h6"
             >Rutinas de otros usuarios</span
@@ -33,23 +33,27 @@
       <div
         style="
           padding-bottom: 16px;
-          margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
+          margin-right: calc(100vw - (500px * 3 + 16px * 6 + 256px));
         "
       >
         <v-row class="mb-6">
           <v-col cols="4" v-for="routine in routines" :key="routine.name">
             <v-fade-transition appear>
-              <WorkoutResultCard
-                :routineId="routine.id"
-                :name="routine.name"
-                :desc="routine.detail"
-                :image="routine.metadata.image"
-                :author="routine.user.username"
-                :avatar="routine.user.avatarUrl"
-                :verified="routine.verified"
-                :stars="routine.score"
-                :bookmarks="routine.bookmarks"
-            /></v-fade-transition>
+              <router-link
+                :to="`routines/${routine.name}-${routine.id}`"
+                style="text-decoration: none; color: inherit"
+              >
+                <WorkoutResultCard
+                  :routineId="routine.id"
+                  :name="routine.name"
+                  :desc="routine.detail"
+                  :image="routine.metadata.image"
+                  :author="routine.user.username"
+                  :avatar="routine.user.avatarUrl"
+                  :verified="routine.verified"
+                  :stars="routine.score"
+                  :bookmarks="routine.bookmarks" /></router-link
+            ></v-fade-transition>
           </v-col>
         </v-row>
       </div></div
@@ -61,8 +65,6 @@ import SwitchButton from "@/components/SwitchButton";
 import WorkoutResultCard from "@/components/WorkoutResultCard";
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
-import { useExerciseStore } from "@/stores/exerciseStore";
-import router from "@/router";
 export default {
   name: "DiscoverView",
   components: {
@@ -70,12 +72,11 @@ export default {
     SwitchButton,
   },
   routines: [],
-  exercises: [],
+
   data: () => {
     return {
       routines: [],
       carousel: 0,
-      exercises: [],
     };
   },
   methods: {
@@ -102,6 +103,15 @@ export default {
           }
         });
     },
+    navigateToRoutine(name, id) {
+      this.$router.push({
+        name: "routine_detail",
+        params: {
+          id: id,
+          name: name,
+        },
+      });
+    },
     getAllRoutinesWrapper() {
       this.routines = [];
       this.getAllRoutines(0);
@@ -119,34 +129,13 @@ export default {
           }
         });
     },
-    getAllExercisesWrapper() {
-      this.getAllExercises(0);
-    },
-    getAllExercises(page) {
-      this.$getPageExercise(page)
-        .then((exercise) => {
-          this.exercises = this.exercises.concat(exercise.content);
-          return exercise.isLastPage;
-        })
-        .then((isLast) => {
-          if (!isLast && page < 5) {
-            this.getAllExercises(page + 1);
-            return;
-          }
-        });
-    },
-    viewExerciseDetails(exercise) {
-      router.push(`exercises/${exercise.name}-${exercise.id}`);
-    },
     ...mapActions(useRoutineStore, {
       $getPageRoutineOrdered: "getPageRoutineOrdered",
       $getPageRoutine: "getPageRoutine",
     }),
-    ...mapActions(useExerciseStore, { $getPageExercise: "getPageExercise" }),
   },
   created() {
-    this.getOrderedWrapper("score", "desc");
-    this.getAllExercisesWrapper();
+    this.getOrderedWrapper("date", "desc");
   },
 };
 </script>

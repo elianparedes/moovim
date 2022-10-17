@@ -1,5 +1,5 @@
 <template>
-  <v-slide-x-transition mode="in-out" appear>
+  <v-slide-x-transition mode="in-out" appear hide-on-leave>
     <div class="d-flex flex-column" style="gap: 32px">
       <div class="font-weight-thin text-h6">Objetivos</div>
 
@@ -26,7 +26,7 @@
       <div
         style="
           padding-bottom: 16px;
-          margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
+          margin-right: calc(100vw - (500px * 3 + 16px * 6 + 256px));
         "
       >
         <v-row class="mb-6">
@@ -150,7 +150,7 @@ export default {
 
 <style scoped>
 ::-webkit-scrollbar-track {
-  margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
+  margin-right: calc(100vw - (500px * 3 + 16px * 6 + 256px));
 }
 
 .v-responsive__sizer {
