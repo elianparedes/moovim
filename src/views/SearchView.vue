@@ -180,7 +180,7 @@ export default {
   expand: false,
   muscularesArray: ["Pectorales", "Hombros", "Tríceps", "Gemelos", "Piernas", "Espalda", "Abdominales", "Bíceps"],
   categoriasArray: ["Rutinas", "Ejercicios"],
-  dificultadesArray: ["rookie","begginer", "intermediate","advanced", "expert"],
+  dificultadesArray: ["rookie","beginner", "intermediate", "advanced", "expert"],
   gruposMusculares: [
     {text:"Pectorales",toggle:true},
     {text:"Tríceps",toggle:true},
@@ -192,7 +192,7 @@ export default {
     {text:"Piernas",toggle:true}],
   categorias: [{text:"Rutinas",toggle:true},{text:"Ejercicios",toggle:true}],
   dificultades: [{text:"rookie",toggle:true},
-    {text:"begginer",toggle:true},
+    {text:"beginner",toggle:true},
     {text:"intermediate",toggle:true},
     {text:"advanced",toggle:true},
     {text:"expert",toggle:true}]
