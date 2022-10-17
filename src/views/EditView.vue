@@ -506,12 +506,18 @@ export default {
     },
     createCycle() {
       this.saving = true;
+
+      const order =
+        this.cycles && this.cycles.length > 0
+          ? this.cycles[this.cycles.length - 1].order + 1
+          : 1;
+
       this.$addRoutineCycle(
         this.routine.id,
         this.newCycleName,
         this.newCycleName,
         "exercise",
-        this.cycles[this.cycles.length - 1].order + 1,
+        order,
         this.newCycleRepetitionsNumber,
         null
       )
