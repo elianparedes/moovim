@@ -7,8 +7,7 @@
     @click="click"
     :ripple="false"
   >
-    <AddExerciseSteps v-if="stepDialog" v-model="stepDialog" :exerciseId="id" />
-
+    <AddExerciseSteps v-if="stepDialog" v-model="stepDialog" :exerciseId="id" @finish="emitFinish()"/>
     <v-row align="center">
       <v-col>
         <v-list-item>
@@ -75,10 +74,13 @@ export default {
         { title: "Añadir a rutina...", action: this.add },
         { title: "Compartir", action: this.share },
       ],
-      stepDialog: false,
+      stepDialog: false
     };
   },
   methods: {
+    emitFinish(){
+      this.$emit("finish")
+    },
     add() {
       this.stepDialog = true;
     },

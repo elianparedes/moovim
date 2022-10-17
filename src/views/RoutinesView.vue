@@ -6,6 +6,16 @@
       style="gap: 8px; height: calc(100vh - 128px)"
       v-if="!loading"
     >
+      <v-snackbar v-model="success" rounded="lg">
+        Ejercicio agregado
+
+        <template>
+          <v-icon class="float-right material-icons-round" size="18" color="white"
+          >check_circle</v-icon
+          >
+        </template>
+      </v-snackbar>
+
       <v-item-group
         mandatory
         class="px-4 py-1 d-flex flex-column"
@@ -102,7 +112,8 @@
 
             <template v-if="cycle.exercises.length > 0">
               <ExerciseViewCard
-                style="cursor: default"
+                  style="cursor: default"
+                  @finish="changeSuccess()"
                 v-for="obj in cycle.exercises"
                 :key="obj.order"
                 :id="obj.exercise.id"
@@ -151,6 +162,7 @@ export default {
   },
   data() {
     return {
+      success: false,
       loading: true,
       routines: null,
       cycles: null,
@@ -169,6 +181,7 @@ export default {
     $route: "fetchRoutines",
   },
   methods: {
+
     ...mapActions(useRoutineStore, {
       $getAllRoutine: "getAllRoutine",
       $deleteRoutine: "deleteRoutine",
@@ -185,6 +198,9 @@ export default {
     ...mapState(useSecurityStore, {
       $getUser: "getUser",
     }),
+    changeSuccess(){
+      this.success = true
+    },
     editRoutine() {
       this.$router.push({
         name: "routine_detail",
@@ -240,7 +256,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
 }

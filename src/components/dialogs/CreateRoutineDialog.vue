@@ -1,25 +1,78 @@
 <template>
-  <v-dialog v-model="show" width="30%" transition="fade-transition" class="rounded-xl" overlay-opacity="0.9"
-    overlay-color="#181818">
+  <v-dialog
+    v-model="show"
+    width="30%"
+    transition="fade-transition"
+    class="rounded-xl"
+    overlay-opacity="0.9"
+    overlay-color="#181818"
+  >
     <v-card class="d-inline-block pa-4" color="#1e1e1e" flat>
-      <v-card-title class="d-inline-block font-weight-regular text-center mb-16">
+      <v-card-title
+        class="d-inline-block font-weight-regular text-center mb-16"
+      >
         Nueva rutina
       </v-card-title>
 
       <v-card-text>
         <v-form v-model="valid">
-          <v-text-field :rules=nameRules outlined class="rounded-lg" label="Nombre" v-model="routineName" counter="100"></v-text-field>
-          <v-textarea :rules=detailRules outlined label="Descripción" v-model="routineDetail" counter="100" rows="4" row-height="20"
-            no-resize class="rounded-lg"></v-textarea>
+          <v-text-field
+            :rules="nameRules"
+            outlined
+            class="rounded-lg"
+            label="Nombre"
+            v-model="routineName"
+            counter="100"
+          ></v-text-field>
+          <v-textarea
+            :rules="detailRules"
+            outlined
+            label="Descripción"
+            v-model="routineDetail"
+            counter="100"
+            rows="4"
+            row-height="20"
+            no-resize
+            class="rounded-lg"
+          ></v-textarea>
 
-          <v-select outlined class="rounded-lg" :items="items" item-text="category" item-value="id" label="Categoría"
-            item-color="gray" v-model="routineCategory"></v-select>
+          <v-select
+            outlined
+            class="rounded-lg"
+            :items="category"
+            item-text="category"
+            item-value="id"
+            label="Categoría"
+            item-color="gray"
+            v-model="routineCategory"
+          ></v-select>
+
+          <v-select
+            outlined
+            class="rounded-lg"
+            :items="difficulties"
+            item-text="difficulty"
+            item-value="id"
+            label="Dificultad"
+            item-color="gray"
+            v-model="routineDifficulty"
+          ></v-select>
         </v-form>
       </v-card-text>
 
       <div class="text-center">
-        <v-btn :disabled="!valid" large style="flex: 1" rounded elevation="0" color="accent" class="px-16 mt-8 mb-8" :loading="loading"
-          @click="create">Crear rutina</v-btn>
+        <v-btn
+          :disabled="!valid"
+          large
+          style="flex: 1"
+          rounded
+          elevation="0"
+          color="accent"
+          class="px-16 mt-8 mb-8"
+          :loading="loading"
+          @click="create"
+          >Crear rutina</v-btn
+        >
       </div>
     </v-card>
   </v-dialog>
@@ -38,15 +91,33 @@ export default {
     return {
       routineName: "",
       routineDetail: "",
-      routineCategory: "",
+      routineCategory: 1,
+      routineDifficulty: "rookie",
       loading: false,
-      items: [{ id: 1, category: "Tonificación" }],
-      nameRules:
-        [v => (v.length <= 100) || 'El nombre debe tener menos de 100 caracteres',
-        (v) => !!v || "Se debe especificar el nombre de la rutina"],
-      detailRules:
-        [v => (v.length <= 100) || 'La descripción debe tener menos de 100 caracteres',
-        (v) => !!v || "Se debe especificar la descripción"],
+      category: [
+        { id: 1, category: "Tonificación" },
+        { id: 2, category: "Resistencia" },
+        { id: 3, category: "Masa muscular" },
+        { id: 4, category: "Relajación" },
+      ],
+      difficulties: [
+        { id: "rookie", difficulty: "Rookie" },
+        { id: "beginner", difficulty: "Beginner" },
+        { id: "intermediate", difficulty: "Intermediate" },
+        { id: "advanced", difficulty: "Advanced" },
+        { id: "expert", difficulty: "Expert" },
+      ],
+      nameRules: [
+        (v) =>
+          v.length <= 100 || "El nombre debe tener menos de 100 caracteres",
+        (v) => !!v || "Se debe especificar el nombre de la rutina",
+      ],
+      detailRules: [
+        (v) =>
+          v.length <= 100 ||
+          "La descripción debe tener menos de 100 caracteres",
+        (v) => !!v || "Se debe especificar la descripción",
+      ],
       valid: false,
     };
   },
@@ -71,7 +142,7 @@ export default {
         this.routineDetail,
         true,
         { id: this.routineCategory },
-        "rookie",
+        this.routineDifficulty,
         {
           image:
             "https://images.pexels.com/photos/2425232/pexels-photo-2425232.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",

@@ -69,7 +69,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-image__image--cover {
   border-radius: 24px;
 }

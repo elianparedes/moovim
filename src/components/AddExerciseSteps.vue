@@ -236,6 +236,7 @@ export default {
       exerciseRepeated: false,
       selectedCycle: null,
       counter: 0,
+      success: false,
       items: [],
       loading: false,
       input: {
@@ -304,6 +305,7 @@ export default {
         }
         this.checkStep();
       } else {
+        this.$emit("finish");
         this.addExercise();
       }
     },
@@ -339,6 +341,7 @@ export default {
       });
     },
     addExercise() {
+      this.success = true
       const cycleId = this.active[0].id;
       this.$getAllExerciseCycles(cycleId)
         .then(
@@ -355,7 +358,6 @@ export default {
           )
             .then(() => {
               this.show = false;
-              this.$emit("finish");
             })
             .catch(() => {})
         );
