@@ -7,24 +7,27 @@
         </div>
       </div>
       <div>
-        <ExerciseSummaryCard
-          v-for="exercise in exercises"
-          :key="exercise.name"
-          :category="exercise.type"
+        <SelectableExerciseSummaryCard
+            v-for="exercise in exercises"
+            :key="exercise.id"
+          :id="exercise.id"
+          :category="exercise.detail"
           :exercise="exercise.name"
+          :click="()=>{viewExerciseDetails(exercise)}"
           class="my-4 mr-6"
-        ></ExerciseSummaryCard>
+        ></SelectableExerciseSummaryCard>
       </div>
     </div>
   </template>
   
   <script>
-  import ExerciseSummaryCard from "@/components/ExerciseSummaryCard";
   import { mapActions } from "pinia";
   import { useExerciseStore } from "@/stores/exerciseStore";
+  import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummaryCard.vue";
+
   export default {
     name: "DiscoverView",
-    components: { ExerciseSummaryCard },
+    components: { SelectableExerciseSummaryCard,},
     routines: [],
     exercises: [],
     data: () => {
@@ -41,7 +44,7 @@
       getAllExercises(page){
         this.$getPageExercise(page)
         .then((exercise) => {
-          this.exercises = this.exercises.concat(exercise.content).filter((item)=>{return item.metadata.muscleGroup===this.$route.query.query});
+          this.exercises = this.exercises.concat(exercise.content).filter((item)=>{return item.detail===this.$route.query.query});
           return exercise.isLastPage;
         }).then((isLast) => {
           if(!isLast && page<5){

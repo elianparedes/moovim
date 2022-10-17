@@ -7,14 +7,16 @@
         <v-spacer></v-spacer>
         <SwitchButton
           class="mx-6"
-          :chip-content="['Populares', 'Verificados', 'Recientes']"
+          :chip-content="['Mas recientes', 'Mas antiguos', 'Mas faciles', 'Mas dificiles']"
           :vue-style="'mx-1'"
           v-on:newOrder="
-            $event === 'Recientes'
+            $event === 'Mas recientes'
               ? getOrderedWrapper('date', 'desc')
-              : $event === 'Populares'
-              ? getOrderedWrapper('score', 'desc')
-              : getAllRoutinesWrapper()
+              : $event === 'Mas antiguos'
+              ? getOrderedWrapper('date', 'asc')
+              : $event === 'Mas faciles'
+              ? getOrderedWrapper('difficulty', 'asc')
+              : getOrderedWrapper('difficulty', 'desc')
           "
         ></SwitchButton>
       </div>
@@ -33,6 +35,10 @@
               md="4"
               xs="3"
             >
+              <router-link
+                :to="`routines/${routine.name}-${routine.id}`"
+                style="text-decoration: none; color: inherit"
+              >
               <WorkoutResultCard
                 v-if="routine"
                 :routineId="routine.id"
@@ -45,29 +51,11 @@
                 :stars="routine.score"
                 :bookmarks="routine.bookmarks"
               />
+            </router-link>
             </v-col>
           </v-row>
         </v-carousel-item>
       </v-carousel>
-    </div>
-    <div class="font-weight-thin text-h6 my-2">
-      <span class="mx-2">Ejercicios</span>
-    </div>
-    <div>
-      <router-link
-        v-for="exercise in exercises"
-        :key="exercise.id"
-        :to="`exercises/${exercise.name}-${exercise.id}`"
-        style="text-decoration: none; color: inherit"
-      >
-        <SelectableExerciseSummaryCard
-          :id="exercise.id"
-          :category="exercise.detail"
-          :exercise="exercise.name"
-          :click="() => ({})"
-          class="my-4 mr-6"
-        ></SelectableExerciseSummaryCard>
-      </router-link>
     </div>
   </div>
 </template>
@@ -75,24 +63,20 @@
 <script>
 import SwitchButton from "@/components/SwitchButton";
 import WorkoutResultCard from "@/components/WorkoutResultCard";
-import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummaryCard";
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
-import { useExerciseStore } from "@/stores/exerciseStore";
 export default {
   name: "DiscoverView",
   components: {
-    SelectableExerciseSummaryCard,
     WorkoutResultCard,
     SwitchButton,
   },
   routines: [],
-  exercises: [],
+
   data: () => {
     return {
       routines: [],
       carousel: 0,
-      exercises: [],
     };
   },
   methods: {
@@ -119,6 +103,15 @@ export default {
           }
         });
     },
+    navigateToRoutine(name, id) {
+      this.$router.push({
+        name: "routine_detail",
+        params: {
+          id: id,
+          name: name,
+        },
+      });
+    },
     getAllRoutinesWrapper() {
       this.routines = [];
       this.getAllRoutines(0);
@@ -136,31 +129,13 @@ export default {
           }
         });
     },
-    getAllExercisesWrapper() {
-      this.getAllExercises(0);
-    },
-    getAllExercises(page) {
-      this.$getPageExercise(page)
-        .then((exercise) => {
-          this.exercises = this.exercises.concat(exercise.content);
-          return exercise.isLastPage;
-        })
-        .then((isLast) => {
-          if (!isLast && page < 5) {
-            this.getAllExercises(page + 1);
-            return;
-          }
-        });
-    },
     ...mapActions(useRoutineStore, {
       $getPageRoutineOrdered: "getPageRoutineOrdered",
       $getPageRoutine: "getPageRoutine",
     }),
-    ...mapActions(useExerciseStore, { $getPageExercise: "getPageExercise" }),
   },
   created() {
-    this.getOrderedWrapper("score", "desc");
-    this.getAllExercisesWrapper();
+    this.getOrderedWrapper("date", "desc");
   },
 };
 </script>
