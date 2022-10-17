@@ -140,7 +140,7 @@ export default {
     },
   },
   created() {
-    this.getOrderedWrapper("score", "desc");
+    this.getOrderedWrapper("date", "desc");
   },
 };
 </script>
