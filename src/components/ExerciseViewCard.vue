@@ -7,7 +7,7 @@
     :ripple="false"
     @click.native="click"
   >
-    <AddExerciseSteps v-if="stepDialog" v-model="stepDialog" :exerciseId="id" />
+    <AddExerciseSteps v-if="stepDialog" v-model="stepDialog" :exerciseId="id" @finish="emitFinish()" />
 
     <v-row
       align="center"
@@ -131,6 +131,9 @@ export default {
     };
   },
   methods: {
+    emitFinish(){
+      this.$emit("finish")
+    },
     add() {
       this.stepDialog = true;
     },

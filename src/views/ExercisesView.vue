@@ -1,10 +1,21 @@
 <template>
   <v-slide-x-transition hide-on-leave>
+
     <div
       class="d-flex pl-8"
       v-if="exercises"
       style="gap: 32px; height: calc(100vh - 128px)"
     >
+      <v-snackbar v-model="success" rounded="lg">
+        Ejercicio agregado
+
+        <template>
+          <v-icon class="float-right material-icons-round" size="18" color="white"
+          >check_circle</v-icon
+          >
+        </template>
+      </v-snackbar>
+
       <div class="d-flex flex-column" style="gap: 16px; width: 50%; flex: 50%">
         <v-item-group
           mandatory
@@ -18,6 +29,7 @@
             :key="exercise.id"
           >
             <SelectableExerciseSummaryCard
+                @finish="changeSuccess()"
               :exercise="exercise.name"
               :category="exercise.detail"
               :id="exercise.id"
@@ -51,6 +63,7 @@ import ExerciseView from "./ExerciseView.vue";
 export default {
   data() {
     return {
+      success: false,
       exercises: [],
       selectedExercise: null,
       images: [],
@@ -83,6 +96,9 @@ export default {
           return;
         }
       })
+    },
+    changeSuccess(){
+      this.success = true
     },
     showDeleted(deletedExercise) {
       this.exercises.splice(
