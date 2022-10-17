@@ -299,9 +299,9 @@ export default {
     checkStepBtn() {
       this.steps[this.step].toggle = true;
       if (this.step === 1) {
-        if(this.exerciseRepeated) {
+        if (this.exerciseRepeated) {
           this.steps[this.step].toggle = false;
-          return
+          return;
         }
         this.checkStep();
       } else {
@@ -341,13 +341,16 @@ export default {
       });
     },
     addExercise() {
-      this.success = true
+      this.success = true;
       const cycleId = this.active[0].id;
       this.$getAllExerciseCycles(cycleId)
-        .then(
-          (exercises) =>
-            exercises.content[exercises.content.length - 1].order + 1
-        )
+        .then((exercises) => {
+          const newOrder =
+            exercises.content.length > 0
+              ? exercises.content[exercises.content.length - 1].order + 1
+              : 1;
+          return newOrder;
+        })
         .then((newOrder) =>
           this.$addExerciseCycle(
             cycleId,
