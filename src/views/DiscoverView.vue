@@ -35,6 +35,10 @@
               md="4"
               xs="3"
             >
+              <router-link
+                :to="`routines/${routine.name}-${routine.id}`"
+                style="text-decoration: none; color: inherit"
+              >
               <WorkoutResultCard
                 v-if="routine"
                 :routineId="routine.id"
@@ -47,24 +51,11 @@
                 :stars="routine.score"
                 :bookmarks="routine.bookmarks"
               />
+            </router-link>
             </v-col>
           </v-row>
         </v-carousel-item>
       </v-carousel>
-    </div>
-    <div class="font-weight-thin text-h6 my-2">
-      <span class="mx-2">Ejercicios</span>
-    </div>
-    <div>
-        <SelectableExerciseSummaryCard
-            v-for="exercise in exercises"
-            :key="exercise.id"
-          :id="exercise.id"
-          :category="exercise.detail"
-          :exercise="exercise.name"
-          :click="()=>{viewExerciseDetails(exercise)}"
-          class="my-4 mr-6"
-        ></SelectableExerciseSummaryCard>
     </div>
   </div>
 </template>
@@ -72,25 +63,20 @@
 <script>
 import SwitchButton from "@/components/SwitchButton";
 import WorkoutResultCard from "@/components/WorkoutResultCard";
-import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummaryCard";
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
-import { useExerciseStore } from "@/stores/exerciseStore";
-import router from "@/router";
 export default {
   name: "DiscoverView",
   components: {
-    SelectableExerciseSummaryCard,
     WorkoutResultCard,
     SwitchButton,
   },
   routines: [],
-  exercises: [],
+
   data: () => {
     return {
       routines: [],
       carousel: 0,
-      exercises: [],
     };
   },
   methods: {
@@ -117,6 +103,15 @@ export default {
           }
         });
     },
+    navigateToRoutine(name, id) {
+      this.$router.push({
+        name: "routine_detail",
+        params: {
+          id: id,
+          name: name,
+        },
+      });
+    },
     getAllRoutinesWrapper() {
       this.routines = [];
       this.getAllRoutines(0);
@@ -134,34 +129,13 @@ export default {
           }
         });
     },
-    getAllExercisesWrapper() {
-      this.getAllExercises(0);
-    },
-    getAllExercises(page) {
-      this.$getPageExercise(page)
-        .then((exercise) => {
-          this.exercises = this.exercises.concat(exercise.content);
-          return exercise.isLastPage;
-        })
-        .then((isLast) => {
-          if (!isLast && page < 5) {
-            this.getAllExercises(page + 1);
-            return;
-          }
-        });
-    },
-    viewExerciseDetails(exercise){
-      router.push(`exercises/${exercise.name}-${exercise.id}`)
-    },
     ...mapActions(useRoutineStore, {
       $getPageRoutineOrdered: "getPageRoutineOrdered",
       $getPageRoutine: "getPageRoutine",
     }),
-    ...mapActions(useExerciseStore, { $getPageExercise: "getPageExercise" }),
   },
   created() {
-    this.getOrderedWrapper("score", "desc");
-    this.getAllExercisesWrapper();
+    this.getOrderedWrapper("date", "desc");
   },
 };
 </script>

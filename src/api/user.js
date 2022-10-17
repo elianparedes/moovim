@@ -19,6 +19,7 @@ class UserApi {
 
   static async signUp(credentials, controller) {
     credentials["avatarUrl"] = profileImage;
+    credentials["metadata"] = {'login': 0};
     return await Api.post(UserApi.getUrl(), false, credentials, controller);
   }
 

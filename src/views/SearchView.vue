@@ -147,15 +147,15 @@
         <span>Ejercicios</span>
       </div>
       <div>
-        <ExerciseSummaryCard
-          v-for="exercise in exercises.filter(function (item) {
-            return muscularesArray.includes(item.detail);
-          })"
-          :key="exercise.id"
+        <SelectableExerciseSummaryCard
+            v-for="exercise in exercises"
+            :key="exercise.id"
+          :id="exercise.id"
           :category="exercise.detail"
           :exercise="exercise.name"
+          :click="()=>{viewExerciseDetails(exercise)}"
           class="my-4 mr-6"
-        ></ExerciseSummaryCard>
+        ></SelectableExerciseSummaryCard>
       </div>
     </div>
   </div>
@@ -163,7 +163,7 @@
 
 <script>
 import WorkoutResultCard from "@/components/WorkoutResultCard";
-import ExerciseSummaryCard from "@/components/ExerciseSummaryCard";
+import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummaryCard.vue";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useExerciseStore } from "@/stores/exerciseStore";
 
@@ -172,7 +172,7 @@ import SelectButton from "@/components/SelectButton";
 import { mapActions } from "pinia";
 export default {
   name: "SearchView",
-  components: {WorkoutResultCard, ExerciseSummaryCard, SelectButton},
+  components: {WorkoutResultCard, SelectableExerciseSummaryCard, SelectButton},
   
   data: () => ({
   routines: [],

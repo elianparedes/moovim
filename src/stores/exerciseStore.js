@@ -14,6 +14,7 @@ export const useExerciseStore = defineStore("exercises", {
     splice(index) {
       this.items.splice(index, 1);
     },
+    //detail: pectorales, triceps, gemelos, espalda, gemelos, abdominales, hombros, piernas
     async addExercise(name, type, detail, metadata) {
       const result = await exercisesApi.add(
         new Exercise(name, type, detail, metadata)
