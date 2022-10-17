@@ -1,17 +1,26 @@
 <template>
   <v-slide-x-transition hide-on-leave>
+    <div v-if="routines && routines.length == 0">
+      <div style="background-color: #1e1e1e" class="rounded-xl pa-16 mr-8">
+        Aún no has creado ninguna rutina
+      </div>
+    </div>
+
     <div
       id="routines"
       class="d-flex"
-      style="gap: 8px; height: calc(100vh - 128px)"
       v-if="!loading"
+      style="gap: 8px; height: calc(100vh - 128px)"
     >
       <v-snackbar v-model="success" rounded="lg">
         Ejercicio agregado
 
         <template>
-          <v-icon class="float-right material-icons-round" size="18" color="white"
-          >check_circle</v-icon
+          <v-icon
+            class="float-right material-icons-round"
+            size="18"
+            color="white"
+            >check_circle</v-icon
           >
         </template>
       </v-snackbar>
@@ -76,67 +85,83 @@
             "
           ></div>
         </div>
-        <v-slide-y-transition mode="in" group hide-on-leave>
-          <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-6">
-            <v-row class="text-body-1 pl-4 align-center mb-4">
-              <v-col cols="6">
-                <div>
-                  {{ cycle.name
-                  }}<span>
-                    <v-icon size="18px" class="ml-4 material-icons-round"
-                      >loop</v-icon
+        <template v-if="cycles && cycles.length > 0">
+          <v-slide-y-transition group hide-on-leave appear>
+            <div v-for="(cycle, n) in cycles" :key="cycle.id" class="px-4 mb-6">
+              <v-row class="text-body-1 pl-4 align-center mb-4">
+                <v-col cols="6">
+                  <div>
+                    {{ cycle.name
+                    }}<span>
+                      <v-icon size="18px" class="ml-4 material-icons-round"
+                        >loop</v-icon
+                      >
+                      {{ cycle.repetitions }}
+                    </span>
+                  </div>
+                </v-col>
+
+                <template v-if="n === 0">
+                  <v-col cols="1" class="text-center" align="center">
+                    <v-icon size="24px" class="material-icons-round"
+                      >replay</v-icon
                     >
-                    {{ cycle.repetitions }}
-                  </span>
-                </div>
-              </v-col>
+                  </v-col>
+                  <v-col cols="1" class="text-center" align="center">
+                    <v-icon size="24px" class="material-icons-round"
+                      >fitness_center</v-icon
+                    >
+                  </v-col>
+                  <v-col cols="1" class="text-center" align="center">
+                    <v-icon size="24px" class="material-icons-outlined"
+                      >timer</v-icon
+                    >
+                  </v-col>
+                </template>
+              </v-row>
 
-              <template v-if="n === 0">
-                <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="24px" class="material-icons-round"
-                    >replay</v-icon
-                  >
-                </v-col>
-                <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="24px" class="material-icons-round"
-                    >fitness_center</v-icon
-                  >
-                </v-col>
-                <v-col cols="1" class="text-center" align="center">
-                  <v-icon size="24px" class="material-icons-outlined"
-                    >timer</v-icon
-                  >
-                </v-col>
-              </template>
-            </v-row>
-
-            <template v-if="cycle.exercises.length > 0">
-              <ExerciseViewCard
+              <template v-if="cycle.exercises.length > 0">
+                <ExerciseViewCard
                   style="cursor: default"
                   @finish="changeSuccess()"
-                v-for="obj in cycle.exercises"
-                :key="obj.order"
-                :id="obj.exercise.id"
-                :name="obj.exercise.name"
-                :detail="obj.exercise.detail"
-                :duration="obj.duration"
-                :weight="obj.weight"
-                :repetitions="obj.repetitions"
-                class="rounded-xl"
-              ></ExerciseViewCard>
-            </template>
-            <template v-else>
-              <div
-                class="rounded-xl py-6 px-4"
-                style="background-color: #1e1e1e; margin: -12px -12px 0 0"
-              >
-                <v-card-text style="color: gray">
-                  Este ciclo no contiene ejercicios.
-                </v-card-text>
-              </div>
-            </template>
-          </div>
-        </v-slide-y-transition>
+                  v-for="obj in cycle.exercises"
+                  :key="obj.order"
+                  :id="obj.exercise.id"
+                  :name="obj.exercise.name"
+                  :detail="obj.exercise.detail"
+                  :duration="obj.duration"
+                  :weight="obj.weight"
+                  :repetitions="obj.repetitions"
+                  class="rounded-xl"
+                ></ExerciseViewCard>
+              </template>
+              <template v-else>
+                <div
+                  class="rounded-xl py-6 px-4"
+                  style="background-color: #1e1e1e; margin: -12px -12px 0 0"
+                >
+                  <v-card-text style="color: gray">
+                    Este ciclo no contiene ejercicios.
+                  </v-card-text>
+                </div>
+              </template>
+            </div>
+          </v-slide-y-transition>
+        </template>
+
+        <template v-else>
+          <v-slide-y-transition appear>
+            <div
+              class="rounded-xl py-6 px-4 mx-4"
+              style="background-color: #1e1e1e"
+            >
+              <v-card-text style="color: gray">
+                Esta rutina no contiene ejercicios. Pulse editar para añadir
+                nuevos ciclos y ejercicios.
+              </v-card-text>
+            </div>
+          </v-slide-y-transition></template
+        >
       </div>
     </div></v-slide-x-transition
   >
@@ -181,7 +206,6 @@ export default {
     $route: "fetchRoutines",
   },
   methods: {
-
     ...mapActions(useRoutineStore, {
       $getAllRoutine: "getAllRoutine",
       $deleteRoutine: "deleteRoutine",
@@ -198,8 +222,8 @@ export default {
     ...mapState(useSecurityStore, {
       $getUser: "getUser",
     }),
-    changeSuccess(){
-      this.success = true
+    changeSuccess() {
+      this.success = true;
     },
     editRoutine() {
       this.$router.push({

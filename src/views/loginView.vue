@@ -107,13 +107,13 @@ export default {
     ...mapActions(useSecurityStore, {
       $login: "login",
       $getCurrentUser: "getCurrentUser",
-      $modifyUser: "modifyUser"
+      $modifyUser: "modifyUser",
     }),
     ...mapActions(useExerciseStore, {
-      $addExercise: "addExercise"
+      $addExercise: "addExercise",
     }),
     ...mapActions(useExerciseImageStore, {
-      $addExerciseImage: "addExerciseImage"
+      $addExerciseImage: "addExerciseImage",
     }),
     snackbarLoading() {
       this.loading = true;
@@ -138,13 +138,9 @@ export default {
         this.rememberMe
       )
         .then(() => this.$getCurrentUser())
-        .then((user) => {
-          if (user.metadata.login === 0) {
-            this.loadExercises();
-            this.$modifyUser({"metadata": {"login": 1}});
-          }
+        .then(() => {
+          this.$router.push({ name: "Categorias" });
         })
-        .then(() => { this.$router.push({ name: "Categorias" }) })
         .catch((e) => this.handleResult(e));
     },
     handleResult(result) {
@@ -169,48 +165,127 @@ export default {
     },
     async loadExercises() {
       let result;
-      result = await this.$addExercise('Curl alterno con mancuernas', "exercise", "Bíceps", {
-        "pos": "De pie, con las rodillas ligeramente dobladas y la espalda recta. Sostén una mancuerna en cada mano, con un agarre neutral a lo largo del cuerpo.",
-        "procedure": "Sin mover el pecho, eleva la mancuerna flexionando el antebrazo. Durante el movimiento, rota la muñeca hacia afuera hasta que la mano esté en posición supina y recta. Contrae el bíceps, y luego vuelve lentamente a la posición inicial. Mantén el codo cerca del cuerpo durante el movimiento. Alterne este movimiento realizándolo con un brazo tras otro."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Alternating-Dumbbell-Curl_ad879dc4-b4fb-4ca7-b2b1-6e1eb5d78252_600x600.png?v=1612137169')
-      result = await this.$addExercise('Curl con cuerda en polea', "exercise", "Bíceps", {
-        "pos": "De pie frente a la polea, rodillas ligeramente flexionadas, toma la cuerda con ambas manos, en un agarre neutral, brazos relajados a lo largo del cuerpo.",
-        "procedure": "Sin mover el pecho, flexiona los antebrazos, acercando las manos lo más posible a los hombros, sin llevar los codos demasiado hacia delante. Contrae los bíceps en una posición alta, y luego vuelve lentamente a la posición inicial."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Rope-Cable-Curl_6216e254-5f77-462c-9954-ea210fff8a70_600x600.png?v=1612137195')
-      result = await this.$addExercise('Curl con barra EZ', "exercise", "Bíceps", {
-        "pos": "De pie, con las rodillas ligeramente dobladas y la espalda recta. Sujeta la barra EZ con las manos en supinación",
-        "procedure": "Sin mover el pecho, levantar la barra EZ flexionando los antebrazos. Contrae los bíceps en posición elevada, luego deja que la barra baje lentamente de nuevo hasta la posición inicial. Mantén tus codos cerca del cuerpo durante el movimiento."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/EZ-Barbell-Curl_42cb566b-6415-4318-94e0-c93f4b442e59_600x600.png?v=1612137227');
-      result = await this.$addExercise('Elevación de gemelos sentado', "exercise", "Gemelos", {
-        "pos": "Sentado en la máquina con la parte delantera de los pies en la cuña y la parte inferior de los muslos bajo las partes acolchadas.",
-        "procedure": "A la vez que contraes los gemelos, levanta los talones lo más alto posible. Permanece en la posición más elevada por un momento, sintiendo bien la contracción. Luego baja lentamente los talones estirando las pantorrillas."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Seated-Calf-Raise_8c8641b2-10f2-4dc8-9adb-8d80fd1a16d0_600x600.png?v=1612137064');
-      result = await this.$addExercise('Press de banca con barra', "exercise", "Pectorales", {
-        "pos": "Acostado en el banco, con los pies en el suelo. Agarra la barra con un agarre más amplio que el ancho de los hombros. Tus antebrazos deben estar perpendiculares al suelo.",
-        "procedure": "Desengancha la barra y bájala lentamente hasta la parte inferior del pecho. A medida que contraes los pectorales, empuja la carga hacia arriba hasta que los brazos estén casi rectos. Durante todo el movimiento: Mantén los codos en el exterior para poner el máximo esfuerzo en el pecho y el mínimo en los deltoides anteriores y el tríceps.      Mantén los hombros apoyados en la banca."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Barbell-Bench-Press_0316b783-43b2-44f8-8a2b-b177a2cfcbfc_600x600.png?v=1612137800');
-      result = await this.$addExercise('Press banca inclinado con mancuernas', "exercise", "Pectorales",
+      result = await this.$addExercise(
+        "Curl alterno con mancuernas",
+        "exercise",
+        "Bíceps",
         {
-          "pos": "Tumbado en el banco inclinado, con los pies apoyados en el suelo, una mancuerna en cada mano, agarre en pronación. Sostén las mancuernas a cada lado a la altura del pecho. Tus antebrazos deben estar perpendiculares al suelo.",
-          "procedure": "Mientras contraes tus pectorales, empuja la carga hacia arriba hasta que tus brazos estén casi rectos, luego vuelve a la posición inicial. Durante todo el movimiento: Mantén los codos hacia afuera para poner el máximo esfuerzo en los pectorales y el mínimo en los deltoides frontales y el tríceps. Mantén los hombros pegados al banco."
-        })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Incline-Dumbbell-Bench-Press_c2bf89a2-433f-4a8f-9801-67c679980867_600x600.png?v=1612138008');
-      result = await this.$addExercise('Aperturas en máquina Peck Deck', "exercise", "Pectorales", {
-        "pos": "Sentado en la máquina \"Peck deck\" con la espalda pegada al respaldo, los antebrazos bien apoyados contra las piezas acolchadas previstas para este fin. La parte superior de los brazos debe estar paralela al suelo y en línea con los hombros.",
-        "procedure": "Aprieta los brazos tanto como sea posible siguiendo el movimiento de la máquina. Contrae el pecho al final del movimiento y luego vuelve lentamente a la posición inicial."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Peck-Deck_600x600.png?v=1612137910');
-      result = await this.$addExercise('Cruce de poleas', "exercise", 'Pectorales', {
-        "pos": "Toma los manerales que están en los extremos de cada cable y colócate en el centro entre las poleas. Dobla el pecho ligeramente hacia adelante y mantén los codos ligeramente doblados.",
-        "procedure": "Aprieta lentamente los brazos frente al pecho como si fuera un arco. Mantén los codos ligeramente flexionados durante el movimiento. Cuando las manos se junten, mantén la posición por un momento, contrayendo el pecho. Luego vuelve lentamente a la posición original."
-      })
-      await this.$addExerciseImage(result.id, 1, 'https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Cable-Crossover_09c90616-2777-47ed-927e-d5987edfce09_600x600.png?v=1612138036')
-    }
+          pos: "De pie, con las rodillas ligeramente dobladas y la espalda recta. Sostén una mancuerna en cada mano, con un agarre neutral a lo largo del cuerpo.",
+          procedure:
+            "Sin mover el pecho, eleva la mancuerna flexionando el antebrazo. Durante el movimiento, rota la muñeca hacia afuera hasta que la mano esté en posición supina y recta. Contrae el bíceps, y luego vuelve lentamente a la posición inicial. Mantén el codo cerca del cuerpo durante el movimiento. Alterne este movimiento realizándolo con un brazo tras otro.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Alternating-Dumbbell-Curl_ad879dc4-b4fb-4ca7-b2b1-6e1eb5d78252_600x600.png?v=1612137169"
+      );
+      result = await this.$addExercise(
+        "Curl con cuerda en polea",
+        "exercise",
+        "Bíceps",
+        {
+          pos: "De pie frente a la polea, rodillas ligeramente flexionadas, toma la cuerda con ambas manos, en un agarre neutral, brazos relajados a lo largo del cuerpo.",
+          procedure:
+            "Sin mover el pecho, flexiona los antebrazos, acercando las manos lo más posible a los hombros, sin llevar los codos demasiado hacia delante. Contrae los bíceps en una posición alta, y luego vuelve lentamente a la posición inicial.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Rope-Cable-Curl_6216e254-5f77-462c-9954-ea210fff8a70_600x600.png?v=1612137195"
+      );
+      result = await this.$addExercise(
+        "Curl con barra EZ",
+        "exercise",
+        "Bíceps",
+        {
+          pos: "De pie, con las rodillas ligeramente dobladas y la espalda recta. Sujeta la barra EZ con las manos en supinación",
+          procedure:
+            "Sin mover el pecho, levantar la barra EZ flexionando los antebrazos. Contrae los bíceps en posición elevada, luego deja que la barra baje lentamente de nuevo hasta la posición inicial. Mantén tus codos cerca del cuerpo durante el movimiento.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/EZ-Barbell-Curl_42cb566b-6415-4318-94e0-c93f4b442e59_600x600.png?v=1612137227"
+      );
+      result = await this.$addExercise(
+        "Elevación de gemelos sentado",
+        "exercise",
+        "Gemelos",
+        {
+          pos: "Sentado en la máquina con la parte delantera de los pies en la cuña y la parte inferior de los muslos bajo las partes acolchadas.",
+          procedure:
+            "A la vez que contraes los gemelos, levanta los talones lo más alto posible. Permanece en la posición más elevada por un momento, sintiendo bien la contracción. Luego baja lentamente los talones estirando las pantorrillas.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Seated-Calf-Raise_8c8641b2-10f2-4dc8-9adb-8d80fd1a16d0_600x600.png?v=1612137064"
+      );
+      result = await this.$addExercise(
+        "Press de banca con barra",
+        "exercise",
+        "Pectorales",
+        {
+          pos: "Acostado en el banco, con los pies en el suelo. Agarra la barra con un agarre más amplio que el ancho de los hombros. Tus antebrazos deben estar perpendiculares al suelo.",
+          procedure:
+            "Desengancha la barra y bájala lentamente hasta la parte inferior del pecho. A medida que contraes los pectorales, empuja la carga hacia arriba hasta que los brazos estén casi rectos. Durante todo el movimiento: Mantén los codos en el exterior para poner el máximo esfuerzo en el pecho y el mínimo en los deltoides anteriores y el tríceps.      Mantén los hombros apoyados en la banca.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Barbell-Bench-Press_0316b783-43b2-44f8-8a2b-b177a2cfcbfc_600x600.png?v=1612137800"
+      );
+      result = await this.$addExercise(
+        "Press banca inclinado con mancuernas",
+        "exercise",
+        "Pectorales",
+        {
+          pos: "Tumbado en el banco inclinado, con los pies apoyados en el suelo, una mancuerna en cada mano, agarre en pronación. Sostén las mancuernas a cada lado a la altura del pecho. Tus antebrazos deben estar perpendiculares al suelo.",
+          procedure:
+            "Mientras contraes tus pectorales, empuja la carga hacia arriba hasta que tus brazos estén casi rectos, luego vuelve a la posición inicial. Durante todo el movimiento: Mantén los codos hacia afuera para poner el máximo esfuerzo en los pectorales y el mínimo en los deltoides frontales y el tríceps. Mantén los hombros pegados al banco.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Incline-Dumbbell-Bench-Press_c2bf89a2-433f-4a8f-9801-67c679980867_600x600.png?v=1612138008"
+      );
+      result = await this.$addExercise(
+        "Aperturas en máquina Peck Deck",
+        "exercise",
+        "Pectorales",
+        {
+          pos: 'Sentado en la máquina "Peck deck" con la espalda pegada al respaldo, los antebrazos bien apoyados contra las piezas acolchadas previstas para este fin. La parte superior de los brazos debe estar paralela al suelo y en línea con los hombros.',
+          procedure:
+            "Aprieta los brazos tanto como sea posible siguiendo el movimiento de la máquina. Contrae el pecho al final del movimiento y luego vuelve lentamente a la posición inicial.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Peck-Deck_600x600.png?v=1612137910"
+      );
+      result = await this.$addExercise(
+        "Cruce de poleas",
+        "exercise",
+        "Pectorales",
+        {
+          pos: "Toma los manerales que están en los extremos de cada cable y colócate en el centro entre las poleas. Dobla el pecho ligeramente hacia adelante y mantén los codos ligeramente doblados.",
+          procedure:
+            "Aprieta lentamente los brazos frente al pecho como si fuera un arco. Mantén los codos ligeramente flexionados durante el movimiento. Cuando las manos se junten, mantén la posición por un momento, contrayendo el pecho. Luego vuelve lentamente a la posición original.",
+        }
+      );
+      await this.$addExerciseImage(
+        result.id,
+        1,
+        "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Cable-Crossover_09c90616-2777-47ed-927e-d5987edfce09_600x600.png?v=1612138036"
+      );
+    },
   },
 };
 </script>

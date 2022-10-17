@@ -1,5 +1,10 @@
 <template>
   <v-slide-x-transition hide-on-leave appear>
+    <div v-if="exercises && exercises.length == 0">
+      <div style="background-color: #1e1e1e" class="rounded-xl pa-16 mr-8">
+        Aún no has creado ningún ejercicio
+      </div>
+    </div>
     <div
       class="d-flex pl-8"
       v-if="exercises"
@@ -9,8 +14,11 @@
         Ejercicio agregado
 
         <template>
-          <v-icon class="float-right material-icons-round" size="18" color="white"
-          >check_circle</v-icon
+          <v-icon
+            class="float-right material-icons-round"
+            size="18"
+            color="white"
+            >check_circle</v-icon
           >
         </template>
       </v-snackbar>
@@ -28,7 +36,7 @@
             :key="exercise.id"
           >
             <SelectableExerciseSummaryCard
-                @finish="changeSuccess()"
+              @finish="changeSuccess()"
               :exercise="exercise.name"
               :category="exercise.detail"
               :id="exercise.id"
@@ -97,8 +105,8 @@ export default {
           }
         });
     },
-    changeSuccess(){
-      this.success = true
+    changeSuccess() {
+      this.success = true;
     },
     showDeleted(deletedExercise) {
       this.exercises.splice(
