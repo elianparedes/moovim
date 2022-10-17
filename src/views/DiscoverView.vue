@@ -1,42 +1,45 @@
 <template>
-  <div>
-    <div style="height: 80px">
-      <v-spacer class="my-8"></v-spacer>
-      <div class="font-weight-thin text-h6 d-flex row">
-        <span class="mx-2">Rutinas de otros usuarios</span>
-        <v-spacer></v-spacer>
-        <SwitchButton
-          class="mx-6"
-          :chip-content="['Mas recientes', 'Mas antiguos', 'Mas faciles', 'Mas dificiles']"
-          :vue-style="'mx-1'"
-          v-on:newOrder="
-            $event === 'Mas recientes'
-              ? getOrderedWrapper('date', 'desc')
-              : $event === 'Mas antiguos'
-              ? getOrderedWrapper('date', 'asc')
-              : $event === 'Mas faciles'
-              ? getOrderedWrapper('difficulty', 'asc')
-              : getOrderedWrapper('difficulty', 'desc')
-          "
-        ></SwitchButton>
-      </div>
-    </div>
-    <div class="mr-6">
-      <v-carousel hide-delimiters height="100%" cycle show-arrows-on-hover>
-        <v-carousel-item
-          v-for="i in Math.ceil(routines.length / 6)"
-          :key="i"
-          height="100%"
+  <v-slide-x-transition mode="in-out" appear>
+    <div class="d-flex flex-column" style="gap: 32px">
+      <div>
+        <div
+          class="d-flex"
+          style="margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px))"
         >
-          <v-row v-for="k in [(i - 1) * 2, (i - 1) * 2 + 1]" :key="k">
-            <v-col
-              v-for="routine in getArray(k)"
-              :key="routine.id"
-              md="4"
-              xs="3"
-            >
+          <span class="mx-2 font-weight-thin text-h6"
+            >Rutinas de otros usuarios</span
+          >
+          <v-spacer></v-spacer>
+          <SwitchButton
+            :chip-content="[
+              'Más recientes',
+              'Más antiguos',
+              'Más fáciles',
+              'Más difíciles',
+            ]"
+            :vue-style="'mx-1'"
+            v-on:newOrder="
+              $event === 'Más recientes'
+                ? getOrderedWrapper('date', 'desc')
+                : $event === 'Más antiguos'
+                ? getOrderedWrapper('date', 'asc')
+                : $event === 'Más fáciles'
+                ? getOrderedWrapper('difficulty', 'asc')
+                : getOrderedWrapper('difficulty', 'desc')
+            "
+          ></SwitchButton>
+        </div>
+      </div>
+      <div
+        style="
+          padding-bottom: 16px;
+          margin-right: calc(100vw - (500px * 3 + 16px * 4 + 256px));
+        "
+      >
+        <v-row class="mb-6">
+          <v-col cols="4" v-for="routine in routines" :key="routine.name">
+            <v-fade-transition appear>
               <WorkoutResultCard
-                v-if="routine"
                 :routineId="routine.id"
                 :name="routine.name"
                 :desc="routine.detail"
@@ -46,33 +49,16 @@
                 :verified="routine.verified"
                 :stars="routine.score"
                 :bookmarks="routine.bookmarks"
-              />
-            </v-col>
-          </v-row>
-        </v-carousel-item>
-      </v-carousel>
-    </div>
-    <div class="font-weight-thin text-h6 my-2">
-      <span class="mx-2">Ejercicios</span>
-    </div>
-    <div>
-        <SelectableExerciseSummaryCard
-            v-for="exercise in exercises"
-            :key="exercise.id"
-          :id="exercise.id"
-          :category="exercise.detail"
-          :exercise="exercise.name"
-          :click="()=>{viewExerciseDetails(exercise)}"
-          class="my-4 mr-6"
-        ></SelectableExerciseSummaryCard>
-    </div>
-  </div>
+            /></v-fade-transition>
+          </v-col>
+        </v-row>
+      </div></div
+  ></v-slide-x-transition>
 </template>
 
 <script>
 import SwitchButton from "@/components/SwitchButton";
 import WorkoutResultCard from "@/components/WorkoutResultCard";
-import SelectableExerciseSummaryCard from "@/components/SelectableExerciseSummaryCard";
 import { mapActions } from "pinia";
 import { useRoutineStore } from "@/stores/routineStore";
 import { useExerciseStore } from "@/stores/exerciseStore";
@@ -80,7 +66,6 @@ import router from "@/router";
 export default {
   name: "DiscoverView",
   components: {
-    SelectableExerciseSummaryCard,
     WorkoutResultCard,
     SwitchButton,
   },
@@ -150,8 +135,8 @@ export default {
           }
         });
     },
-    viewExerciseDetails(exercise){
-      router.push(`exercises/${exercise.name}-${exercise.id}`)
+    viewExerciseDetails(exercise) {
+      router.push(`exercises/${exercise.name}-${exercise.id}`);
     },
     ...mapActions(useRoutineStore, {
       $getPageRoutineOrdered: "getPageRoutineOrdered",

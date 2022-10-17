@@ -3,8 +3,11 @@
     <SelectButton
       v-for="(chip, index) in chipContent"
       :key="chip"
-      :vue-style=vueStyle
-      @click="changeSelectedChip(index); $emit('newOrder',chipContent[index])"
+      :vue-style="vueStyle"
+      @click="
+        changeSelectedChip(index);
+        $emit('newOrder', chipContent[index]);
+      "
       :toggle="chipStatus[index].toggle"
       >{{ chip }}</SelectButton
     >
@@ -22,31 +25,30 @@ export default {
       type: Array,
       required: true,
     },
-    vueStyle:{
+    vueStyle: {
       type: String,
       required: false,
-      default: "mx-1 px-16 py-4 font-weight-regular text-body-2"
+      default: "mx-1 px-16 py-4 font-weight-regular text-body-2",
     },
     selectedChip: {
       type: Number,
       required: false,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
       chipStatus: [],
-      indexChip : this.selectedChip
+      indexChip: this.selectedChip,
     };
   },
   methods: {
     changeSelectedChip(index) {
       this.chipStatus[this.indexChip].toggle = false;
-      this.$emit('switch',index)
-      this.indexChip = index
+      this.$emit("switch", index);
+      this.indexChip = index;
       this.chipStatus[index].toggle = true;
     },
-
   },
   created() {
     for (let i = 0; i < this.chipContent.length; i++) {
@@ -54,7 +56,7 @@ export default {
       this.chipStatus.push({ toggle: false });
     }
     this.chipStatus[this.selectedChip].toggle = true;
-  }
+  },
 };
 </script>
 

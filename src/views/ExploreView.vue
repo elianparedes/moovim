@@ -1,28 +1,34 @@
 <template>
   <div>
-    <v-text-field
-      v-model="input"
-      background-color="#252525"
-      solo
-      flat
-      label="Buscar"
-      class="rounded-lg"
-      @keydown.enter="search"
-      style="width: 50%"
-    >
-      <template v-slot:prepend-inner
-        ><v-icon class="mr-2" color="#4a4a4a">mdi-magnify</v-icon></template
-      >
-      <template v-slot:label
-        ><span style="color: #4a4a4a">Buscar</span></template
-      >
-    </v-text-field>
-    <SwitchButton
-      v-if="getIndex() !== -1"
-      :chip-content="contents"
-      :selected-chip="getIndex()"
-      @switch="switchHandler"
-    ></SwitchButton>
+    <v-fade-transition appear>
+      <div>
+        <v-text-field
+          v-model="input"
+          background-color="#252525"
+          solo
+          flat
+          label="Buscar"
+          class="rounded-lg"
+          @keydown.enter="search"
+          style="width: 50%"
+          :key="1"
+        >
+          <template v-slot:prepend-inner
+            ><v-icon class="mr-2" color="#4a4a4a">mdi-magnify</v-icon></template
+          >
+          <template v-slot:label
+            ><span style="color: #4a4a4a">Buscar</span></template
+          >
+        </v-text-field>
+        <SwitchButton
+          :key="2"
+          v-if="getIndex() !== -1"
+          :chip-content="contents"
+          :selected-chip="getIndex()"
+          @switch="switchHandler"
+        ></SwitchButton>
+      </div>
+    </v-fade-transition>
     <router-view class="mt-8" />
   </div>
 </template>
