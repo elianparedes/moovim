@@ -125,7 +125,6 @@ export default {
       items: [
         { title: "Ver detalles", action: this.showMore },
         { title: "Añadir a rutina...", action: this.add },
-        { title: "Compartir", action: this.share },
       ],
       stepDialog: false,
     };

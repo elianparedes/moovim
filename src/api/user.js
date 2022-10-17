@@ -17,6 +17,10 @@ class UserApi {
     );
   }
 
+  static async logout(controller) {
+    return await Api.post(UserApi.getUrl('logout'), true, controller);
+}
+
   static async signUp(credentials, controller) {
     credentials["avatarUrl"] = profileImage;
     return await Api.post(UserApi.getUrl(), false, credentials, controller);

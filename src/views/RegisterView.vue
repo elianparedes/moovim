@@ -85,85 +85,91 @@ import { SignCredentials } from "../api/user";
 import { useSecurityStore } from "../stores/securityStore.js";
 
 export default {
-    data: () => ({
-        result: null,
-        controller: null,
-        valid: true,
-        username: '',
-        password: '',
-        email: '',
-        nameRules: [
-            v => !!v || 'El nombre es obligatorio',
-            v => v.length <= 15 || 'El nombre puede tener hasta 15 caracteres',
-        ],
-        emailRules: [
-            v => !!v || 'El correo electrónico es obligatorio',
-            v => /.+@.+/.test(v) || 'El correo electrónico no es válido',
-            v => v.length <= 40 || 'El correo electrónico puede tener hasta 40 caracteres',
-        ],
-        passwordRules: [
-            v => !!v || 'La contraseña es obligatoria',
-            v => v.length <= 15 || 'La contraseña puede tener hasta 15 caracteres',
-        ],
-        show: false,
-        snackbar: false,
-        snackbarColor: "#252525",
-        snackbarText: 'Cargando',
-        timeout: 10 * 1000,
-        loading: true,
+  data: () => ({
+    result: null,
+    controller: null,
+    valid: true,
+    username: "",
+    password: "",
+    email: "",
+    nameRules: [
+      (v) => !!v || "El nombre es obligatorio",
+      (v) => v.length <= 15 || "El nombre puede tener hasta 15 caracteres",
+    ],
+    emailRules: [
+      (v) => !!v || "El correo electrónico es obligatorio",
+      (v) => /.+@.+/.test(v) || "El correo electrónico no es válido",
+      (v) =>
+        v.length <= 40 ||
+        "El correo electrónico puede tener hasta 40 caracteres",
+    ],
+    passwordRules: [
+      (v) => !!v || "La contraseña es obligatoria",
+      (v) => v.length <= 15 || "La contraseña puede tener hasta 15 caracteres",
+    ],
+    show: false,
+    snackbar: false,
+    snackbarColor: "#252525",
+    snackbarText: "Cargando",
+    timeout: 10 * 1000,
+    loading: true,
+  }),
+  methods: {
+    ...mapActions(useSecurityStore, {
+      $getCurrentUser: "getCurrentUser",
+      $signUp: "signUp",
     }),
-    methods: {
-        ...mapActions(useSecurityStore, {
-            $getCurrentUser: 'getCurrentUser',
-            $signUp: 'signUp',
-        }),
-        clearResult() {
-            this.result = null
-        },
-        snackbarLoading() {
-            this.loading = true;
-            this.error = false;
-            this.snackbarText = "Cargando";
-            this.snackbarColor = "#252525";
-            this.timeout = 65 * 1000;
-            this.snackbar = true;
-        },
-        snackbarError(errorMessage) {
-            this.loading = false;
-            this.error = true;
-            this.snackbarText = errorMessage;
-            this.snackbarColor = 'error';
-            this.timeout = 5 * 1000;
-            this.snackbar = true;
-        },
-        onClicked() {
-            this.snackbarLoading();
-            this.$signUp(new SignCredentials(this.username, this.password, this.email))
-                .then(() => {
-                    sessionStorage.setItem('email', this.email);
-                    this.$router.push({ name: 'verify' });
-                })
-                .catch((result) => this.handleResult(result))
-        },
-        handleResult(result) {
-            switch (result.code) {
-                case 2:
-                    if (result.details[0].includes('username'))
-                        this.snackbarError('El nombre de usuario ya existe');
-                    else
-                        this.snackbarError("Ya existe una cuenta registrada con este correo");
-                    break;
-                case 99:
-                    this.snackbarError("Sin conexión");
-                    break;
-                default:
-                    break;
-            }
-        },
-        onLogin() {
-            this.$router.push({ name: 'login' });
-        }
-    }
+    clearResult() {
+      this.result = null;
+    },
+    snackbarLoading() {
+      this.loading = true;
+      this.error = false;
+      this.snackbarText = "Cargando";
+      this.snackbarColor = "#252525";
+      this.timeout = 65 * 1000;
+      this.snackbar = true;
+    },
+    snackbarError(errorMessage) {
+      this.loading = false;
+      this.error = true;
+      this.snackbarText = errorMessage;
+      this.snackbarColor = "error";
+      this.timeout = 5 * 1000;
+      this.snackbar = true;
+    },
+    onClicked() {
+      this.snackbarLoading();
+      this.$signUp(
+        new SignCredentials(this.username, this.password, this.email)
+      )
+        .then(() => {
+          sessionStorage.setItem("email", this.email);
+          this.$router.push({ name: "verify" });
+        })
+        .catch((result) => this.handleResult(result));
+    },
+    handleResult(result) {
+      switch (result.code) {
+        case 2:
+          if (result.details[0].includes("username"))
+            this.snackbarError("El nombre de usuario ya existe");
+          else
+            this.snackbarError(
+              "Ya existe una cuenta registrada con este correo"
+            );
+          break;
+        case 99:
+          this.snackbarError("Sin conexión");
+          break;
+        default:
+          break;
+      }
+    },
+    onLogin() {
+      this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 

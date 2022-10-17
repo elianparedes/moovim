@@ -14,11 +14,6 @@
             message="Si eliminas este ejercicio, se eliminará de forma permanente de tu biblioteca de ejercicios."
             @click="deleteExercise"
           />
-
-          <v-chip class="px-10 py-4" color="gray" outlined>
-            <v-icon left small class="material-icons-round">share</v-icon>
-            Compartir
-          </v-chip>
           <v-chip
             class="px-10 py-4"
             color="gray"

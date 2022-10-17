@@ -244,4 +244,8 @@ export default {
 .v-expansion-panel:not(:first-child)::after {
   border-top: 0;
 }
+
+.v-image__image--cover {
+  border-radius: 24px;
+}
 </style>

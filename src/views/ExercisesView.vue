@@ -1,5 +1,5 @@
 <template>
-  <v-slide-x-transition hide-on-leave>
+  <v-slide-x-transition hide-on-leave appear>
     <div
       class="d-flex pl-8"
       v-if="exercises"
@@ -28,7 +28,7 @@
         </v-item-group>
       </div>
 
-      <v-fade-transition hide-on-leave>
+      <v-fade-transition hide-on-leave appear>
         <ExerciseView
           v-if="selectedExercise"
           :name="selectedExercise.name"
@@ -67,22 +67,23 @@ export default {
   },
   methods: {
     ...mapActions(useExerciseStore, {
-      $getPageExercise: "getPageExercise"
+      $getPageExercise: "getPageExercise",
     }),
-    getAllExercisesWrapper(){
-      this.getAllExercises(0)
+    getAllExercisesWrapper() {
+      this.getAllExercises(0);
     },
-    getAllExercises(page){
+    getAllExercises(page) {
       this.$getPageExercise(page)
-      .then((exercise) => {
-        this.exercises = this.exercises.concat(exercise.content);
-        return exercise.isLastPage;
-      }).then((isLast) => {
-        if(!isLast){
-          this.getAllExercises(page+1)
-          return;
-        }
-      })
+        .then((exercise) => {
+          this.exercises = this.exercises.concat(exercise.content);
+          return exercise.isLastPage;
+        })
+        .then((isLast) => {
+          if (!isLast) {
+            this.getAllExercises(page + 1);
+            return;
+          }
+        });
     },
     showDeleted(deletedExercise) {
       this.exercises.splice(

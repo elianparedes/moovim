@@ -88,14 +88,14 @@
         <v-spacer></v-spacer>
         <router-link v-if="this.$isLoggedIn" to="/profile">
           <v-fade-transition>
-            <template v-if="avatarUrl">
-              <v-avatar
-                class="my-8"
-                size="36px"
-                style="background-color: #252525"
-              >
-                <img :src="avatarUrl" :alt="username" />
-              </v-avatar> </template
+            <v-avatar
+              class="my-8"
+              size="36px"
+              style="background-color: #252525"
+            >
+              <template v-if="avatarUrl">
+                <img :src="avatarUrl" :alt="username"
+              /></template> </v-avatar
           ></v-fade-transition>
         </router-link>
         <div v-if="!this.$isLoggedIn" class="d-flex align-center">
@@ -216,10 +216,6 @@ body {
 
 .v-list-item {
   flex: 0;
-}
-
-.v-image__image--cover {
-  border-radius: 24px;
 }
 
 .v-card--link:before {

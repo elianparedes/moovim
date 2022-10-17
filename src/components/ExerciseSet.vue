@@ -113,7 +113,7 @@ export default {
       }, 2000);
     },
     updateValue(key, value) {
-      if (value.length > 3) value = value.slice(0, 3);
+      if (value.length > 2) value = value.slice(0, 2);
 
       this.$emit("input", { ...this.value, [key]: Number(value) });
     },

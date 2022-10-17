@@ -82,9 +82,6 @@ export default {
     add() {
       this.stepDialog = true;
     },
-    share() {
-      console.log("share");
-    },
     showMore() {
       this.$router.push({
         name: "exercises_detail",
