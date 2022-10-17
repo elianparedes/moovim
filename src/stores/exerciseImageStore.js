@@ -25,9 +25,8 @@ export const useExerciseImageStore = defineStore("exerciseImage", {
         return result;
       },
       async addExerciseImage(exerciseId, number, url) {
-        const result = await exerciseImageApi.add(
-          new exerciseImageApi.add(exerciseId, new Image(number, url))
-        );
+        const image= new Image(number, url);
+        const result = await exerciseImageApi.add(exerciseId, image);
         this.items.push(result);
         return result;
       },

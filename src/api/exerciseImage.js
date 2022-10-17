@@ -5,8 +5,7 @@ export {exerciseImageApi, Image}
 class exerciseImageApi{
 
     static getUrl(exerciseId, imageId){
-        return `${Api.baseUrl}/exercises${exerciseId ? `/${exerciseId}` : "" }/images
-        ${imageId ? `/${imageId}` : "" }`;
+        return `${Api.baseUrl}/exercises${exerciseId ? `/${exerciseId}`:""}/images${imageId ? `/${imageId}` : "" }`;
     }
 
     static async getAll(exerciseId, controller){
@@ -14,7 +13,7 @@ class exerciseImageApi{
     }
 
     static async add(exerciseId, image, controller){
-        return await Api.post(exerciseImageApi.getUrl(), true, image, controller);
+        return await Api.post(exerciseImageApi.getUrl(exerciseId), true, image, controller);
     }
 
     static async get(exerciseId, imageId, controller){
