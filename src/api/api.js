@@ -4,7 +4,7 @@ class Api {
   static token;
 
   static get baseUrl() {
-    return "http://localhost:8080/api";
+    return "https://moovim-api-dev.up.railway.app/api";
   }
 
   static get timeout() {
